@@ -1,0 +1,103 @@
+<div class="row main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <h5 class="main-page-title">Task Details</h5>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-12">
+      <div class="table-container innerpage-container">
+        <h5 class="table-header">More details about the task</h5>
+        <div class="table-responsive table-wrapper">
+            <table class="table table-striped table-bordered" id="table-data">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Status</th>
+                  <% if(task.isFixedTime) {%>
+                    <th scope="col">Estimated Time</th>
+                  <%} else if(task.status == "Closed"){%>
+                    <th scope="col">Volunteered Time</th>
+                  <%}%>
+                  <th scope="col">Category</th>
+                  <th scope="col">Description</th>
+                  <% if(task.auther) {%>
+                  <th scope="col">Created By</th>
+                  <%}%>
+                  <% if(task.assigned) {%>
+                  <th scope="col">Assigned to</th>
+                  <%}%>
+                  <% if(user.userType == 'Family') {%>
+                    <% if(task.status == 'Open') {%>
+                      <th></th>
+                    <% } else if(task.status == 'In-progress') {%>
+                      <th></th>
+                      <th></th>
+                    <% } %>
+                  <%} else {%>
+                    <% if(task.status == 'Open') {%>
+                      <th></th>
+                    <% } %>
+                    <% if(task.status == 'Closed') {%>
+                      <th></th>
+                    <% } %>
+                  <% } %>
+                  <% if(user.userType == 'Admin') {%>
+                    <th scope="col"></th>
+                  <%}%>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(task){ %>
+                  <div class="row">
+                    <tr>
+                      <td><%= task.name %></td>
+                      <td><%= task.status %></td>
+                      <% if(task.isFixedTime) {%>
+                        <td><%= task.estimatedTime %></td>
+                      <%} else if(task.status == "Closed"){%>
+                        <td><%= task.actualTime %></td>
+                      <%}%>
+                      <td><%= task.category %></td>
+                      <td><%= task.description %></td>
+                      <% if(task.auther) {%>
+                      <td><%= task.author.displayName %></td>
+                      <%}%>
+                      <% if(task.assigned) {%>
+                      <td><%= task.assigned.displayName %></td>
+                      <%}%>
+                      <% if(user.userType == 'Family') {%>
+                        <% if(task.status == 'Open') {%>
+                          <td><a href="/tasks/<%=task._id%>/signup">Signup</a></td>
+                        <% } else if(task.status == 'In-progress') {%>
+                          <td><a href="/tasks/<%=task._id%>/cancel">Cancel</a></td>
+                          <td><a href="/tasks/<%=task._id%>/complete">Complete</a></td>
+                        <% } %>
+                      <%} else {%>
+                        <% if(task.status == 'Open') {%>
+                          <td><a href="/tasks/<%=task._id%>/edit">Edit</a></td>
+                        <% } %>
+                        <% if(task.status == 'Pending Review') {%>
+                          <td>
+                            <a href="/tasks/<%= task._id%>/approve">Approve</a>
+                            <a href="/tasks/<%= task._id%>/unapprove">Unapprove</a>
+                          </td>
+                        <% } %>
+                      <% } %>
+                      <% if(user.userType == 'Admin') {%>
+                        <td><form id="delete-form" action="/tasks/<%= task._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-xs btn-danger">Delete</button>
+                        </form></td>
+                      <%}%>
+                    </tr>
+                  </div>
+                <%}%>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

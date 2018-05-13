@@ -1,0 +1,77 @@
+<%- include ../common/header%>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="sidebar-container" id="sidebar">
+        <div class="container-fluid">
+          <div class="row sidebar-brand">
+            <div class="col-12">
+              <a class="brand-link" href="/users/<%=currentUser._id%>">
+								<i data-feather="home" class="brand-logo"></i>
+                <span class="brand-text"> Dashboard</span>
+              </a>
+            </div>
+          </div>
+          <div class="row sidebar-menu">
+            <div class="col-12">
+              <ul>
+								<li class="sidebar-item">
+                  <a href="/users/<%=currentUser._id%>" class="sidebar-link">
+                    <!-- <span class="icon-holder"> -->
+                      <!-- <i class="fas fa-tasks"></i> -->
+											<i data-feather="bookmark" class="icon-holder bookmark"></i>
+                    <!-- </span> -->
+                    <span class="sidebar-title">Your Tasks</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a href="/tasks" class="sidebar-link">
+										<i data-feather="list" class="icon-holder list"></i>
+                    <span class="sidebar-title">All Tasks</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a href="/logout" class="sidebar-link">
+										<hr>
+                    <i data-feather="log-out" class="icon-holder log-out"></i>
+                    <span class="sidebar-title"> Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="main" id="main">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12 topbar">
+              <ul class="nav-left">
+                <li>
+                  <a href="#" id="sidebar-toggler">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav-right">
+                <li class="dropdown">
+                  <a href="/users/<%=currentUser._id%>" class="dropdown-toggler" id="navbarDropdown"
+										 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<i data-feather="user" class="user-logo"></i>
+                    <span class="user-text"><%= currentUser.displayName %></span>
+                  </a>
+									<!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<li>
+											<a class="dropdown-item" href="#">logged in as Family</a>
+										</li>
+										<li class="dropdown-divider">
+										</li>
+										<li>
+											<a class="dropdown-item" href=>Log out</a>
+										</li>
+					        </ul> -->
+                </li>
+				      </li>
+              </ul>
+            </div>
+          </div>

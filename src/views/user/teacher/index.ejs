@@ -1,0 +1,22 @@
+<%- include ../../partials/admin/header%>
+<%- include ../../partials/common/flash%>
+
+<% let text = ""%>
+<%if (page === 'index') {%>
+<%- include ../index%>
+<%} else if (page === 'show') {%>
+<% text = "created by you" %>
+<%- include ../../task/index%>
+<% } else if (page === 'profile') {%>
+<%- include ../profile%>
+<%} else if (page === 'task/index') {%>
+<%- include ../../task/index%>
+<%} else if (page === 'task/show') {%>
+<%- include ../../task/show%>
+<%} else if (page === 'task/new') {%>
+<%- include ../../task/new%>
+<%} else if (page === 'task/edit') {%>
+<%- include ../../task/edit%>
+<%}%>
+
+<%- include ../../partials/admin/footer%>
