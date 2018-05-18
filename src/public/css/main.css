@@ -8,7 +8,6 @@ body {
   width: 100%;
   height: 100%;
   position: relative;
-  color: black;
   background-color: white;
   color: #72777a;
   letter-spacing: .2px;
@@ -25,10 +24,43 @@ a {
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+
+  color: inherit;
 }
 
 a:focus, a:hover {
   text-decoration: none;
+}
+
+.card-header a:link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card-header a:focus, a:hover {
+  color: #72777a;
+  text-decoration: none;
+}
+
+table .truncate-container {
+  max-width: 210px;
+}
+
+table .truncate-container .truncate-text:hover{
+  overflow: visible;
+  white-space: pre-wrap;
+}
+
+table .truncate-container .truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+table .secondary-data {
+  color: green;
+  font-size: 95%;
 }
 
 ul {
@@ -37,6 +69,45 @@ ul {
   margin: 0;
 }
 
+.bg-green {
+  background: #009688;
+}
+
+.bg-blue {
+  background: #17a2b8 /*#2196f3*/;
+}
+
+.bg-brown {
+  background: #795548;
+}
+
+.bg-purple {
+  background: #8262BB;
+}
+
+.bg-red {
+  background: #e91e63;
+}
+
+.border-green {
+  border-color: #009688;
+}
+
+.border-blue {
+  border-color: #17a2b8 /*#2196f3*/;
+}
+
+.border-brown {
+  border-color: #795548;
+}
+
+.border-purple {
+  border-color: #8262BB;
+}
+
+.border-red {
+  border-color: #e91e63;
+}
 /*
 * ************ Sidebar
 */
@@ -117,6 +188,15 @@ ul {
   vertical-align: middle;
 }
 
+.tools {
+  margin-top: 2px;
+  float: right;
+}
+
+.tools .chevron-up, .chevron-down, .x {
+  color: white!important;
+}
+
 .bookmark {
   color: #2196f3!important;
 }
@@ -187,6 +267,7 @@ ul {
 .main-page-title {
     margin-top: 10px;
     margin-bottom: 30px;
+    text-transform: uppercase;
     color: #313435;
 }
 
@@ -196,23 +277,6 @@ ul {
   border-radius: 3px;
   padding: 20px;
   margin-bottom: 20px;
-}
-
-#tabs .nav-tabs .nav-link {
-    border: 1px solid transparent;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
-    color: #72777a;
-    font-size: 20px;
-}
-
-#tabs .nav-tabs .nav-link.active {
-    /*color: #737373;*/
-    /*background-color: transparent;*/
-    /*border-color: transparent transparent #737373;*/
-    border-bottom: 4px solid #f3565d !important;
-    font-size: 20px;
-    font-weight: bold;
 }
 
 .table-header {
@@ -226,6 +290,10 @@ ul {
   padding-top: 30px;
 }
 
+.table td {
+  vertical-align: middle;
+}
+
 .table-borderless > tbody > tr > td,
 .table-borderless > thead > tr > td,
 .table-borderless {
@@ -233,6 +301,22 @@ ul {
     border-top: 0;
 }
 
+/*
+* Project Container
+*/
+.projectContainer {
+  border: 2px solid red;
+  padding: 0px;
+}
+
+.projectHeader {
+  background: red;
+  color: white;
+}
+
+.projectBody {
+  padding: 3px;
+}
 /*******************************/
 /*
 * Main page.
@@ -277,16 +361,9 @@ ul {
 #delete-form {
     display: inline;
 }
-/*
-.form {
-    width: 90%;
-    margin: 0 auto;
-}*/
 
-@media screen and (min-width: 560px) {
-  /*.form {
-    width: 50%;
-  }*/
+.table-head-view {
+  display: none;
 }
 
 @media screen and (max-width: 767px) {
@@ -369,44 +446,53 @@ ul {
   }
 }
 
-/* Tabs*/
-#tabs{
-	/*background: #007b5e;
-    color: #eee;*/
-    padding: 40px 0;
-}
+@media screen and (max-width: 900px) {
 
-#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-    /*color: #f3f3f3;*/
-    background-color: transparent;
-    /*border-color: transparent transparent #f3f3f3;*/
-    border-bottom: 4px solid !important;
-    font-size: 20px;
-    font-weight: bold;
-}
-#tabs .nav-tabs .nav-link {
-    border: 1px solid transparent;
-    border-top-left-radius: .25rem;
-    border-top-right-radius: .25rem;
-    /*color: #eee;*/
-    font-size: 20px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table, thead, tbody, th, td, tr {
+  		display: block!important;
+      width: 100%!important;
+  	}
+
+  thead tr {
+  		position: absolute;
+  		top: -9999px;
+  		left: -9999px;
+  	}
+
+  .table tr {
+    border: 2px solid #ccc;
+  }
+
+  .table td {
+    width: 100%;
+    border: none;
+  }
+
+  .table-head-view {
+    display: inline-block;
+  }
+
+
+  table .truncate-container {
+    max-width: 100%;
+  }
+
+  table .truncate-container .truncate-text{
+    max-width: 90%;
+  }
 }
 
 @media screen and (min-width: 900px) {
-  /*.form {
-    width: 40%;
-  }*/
-
   .main-content {
     padding: 20px;
   }
 }
 
 @media screen and (min-width: 1200px) {
-  /*.form {
-    width: 30%;
-  }*/
-
   #sidebar {
     width: 16.7%;
   }

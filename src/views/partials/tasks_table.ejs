@@ -1,0 +1,87 @@
+<!-- <form>
+  <label for="statusFilter">Filter by Status</label>
+  <select name='statusFilter' id='statusFilter'>
+  <%
+  let options = ['All', 'Open', 'In-progress', 'Pending Approval', 'Closed'];
+  for ( let i = 0; i < options.length; i++ )
+  {
+      var selected = ( status == options[i] ) ? "selected" : "";
+      %><option value="<%=options[ i ] %>" <%=selected %>><%=options[ i ] %></option><%
+  }
+  %>
+  </select>
+</form> -->
+
+<div class="table-responsive table-wrapper">
+     <table class="table" id="table-data">
+      <thead>
+        <tr>
+          <th scope="col"><h5>Task</h5></th>
+          <th scope="col"><h5>Status</h5></th>
+          <th scope="col"><h5>Category</h5></th>
+          <th scope="col"><h5>Description</h5></th>
+          <th scope="col"><h5>Assigned to</h5></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(tasks){ %>
+        <% tasks.forEach( (task) => {%>
+          <div class="row">
+            <tr>
+              <td class="row-head truncate-container">
+                <h6 class="truncate-text"><a href="/tasks/<%=task._id%>"><%= task.name %></a></h6>
+                <p class="secondary-data">
+                  <%= ("0" + (task.deadline.getMonth() + 1)).slice(-2)%>/<%= ("0" + task.deadline.getDate()).slice(-2)%>/<%= task.deadline.getFullYear()%>
+                </p>
+              </td>
+              <td>
+                <h7 class="table-head-view">Status:</h7>
+                <%= task.status %>
+              </td>
+              <td>
+                <h7 class="table-head-view">Category:</h7>
+                <%= task.category %>
+              </td>
+              <td class="truncate-container">
+                <h7 class="table-head-view">Description:</h7>
+                <p class="truncate-text"><%= task.description%></p>
+                <p class="secondary-data">Volunteer time: <%= task.actualTime %> mins</p>
+              </td>
+              <% if(task.assigned && task.assigned.displayName){ %>
+                <td>
+                  <h7 class="table-head-view">Assigned To:</h7>
+                 <i data-feather="check-circle" class="icon-holder check-circle"></i> <%= task.assigned.displayName%>
+                </td>
+              <%} else {%>
+                <td></td>
+              <%}%>
+              <td>
+              <% if(user.userType == 'Family') {%>
+                <% if(task.status == 'Open') {%>
+                  <button type="button" class="btn btn-outline-success"><a href="/tasks/<%=task._id%>/signup">Signup</a></button>
+                <% } else if(task.status == 'In-progress') {%>
+                  <button type="button" class="btn btn-outline-warning"><a href="/tasks/<%=task._id%>/complete">Complete</a></button>
+                  <button type="button" class="btn btn-outline-danger"><a href="/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
+              <%} else {%>
+                <% if(task.status == 'Open') {%>
+                  <button class="btn btn-outline-warning"><a href="/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
+                <% } %>
+                <% if(task.status == 'Pending Review') {%>
+                    <button type="button" class="btn btn-outline-success"><a href="/tasks/<%= task._id%>/approve"><i data-feather="check" class="check"></i> Approve</a></button>
+                    <button type="button" class="btn btn-outline-secondary"><a href="/tasks/<%= task._id%>/unapprove"><i data-feather="x" class="x"></i>Unapprove</a></button>
+                <% } %>
+              <% } %>
+              <% if(user.userType == 'Admin') {%>
+                <form id="delete-form" action="/tasks/<%= task._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-outline-danger"><i data-feather="trash-2" class="trash-2"></i></button>
+                </form>
+              <%}%>
+            </td>
+            </tr>
+          </div>
+        <%}); %>
+        <%}%>
+      </tbody>
+    </table>
+</div>

@@ -6,9 +6,17 @@
 <%- include ../index%>
 <%} else if (page === 'show') {%>
 <% text = "created by you" %>
-<%- include ../../task/index%>
+<%- include ../../project/index%>
 <% } else if (page === 'profile') {%>
 <%- include ../profile%>
+<%} else if (page === 'project/show') {%>
+<%- include ../../project/show%>
+<%} else if (page === 'project/index') {%>
+<%- include ../../project/index%>
+<%} else if (page === 'project/new') {%>
+<%- include ../../project/new%>
+<%} else if (page === 'project/edit') {%>
+<%- include ../../project/edit%>
 <%} else if (page === 'task/index') {%>
 <%- include ../../task/index%>
 <%} else if (page === 'task/show') {%>

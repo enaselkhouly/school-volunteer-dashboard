@@ -100,8 +100,8 @@ function getUser (req, res) {
 
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
-  console.log(`status: ${status} , category: ${category}`);
-  helpers.getUserTasks( req.user, status, (err, tasks, info) => {
+
+  helpers.getUserProjects( req.user, (err, projects) => {
     if(err){
       req.flash("error", err.message);
       res.redirect(`/`);
@@ -111,7 +111,7 @@ function getUser (req, res) {
 
       res.render(`user/${userDir}`, {
         user: req.user,
-        tasks: tasks,
+        projects: projects,
         status: status,
         category: category,
         page: 'show'

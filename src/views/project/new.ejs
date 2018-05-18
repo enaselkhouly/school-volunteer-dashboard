@@ -1,0 +1,34 @@
+<div class="row main-content">
+  <div class="container-fluid">
+		<div class="row">
+      <div class="col-12">
+        <h5 class="main-page-title">Create New Project</h5>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-12">
+			<div class="row">
+				<div class="col-12 col-lg-10 col-xl-8">
+					<div class="innerpage-container">
+						<div class="form">
+						<form action="/projects" method="POST">
+							<div class="form-group">
+								<label for="project-name">Project Summary:</label>
+								<input id="project-name"class="form-control" type="text" placeholder="Enter project summary ..." name="project[name]"
+								required/>
+							</div>
+							<div class="form-group">
+								<label for="description">Description:</label>
+								<textarea id="description" class="form-control" type="text" placeholder="Enter project description ..." rows="10"
+								name="project[description]"></textarea>
+							</div>
+							<div class="form-group" >
+								<button class="btn btn-lg btn-success btn-block">Create!</button>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

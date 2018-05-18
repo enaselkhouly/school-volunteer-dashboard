@@ -54,7 +54,7 @@ var taskSchema = mongoose.Schema({
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Project"
 		},
-		projectName: String
+		name: String
   },
 	description: String,
   status: {

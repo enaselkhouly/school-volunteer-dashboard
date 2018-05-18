@@ -10,19 +10,19 @@ let router = express.Router();
 router.get("/tasks", auth.isLoggedIn, taskController.getTasks);
 
 /* GET: show form to add new task*/
-router.get("/tasks/new", auth.isLoggedIn, taskController.getNewTask);
+router.get("/tasks/new", auth.isAdminOrTeacher, taskController.getNewTask);
 
 /* GET: Show more details about a task*/
 router.get("/tasks/:id", auth.isLoggedIn, taskController.getTask);
 
 /* POST: add new task*/
-router.post("/tasks", auth.isLoggedIn, taskController.postNewTask);
+router.post("/tasks", auth.isAdminOrTeacher, taskController.postNewTask);
 
 /* GET: show form to edit task*/
-router.get("/tasks/:id/edit", auth.isLoggedIn, taskController.getEditTask);
+router.get("/tasks/:id/edit", auth.isAdminOrTeacher, taskController.getEditTask);
 
 /* POST: edit task*/
-router.post("/tasks/:id/edit", auth.isLoggedIn, taskController.postEditTask);
+router.post("/tasks/:id/edit", auth.isAdminOrTeacher, taskController.postEditTask);
 
 /* Signup for a Task*/
 router.get("/tasks/:id/signup", auth.isFamily, taskController.signupTask);
@@ -40,6 +40,6 @@ router.get("/tasks/:id/approve", auth.isAdminOrTeacher, taskController.approveTa
 router.get("/tasks/:id/unapprove", auth.isAdminOrTeacher, taskController.unapproveTask);
 
 /* Delete: delete task*/
-router.delete("/tasks/:id", auth.isLoggedIn, taskController.deleteTask);
+router.delete("/tasks/:id", auth.isAdminOrTeacher, taskController.deleteTask);
 
 module.exports = router;

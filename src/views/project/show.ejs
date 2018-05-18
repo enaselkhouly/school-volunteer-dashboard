@@ -1,0 +1,25 @@
+<div class="row main-content">
+  <div class="container-fluid">
+		<div class="row">
+      <div class="col-12">
+        <h2 class="main-page-title"><%= project.name%></h2>
+      </div>
+    </div>
+    <div class="row">
+    <div class="col-12">
+			<div class="row">
+				<div class="col-12 col-lg-10 col-xl-8">
+					<div class="innerpage-container">
+            <h4>Created by: <%= project.author.displayName%></h4>
+            <h4>Date: <%= project.date%></h4>
+            <h4>Description: <%= project.description%></h4>
+
+            <a class="btn btn-warning" href="/projects/<%=project._id%>/edit">Edit Project</a>
+            <form id="delete-form" action="/projects/<%= project._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete Project</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

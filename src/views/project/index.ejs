@@ -1,0 +1,58 @@
+<div class="row main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="main-page-title">All projects <%=text%></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <% var i = 0;
+          color = ['blue', 'purple', 'brown', 'green' , 'red'];
+          projects.forEach( (project) => {%>
+          <div class="card border-<%=color[i]%> mb-3">
+            <div class="card-header bg-<%=color[i]%> text-white">
+              <div class="fluid-container">
+                <div class="row">
+                  <div class="col-10">
+                    <a href="/projects/<%=project._id%>"><h2><%=project.name%></h2></a>
+                  </div>
+                  <div class="col-2">
+                    <div class="tools">
+                      <a class="projectToggler">
+                        <i data-feather="chevron-up" class="icon-holder chevron-up"></i>
+                        <i data-feather="chevron-down" class="icon-holder chevron-down" style='display: none'></i>
+                      </a>
+                      <a class="more">
+                        <i data-feather="more-horizontal" class="icon-holder more-horizontal"></i>
+                        <i data-feather="more-vertical" class="icon-holder more-vertical" style='display: none'></i>
+                      </a>
+                      <a class="hideProject">
+                        <i data-feather="x" class="icon-holder x"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 projectDescription"  style='display: none'>
+                    <h5><%=project.description%></h5>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <% if (user.userType != 'Family') {%>
+              <a class="btn btn-outline-success" href="/tasks/new?project=<%=project._id%>">New Task</a>
+              <%}%>
+              <% tasks = project.tasks%>
+              <%- include ../partials/tasks_table%>
+            </div>
+          </div>
+        <%
+        (i == (color.length -1)) ? (i = 0) : i++;
+      })%>
+      </div>
+    </div>
+  </div>
+</div>
