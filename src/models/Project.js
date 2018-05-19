@@ -20,6 +20,12 @@ var projectSchema = mongoose.Schema({
   		ref: "Task"
   		}
   	],
+  assignedTo: [
+    {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+    }
+  ],
   created: {
             type: Date,
             default: Date.now

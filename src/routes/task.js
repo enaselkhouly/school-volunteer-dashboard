@@ -7,7 +7,7 @@ const taskController = require('../controllers/task'),
 let router = express.Router();
 
 /* GET: all Tasks*/
-router.get("/tasks", auth.isLoggedIn, taskController.getTasks);
+// router.get("/tasks", auth.isLoggedIn, taskController.getTasks);
 
 /* GET: show form to add new task*/
 router.get("/tasks/new", auth.isAdminOrTeacher, taskController.getNewTask);

@@ -91,7 +91,7 @@ var taskSchema = mongoose.Schema({
 taskSchema.methods.assignTask = function(userId, userName) {
 	var success = false;
 	if (this.status === Status.OPEN) {
-		this.assigned = {
+		this.assignedTo = {
 			id: userId,
 			displayName: userName
 		}
@@ -126,14 +126,14 @@ taskSchema.methods.signUp = function(userId, userName) {
 }//signup
 
 // Cancel Task
-taskSchema.methods.cancelTask = function(userId) {
+taskSchema.methods.cancelTask = function( ) {
 	var success = false;
 
 	if (this.status === Status.INPROGRESS) {
-		this.assigned._id = '';
-		this.assigned.displayName = '';
+		this.assignedTo.id = '';
+		this.assignedTo.displayName = '';
 		this.status	= Status.OPEN;
-
+    console.log(this.status);
 		this.save();
 		success = true;
 	}

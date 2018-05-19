@@ -23,20 +23,37 @@ function getUserProjects ( user, callback ) {
 
   let info;
 
-  User.findById(user._id).populate(
-    {  path: "projects",
-       populate: {
-         path: 'tasks',
-         model: 'Task'
-       } }).exec( (err, user) => {
-      callback(err, user.projects, info);
-  });
+  if (user.isFamily()) {
+
+    User.findById(user._id).populate(
+      {  path: "projects",
+         populate: {
+           path: 'tasks',
+           model: 'Task',
+           match: {'assignedTo.id': user._id}
+         } }).exec( (err, user) => {
+        callback(err, user.projects, info);
+    });
+  } else {
+
+    User.findById(user._id).populate(
+      {  path: "projects",
+         populate: {
+           path: 'tasks',
+           model: 'Task',
+           match: {'author.id': user._id}
+         } }).exec( (err, user) => {
+        callback(err, user.projects, info);
+    });
+  }
+
 }
 
-function addProjectToUser (user, project, callback){
-  User.findByIdAndUpdate(user._id,
-                        {$push: {"projects": project._id}},
+function addProjectToUser (userId, projectId, callback){
+  User.findByIdAndUpdate(userId,
+                        {$push: {"projects": projectId}},
                         (err, user) => {
+      console.log('Project is added to the user', user);
       callback (err, user);
 
   });
@@ -53,11 +70,12 @@ function removeProjectAuthor ( userId, projectId, callback ) {
   });
 }
 
-function allProjects (callback ) {
+function allProjects (user, callback ) {
 
-    Project.find().populate({path: "tasks"}).exec( (err, allProjects) => {
-        callback(err, allProjects);
-    });
+  Project.find().populate({path: "tasks"}).exec( (err, allProjects) => {
+      callback(err, allProjects);
+  });
+
 }
 
 function getProject ( projectId, callback ) {
@@ -190,7 +208,7 @@ function getTask ( taskId, callback ) {
 }
 
 function createTask( task, callback) {
-  
+
   Task.create(task, (err, task) => {
     callback(err, task);
   });

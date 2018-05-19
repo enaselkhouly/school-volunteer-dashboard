@@ -36,12 +36,11 @@ function getTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  console.log('get task taskId', req.params.id);
   helpers.getTask(req.params.id, function (err, task) {
 
     if(err){
       req.flash("error", err.message);
-      res.redirect(`back`);
+      res.redirect(`/projects`);
     } else {
       res.render(`user/${userDir}`, {
         user: user,
@@ -57,19 +56,12 @@ function getNewTask (req, res) {
   let userDir = req.user.userType.toLowerCase();
 
   let projectId = req.query.project;
-  console.log('GEt projectId', projectId);
-  Project.findById(projectId, (err, project) => {
 
-    if (err) {
-      req.flash("error", err.message);
-      res.redirect(`back`);
-    } else {
-      res.render(`user/${userDir}`, {
-        project: project,
-        page :'task/new'
-      });
-    }
-  })
+  res.render(`user/${userDir}`, {
+    projectId: projectId,
+    page :'task/new'
+  });
+
 
 } // getNewTask
 
@@ -92,7 +84,7 @@ function postNewTask (req, res) {
 
   // link the task with the project
   helpers.getProject(projectId, (err, project) => {
-    console.log(project);
+
     newTask.project = {
       id: project._id,
       name: project.name
@@ -119,9 +111,37 @@ function postNewTask (req, res) {
             req.flash("error", err.message);
             return res.redirect(`/tasks/new?project=${project._id}`);
           }
-          // New task created Successfully
-          req.flash("success", "Successfully created a new Task!");
-          res.redirect(`/projects`);
+        });
+
+        // Add project to user if not added before
+        Project.findOne({
+                _id: task.project.id,
+                populate: {
+                  path: 'tasks',
+                  Model: 'Task',
+                  match: {
+                    'author.id': req.user._id
+                  }
+                }
+              }, (err, project) => {
+
+          if (err) {
+            req.flash("error", err.message)	;
+            res.redirect(`back`);
+          }
+
+          if (!project) {
+
+            helpers.addProjectToUser(req.user._id, task.project.id, (err, user) => {
+              if (err) {
+                req.flash("error", err.message)	;
+                res.redirect(`back`);
+              }
+            });
+          }
+
+          req.flash("success", "The task is created successfully!")	;
+          res.redirect('/projects');
         });
 
       }
@@ -169,17 +189,19 @@ function signupTask (req, res) {
           }
         });
 
-        Project.findById(task.project.id, (err, project) => {
+        // Add project to user if not added before
+        Project.findOne({_id: task.project.id, 'assignedTo.id': req.user._id}, (err, project) => {
 
           if (err) {
-            req.flash("error", message.err)	;
+            req.flash("error", err.message)	;
             res.redirect(`back`);
           }
 
           if (!project) {
-            helpers.addProjectToUser(user._id, project, (err, user) => {
+
+            helpers.addProjectToUser(req.user._id, task.project.id, (err, user) => {
               if (err) {
-                req.flash("error", message.err)	;
+                req.flash("error", err.message)	;
                 res.redirect(`back`);
               }
             });
@@ -194,23 +216,27 @@ function signupTask (req, res) {
 
 function cancelTask (req, res) {
 
-  Task.findById(req.params.id, (err, task) => {
-      if (err){
-        req.flash("error", err.message)	;
+    helpers.cancelTaskAssign(req.user._id, req.params.id, (err) => {
+      if(err) {
+        req.flash("error", "The task could not be canceled!")	;
         res.redirect(`back`);
       } else {
 
-          helpers.cancelTaskAssign(req.user._id, task._id, (err) => {
-            if(err) {
-              req.flash("error", "The task could not be canceled!")	;
+        Task.findById(req.params.id, (err, task) => {
+            if (err){
+              req.flash("error", err.message)	;
               res.redirect(`back`);
             } else {
+              task.cancelTask();
+
               req.flash("success", "The Task assign is successfully cancelled!")	;
               res.redirect('/tasks');
-            }
-          });
-        }
-  });
+
+              }
+        });
+      }
+
+    });
 
 } // cancelTask
 

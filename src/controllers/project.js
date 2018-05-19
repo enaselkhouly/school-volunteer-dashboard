@@ -14,7 +14,7 @@ function getProjects (req, res) {
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
 
-  helpers.allProjects(function(err, allProjects){
+  helpers.allProjects(req.user, (err, allProjects) => {
 
     if(err){
       req.flash("error", err.message);
@@ -78,7 +78,7 @@ function postNewProject (req, res) {
       res.redirect(`/projects`);
     } else {
 
-      helpers.addProjectToUser(req.user, project, (err, user) => {
+      helpers.addProjectToUser(req.user, project._id, (err, user) => {
         // Error in updating user
         if(err){
           req.flash("error", err.message);
