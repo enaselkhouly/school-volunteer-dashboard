@@ -130,10 +130,9 @@ taskSchema.methods.cancelTask = function( ) {
 	var success = false;
 
 	if (this.status === Status.INPROGRESS) {
-		this.assignedTo.id = '';
+		this.assignedTo.id = null;
 		this.assignedTo.displayName = '';
 		this.status	= Status.OPEN;
-    console.log(this.status);
 		this.save();
 		success = true;
 	}

@@ -48,13 +48,15 @@
                 <p class="truncate-text"><%= task.description%></p>
                 <p class="secondary-data">Volunteer time: <%= task.actualTime %> mins</p>
               </td>
-              <% if(task.assigned && task.assigned.displayName){ %>
+              <% if(task.assignedTo && task.assignedTo.displayName){ %>
                 <td>
                   <h7 class="table-head-view">Assigned To:</h7>
-                 <i data-feather="check-circle" class="icon-holder check-circle"></i> <%= task.assigned.displayName%>
+                 <i data-feather="check-circle" class="icon-holder check-circle"></i> <%= task.assignedTo.displayName%>
                 </td>
               <%} else {%>
-                <td></td>
+                <td>
+                  <i data-feather="x-circle" class="icon-holder x-circle"></i> No Volunteer
+                </td>
               <%}%>
               <td>
               <% if(user.userType == 'Family') {%>

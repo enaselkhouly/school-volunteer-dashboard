@@ -22,7 +22,7 @@
                   <%}%>
                   <th scope="col">Category</th>
                   <th scope="col">Description</th>
-                  <% if(task.auther) {%>
+                  <% if(task.author) {%>
                   <th scope="col">Created By</th>
                   <%}%>
                   <% if(task.assigned) {%>
@@ -62,7 +62,7 @@
                       <%}%>
                       <td><%= task.category %></td>
                       <td><%= task.description %></td>
-                      <% if(task.auther) {%>
+                      <% if(task.author) {%>
                       <td><%= task.author.displayName %></td>
                       <%}%>
                       <% if(task.assigned) {%>

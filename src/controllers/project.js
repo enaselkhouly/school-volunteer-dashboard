@@ -122,7 +122,7 @@ function deleteProject (req, res) {
     }
 
     // remove Project from Author user
-    helpers.removeProjectAuthor (project.author.id, project._id, function (err) {
+    helpers.removeProjectFromUser (project.author.id, project._id, function (err) {
       if (err) {
         req.flash("error", err.message);
         res.redirect(`/projects`);
