@@ -1,23 +1,22 @@
-<!-- <form>
-  <label for="statusFilter">Filter by Status</label>
-  <select name='statusFilter' id='statusFilter'>
-  <%
-  let options = ['All', 'Open', 'In-progress', 'Pending Approval', 'Closed'];
-  for ( let i = 0; i < options.length; i++ )
-  {
-      var selected = ( status == options[i] ) ? "selected" : "";
-      %><option value="<%=options[ i ] %>" <%=selected %>><%=options[ i ] %></option><%
-  }
-  %>
-  </select>
-</form> -->
-
 <div class="table-responsive table-wrapper">
      <table class="table" id="table-data">
       <thead>
         <tr>
           <th scope="col"><h5>Task</h5></th>
-          <th scope="col"><h5>Status</h5></th>
+          <th scope="col">
+            <h5>Status</h5>
+            <!-- <select name='statusFilter' id='statusFilter'>
+            <%
+            let options = ['All', 'Open', 'In-progress', 'Pending Approval', 'Closed'];
+            for ( let i = 0; i < options.length; i++ )
+            {
+                var selected = ( status == options[i] ) ? "selected" : "";
+                %><option value="<%=options[ i ] %>" <%=selected %>><%=options[ i ] %></option><%
+            }
+            %>
+            </select> -->
+
+          </th>
           <th scope="col"><h5>Category</h5></th>
           <th scope="col"><h5>Description</h5></th>
           <th scope="col"><h5>Assigned to</h5></th>
@@ -46,7 +45,7 @@
               <td class="truncate-container">
                 <h7 class="table-head-view">Description:</h7>
                 <p class="truncate-text"><%= task.description%></p>
-                <p class="secondary-data">Volunteer time: <%= task.actualTime %> mins</p>
+                <p class="secondary-data">Volunteer time: <%= task.volunteerTime %> mins</p>
               </td>
               <% if(task.assignedTo && task.assignedTo.displayName){ %>
                 <td>
@@ -59,26 +58,43 @@
                 </td>
               <%}%>
               <td>
-              <% if(user.userType == 'Family') {%>
-                <% if(task.status == 'Open') {%>
-                  <button type="button" class="btn btn-outline-success"><a href="/tasks/<%=task._id%>/signup">Signup</a></button>
-                <% } else if(task.status == 'In-progress') {%>
-                  <button type="button" class="btn btn-outline-warning"><a href="/tasks/<%=task._id%>/complete">Complete</a></button>
-                  <button type="button" class="btn btn-outline-danger"><a href="/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
-              <%} else {%>
-                <% if(task.status == 'Open') {%>
-                  <button class="btn btn-outline-warning"><a href="/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
-                <% } %>
-                <% if(task.status == 'Pending Review') {%>
-                    <button type="button" class="btn btn-outline-success"><a href="/tasks/<%= task._id%>/approve"><i data-feather="check" class="check"></i> Approve</a></button>
-                    <button type="button" class="btn btn-outline-secondary"><a href="/tasks/<%= task._id%>/unapprove"><i data-feather="x" class="x"></i>Unapprove</a></button>
-                <% } %>
-              <% } %>
-              <% if(user.userType == 'Admin') {%>
-                <form id="delete-form" action="/tasks/<%= task._id%>?_method=DELETE" method="POST">
-                <button class="btn btn-outline-danger"><i data-feather="trash-2" class="trash-2"></i></button>
+                <form action="/tasks/<%=task._id%>?_method=PUT%>" class="actions-form" method="POST">
+                  <div class="form-group form-input hide">
+                    <label for="task-time">task time?</label>
+                    <input id="task-time" class="form-control" type="text" value="<%=task.volunteerTime%>" name="task[volunteerTime]"
+                    required/>
+                  </div>
+                  <div class="form-group">
+                    <% if(user.userType == 'Family') {%>
+                      <% if(task.status == 'Open') {%>
+                        <button type="button" class="btn btn-outline-success" type="button"><a href="/tasks/<%=task._id%>/signup">Signup</a></button>
+                      <% } else if(task.status == 'In-progress') {%>
+                        <% if (!task.isFixedTime) {%>
+                        <button type="button" class="btn btn-outline-warning form-btn" type="button">Complete</button>
+                        <input class="btn btn-outline-warning submit-action hide" type="submit" name="submit" value="Complete">
+                        <%} else {%>
+                        <input class="btn btn-outline-warning submit-action" type="submit" name="submit" value="Complete">
+                        <%}%>
+                        <button type="button" class="btn btn-outline-danger" type="button"><a href="/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
+                    <%} else {%>
+                      <% if(task.status == 'Pending Review') {%>
+                        <button class="btn btn-outline-success form-btn" type="button">Approve</button>
+                        <input class="btn btn-outline-success submit-action hide" type="submit" name="submit" value="Approve"/>
+                        <button type="button" class="btn btn-outline-secondary" type="button"><a href="/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
+                      <% } %>
+                      <% if(task.status == 'Open') {%>
+                        <button class="btn btn-outline-warning" type="button"><a href="/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
+                      <% } else { %>
+                        <button class="btn btn-outline-secondary type="button"" disabled><i data-feather="edit" class="edit"></i></button>
+                      <%}%>
+                      <% if((user.userType == 'Admin') || (task.author.id.equals(user._id))) {%>
+                        <form id="delete-form" action="/tasks/<%= task._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-outline-danger"><i data-feather="trash-2" class="trash-2"></i></button>
+                        </form>
+                      <%}%>
+                    <% } %>
+                  </div>
                 </form>
-              <%}%>
             </td>
             </tr>
           </div>

@@ -22,31 +22,17 @@ function allUsers ( callback ) {
 function getUserProjects ( user, callback ) {
 
   let info;
+  var populate = {  path: "projects",
+     populate: {
+       path: 'tasks',
+       model: 'Task',
+       match: {$or: [{'assignedTo.id': user._id}, {'author.id': user._id}]}
+     }
+   };
 
-  if (user.isFamily()) {
-
-    User.findById(user._id).populate(
-      {  path: "projects",
-         populate: {
-           path: 'tasks',
-           model: 'Task',
-           match: {'assignedTo.id': user._id}
-         } }).exec( (err, user) => {
+    User.findById(user._id).populate(populate).exec( (err, user) => {
         callback(err, user.projects, info);
     });
-  } else {
-
-    User.findById(user._id).populate(
-      {  path: "projects",
-         populate: {
-           path: 'tasks',
-           model: 'Task',
-           match: {'author.id': user._id}
-         } }).exec( (err, user) => {
-        callback(err, user.projects, info);
-    });
-  }
-
 }
 
 function addProjectToUser (userId, projectId, callback){
@@ -113,29 +99,19 @@ function removeTaskFromProject (projectId, taskId, callback) {
                           (err, project) => {
         callback (err);
     });
-  //
-  // Project.findById(projectId, (err, project) => {
-  //   if (!err && project) {
-  //   project.tasks.pull({_id:taskId});
-  //   project.save();
-  //   }
-  //
-  //   callback (err);
-  // });
 }
 
 
-function removeAllTasksFromProject (projectId, callback) {
+function removeAllProjectTasks (project, callback) {
 
-  Project.findById(projectId).populate('path: tasks').exec( (err, project) => {
-    if (!err && project) {
-    project.tasks.forEach( (task) => {
-      project.tasks.pull({id: task._id});
-      project.save();
-    });
-    }
+  var condition = {
+      _id: project.tasks
+  };
 
-    callback (err);
+  console.log("project tasks", project.tasks);
+
+  Task.remove (condition, (err, tasks) => {
+      callback(err);
   });
 }
 
@@ -184,24 +160,14 @@ function addTaskToUser (userId, taskId, callback){
 
 function removeTaskFromUser ( userId, taskId, callback ) {
 
-  User.findByIdAndUpdate(userId,
-                        {$pull: {"tasks": taskId}},
-                        (err, user) => {
+  var update = {
+    $pull: {"tasks": taskId}
+  };
+
+  User.findByIdAndUpdate(userId, update , (err, user) => {
       callback (err, user);
   });
 }
-//
-// function cancelTaskAssign (userId, taskId, callback) {
-//
-//   User.findById(userId, (err, user) => {
-//     if (!err && user) {
-//     user.tasks.pull({_id:taskId});
-//     user.save();
-//     }
-//
-//     callback (err);
-//   });
-// }
 
 function allTasks (query, callback ) {
 
@@ -284,7 +250,7 @@ module.exports = {
   createProject         : createProject,
   addTaskToProject      : addTaskToProject,
   removeTaskFromProject : removeTaskFromProject,
-  removeAllTasksFromProject : removeAllTasksFromProject,
+  removeAllProjectTasks : removeAllProjectTasks,
   deleteProject         : deleteProject,
   addTaskToUser         : addTaskToUser,
   removeTaskFromUser      : removeTaskFromUser,

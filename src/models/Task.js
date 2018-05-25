@@ -71,11 +71,10 @@ var taskSchema = mongoose.Schema({
                 type: Boolean,
                 default: true
               },
-  estimatedTime: {
-                  type: Number,
-                  default: FIXED_TIME_VALUE
-                },
-  actualTime: { type: Number,
+  estimatedTime: { type: Number,
+                   default: FIXED_TIME_VALUE
+              },
+  volunteerTime: { type: Number,
                 default: 0
               },
   created: {

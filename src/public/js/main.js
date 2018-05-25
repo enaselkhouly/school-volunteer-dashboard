@@ -35,6 +35,35 @@ $(".hideProject").click(function (e){
    $(this).parent().parent().parent().parent().parent().parent().hide();
 })
 
+$(".form-btn").click(function (e) {
+  e.stopPropagation();
+
+  let formText = $(this).parent().parent().find('.form-input');
+  let formAction = $(this).parent().parent().find('.submit-action');
+
+  formText.removeClass('hide');
+
+  formAction.removeClass('hide');
+
+  $(this).addClass('hide');
+});
+
+// Set the clicked attribute to true for use to get the clicked button val
+$("form input[type=submit]").click(function() {
+    $("input[type=submit]", $(this).parents("form")).removeAttr("clicked");
+    $(this).attr("clicked", "true");
+});
+
+$(".actions-form").submit(function (e) {
+
+  var val = $("input[type=submit][clicked=true]").val();
+  let formAction = $(this).attr('action');
+
+  // TODO make sure that there is no other & in the url
+  $(this).attr('action', `${formAction}&${val}=1`);
+  return true;
+});
+
 /* Add event listener to set the URL query for statusFilter*/
 var statusElement = document.getElementById("statusFilter");
 

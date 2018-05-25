@@ -2,43 +2,52 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h5 class="main-page-title">Users</h5>
+        <h1 class="main-page-title">Users</h1>
       </div>
     </div>
     <div class="row">
     <div class="col-12">
-      <div class="table-container innerpage-container">
-        <h5 class="table-header">All users</h5>
-        <div class="table-responsive table-wrapper">
-            <table class="table table-striped table-bordered" id="table-data">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Type</th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% if(users) { %>
-                <%  users.forEach( (foundUser) => { %>
-                  <div class="row">
-                    <tr>
-                      <td><%= foundUser.displayName %></td>
-                      <td><%= foundUser.userType %></td>
-                      <td><a href="/users/<%=foundUser._id%>">More Details</a></td>
-                      <td><a href="/users/<%=foundUser._id%>/edit" class="btn btn-xs btn-warning">Edit</a></td>
-                      <td><form id="delete-form" action="/users/<%=foundUser._id%>?_method=DELETE" method="POST">
-                      <button class="btn btn-xs btn-danger">Delete</button>
-                      </form></td>
-                    </tr>
-                  </div>
-                <%}); %>
-                <% } %>
-              </tbody>
-            </table>
-          </div>
+      <div class="innerpage-container" id="tabs">
+        	<div class="container">
+        		<div class="row">
+        			<div class="col-12">
+                <div class="table-responsive table-wrapper">
+                     <table class="table" id="table-data">
+                      <thead>
+                        <tr>
+                          <th scope="col"><h5>Name</h5></th>
+                          <th scope="col"><h5>Type</h5></th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% if(users){ %>
+                        <% users.forEach( (user) => {%>
+                          <div class="row">
+                            <tr>
+                              <td class="row-head truncate-container">
+                                <h6 class="truncate-text"><a href="/users/<%=user._id%>/profile"><%= user.displayName %></a></h6>
+                              </td>
+                              <td>
+                                <h7 class="table-head-view">Type</h7>
+                                <%= user.userType %>
+                              </td>
+                              <td>
+                                <button class="btn btn-outline-warning"><a href="/users/<%=user._id%>/edit">Edit</a></button>
+                                <form id="delete-form" action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                                  <button class="btn btn-outline-danger">Delete</button>
+                                </form>
+                              </td>
+                            </tr>
+                          </div>
+                        <%}); %>
+                        <%}%>
+                      </tbody>
+                    </table>
+                </div>
+        			</div>
+        		</div>
+        	</div>
         </div>
       </div>
     </div>

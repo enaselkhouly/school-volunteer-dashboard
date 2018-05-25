@@ -22,7 +22,7 @@ router.post("/tasks", auth.isAdminOrTeacher, taskController.postNewTask);
 router.get("/tasks/:id/edit", auth.isAdminOrTeacher, taskController.getEditTask);
 
 /* POST: edit task*/
-router.post("/tasks/:id/edit", auth.isAdminOrTeacher, taskController.postEditTask);
+router.put("/tasks/:id", auth.isLoggedIn, taskController.putTask);
 
 /* Signup for a Task*/
 router.get("/tasks/:id/signup", auth.isFamily, taskController.signupTask);

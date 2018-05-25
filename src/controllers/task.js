@@ -83,8 +83,8 @@ function postNewTask (req, res) {
           displayName: req.user.displayName
         }
 
-        newTask.actualTime = (newTask.isFixedTime)? newTask.estimatedTime : 0;
-
+      // Update the estimated time
+      req.body.task.estimatedTime = req.body.task.volunteerTime;
 
       // Get project name
       helpers.getProject(req.query.project, (err, project) => {
@@ -150,14 +150,71 @@ function getEditTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  res.render(`user/${userDir}`, {
-    page: 'task/edit'
+  Task.findById(req.params.id, (err, task) => {
+    if (err) {
+      req.flash("error", err.message);
+      res.redirect("/projects");
+    } else {
+      res.render(`user/${userDir}`, {
+        task: task,
+        page: 'task/edit'
+      });
+    }
   });
 } // getEditTask
 
-function postEditTask (req, res) {
-  // todo
-  res.redirect('/projects');
+function putTask (req, res) {
+
+  async.waterfall([
+    function updateTask(callback){
+      // TODO: update volunteer time only incase of task complete
+
+      // Update the estimated time
+      if (!req.query.Approve && !req.query.Complete) {
+        req.body.task.estimatedTime = req.body.task.volunteerTime;
+      }
+
+      Task.findByIdAndUpdate(req.params.id, req.body.task, (err, task) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, task, "Task is successfully edited!");
+      });
+    },
+    function approveTask(task, msg, callback){
+
+      if (req.query.Approve) {
+
+          if (task.approveTask()) {
+            msg = "The task is successfully approved!";
+          } else {
+            return callback(new Error("The task could not be approved!"));
+          }
+        }
+
+      callback(null, task, msg);
+    },
+    function completeTask(task, msg, callback){
+
+      if (req.query.Complete) {
+
+          if (task.completeTask(req.user._id)) {
+            msg = "The task is successfully completed!";
+          } else {
+            return callback(new Error("The task could not be changed to completed!"));
+          }
+        }
+
+      callback(null, msg);
+    }
+  ], function(err, msg){
+    if (err) {
+      req.flash("error", err.message);
+    } else {
+      req.flash("success", msg);
+    }
+    res.redirect('/projects');
+  });
 } // postEditTask
 
 function signupTask (req, res) {
@@ -275,6 +332,10 @@ function approveTask (req, res) {
     });
 } // approveTask
 
+function postApproveTask (req, res) {
+  console.log('approved time ', req.body.task.volunteerTime);
+  res.redirect('back');
+}
 function unapproveTask (req, res) {
 
     Task.findById(req.params.id, (err, task) => {
@@ -371,11 +432,12 @@ module.exports = {
   getNewTask    : getNewTask,
   postNewTask   : postNewTask,
   getEditTask   : getEditTask,
-  postEditTask  : postEditTask,
+  putTask       : putTask,
   signupTask    : signupTask,
   cancelTask    : cancelTask,
   completeTask  : completeTask,
   approveTask   : approveTask,
+  postApproveTask : postApproveTask,
   unapproveTask : unapproveTask,
   deleteTask    : deleteTask
 };

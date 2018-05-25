@@ -3,7 +3,8 @@
 const User = require('../models/User'),
       Task = require('../models/Task'),
       Project = require('../models/Project'),
-      helpers = require("../helpers");
+      helpers = require("../helpers"),
+      async  = require("async");
 
 /* Show all projects */
 function getProjects (req, res) {
@@ -70,30 +71,33 @@ function postNewProject (req, res) {
     displayName: req.user.displayName
   };
 
-  helpers.createProject( newProject, (err, project) => {
-
-    // Error in creating project
+  async.waterfall([
+      function createProject (callback) {
+        helpers.createProject( newProject, (err, project) => {
+          if (err) {
+            return callback(err);
+          }
+          return callback(null, project);
+        });
+      },
+      function addProjectToUser(project, callback) {
+        helpers.addProjectToUser(req.user, project._id, (err, user) => {
+          if (err) {
+            return callback(err);
+          }
+          return callback(null);
+        });
+      }
+  ], function (err) {
+    // Error in updating user
     if(err){
       req.flash("error", err.message);
-      res.redirect(`/projects`);
-    } else {
-
-      helpers.addProjectToUser(req.user, project._id, (err, user) => {
-        // Error in updating user
-        if(err){
-          req.flash("error", err.message);
-          return res.redirect(`/projects/new`);
-        }
-
-        // New project created Successfully
-        req.flash("success", "Successfully created a new Project!");
-        res.redirect(`/projects`);
-      });
-
+      return res.redirect(`/projects/new`);
     }
-
+    // New project created Successfully
+    req.flash("success", "Successfully created a new Project!");
+    res.redirect(`/projects`);
   });
-
 } // postNewProject
 
 function getEditProject (req, res) {
@@ -101,56 +105,78 @@ function getEditProject (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  res.render(`user/${userDir}`, {
-    page: 'project/edit'
+  Project.findById(req.params.id, (err, project) => {
+    if (err) {
+      req.flash("error", err.message);
+      res.redirect("back");
+    } else {
+      res.render(`user/${userDir}`, {
+        project: project,
+        page: 'project/edit'
+      });
+    }
   });
 } // getEditProject
 
-function postEditProject (req, res) {
-  // todo
-  res.redirect('projects');
+function putProject (req, res) {
+
+  Project.findByIdAndUpdate(req.params.id, req.body.project, (err, project) => {
+
+      if(err){
+         req.flash("error", err.message);
+      } else {
+         req.flash("success", 'The project is successfully edited!');
+      }
+
+      res.redirect("/projects");
+
+  });
 } // postEditProject
 
 function deleteProject (req, res) {
 
-  // Find the project to be deleted
-  Project.findById (req.params.id, (err, project) => {
+  async.waterfall([
+      function findProject (callback) {
+        Project.findById (req.params.id, (err, project) => {
+          if (err) {
+            return callback(err);
+          }
+          return callback(null, project);
+        });
+      },
+      function removeTaskFromUser(project, callback) {
+        // remove Project from Author user
+        helpers.removeProjectFromUser (project.author.id, project._id, function (err) {
+          if (err) { return callback(err) }
+
+           return callback(null, project);
+        });
+      },
+      function removeAllProjectTasks (project, callback) {
+        // remove project tasks
+        helpers.removeAllProjectTasks (project, function (err) {
+          if (err) { return callback(err) }
+
+          return callback(null, project);
+        });
+      },
+      function removeProject (project, callback){
+        //Delete project
+        project.remove(project._id, function (err) {
+          if (err) { return callback(err) }
+
+          return callback(null);
+        });
+      }
+  ], function (err) {
     if (err) {
       req.flash("error", err.message);
       res.redirect(`/projects`);
-      return;
+    } else {
+      req.flash("success", "Successfully deleted the Project!");
+      res.redirect("/projects");
     }
-
-    // remove Project from Author user
-    helpers.removeProjectFromUser (project.author.id, project._id, function (err) {
-      if (err) {
-        req.flash("error", err.message);
-        res.redirect(`/projects`);
-        return;
-      }
-
-      // remove project tasks
-      helpers.removeAllTasksFromProject (project._id, function (err) {
-        if (err) {
-          req.flash("error", err.message);
-          res.redirect(`/projects`);
-          return;
-        }
-
-        // Delete project
-        project.remove(project._id, function (err) {
-          if (err) {
-            req.flash("error", err.message);
-            res.redirect(`/projects`);
-          } else {
-            req.flash("success", "Successfully deleted the Project!");
-            res.redirect("/projects");
-          }
-        });
-      });
-      });
-    });
-
+  });
 } // deleteProject
 
 module.exports = {
@@ -159,6 +185,6 @@ module.exports = {
   getNewProject    : getNewProject,
   postNewProject   : postNewProject,
   getEditProject   : getEditProject,
-  postEditProject  : postEditProject,
+  putProject       : putProject,
   deleteProject    : deleteProject
 };

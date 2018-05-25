@@ -2,7 +2,7 @@
   <div class="container-fluid">
 		<div class="row">
       <div class="col-12">
-        <h2 class="main-page-title"><%= project.name%></h2>
+        <h1 class="main-page-title"><%= project.name%></h1>
       </div>
     </div>
     <div class="row">
@@ -10,13 +10,37 @@
 			<div class="row">
 				<div class="col-12 col-lg-10 col-xl-8">
 					<div class="innerpage-container">
-            <h4>Created by: <%= project.author.displayName%></h4>
-            <h4>Date: <%= project.date%></h4>
-            <h4>Description: <%= project.description%></h4>
-
-            <a class="btn btn-warning" href="/projects/<%=project._id%>/edit">Edit Project</a>
-            <form id="delete-form" action="/projects/<%= project._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-danger">Delete Project</button>
+          <div class="row justify-content-between">
+            <div class="col-4">
+              <h5 class="font-weight-bold">Created by:</h5>
+            </div>
+            <div class="col-8">
+              <h5><%= project.author.displayName%></h5>
+            </div>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-4">
+              <h5 class="font-weight-bold">Date:</h5>
+            </div>
+            <div class="col-8">
+              <h5><%= ("0" + (project.created.getMonth() + 1)).slice(-2)%>/<%= ("0" + project.created.getDate()).slice(-2)%>/<%= project.created.getFullYear()%></h5>
+            </div>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-4">
+              <h5 class="font-weight-bold">Description:</h5>
+            </div>
+            <div class="col-8">
+              <h5><%= project.description%></h5>
+            </div>
+          </div>
+          <div class="row mt-5">
+            <div class="col-12">
+              <a class="btn btn-outline-warning" href="/projects/<%=project._id%>/edit">Edit</a>
+              <form id="delete-form" action="/projects/<%= project._id%>?_method=DELETE" method="POST">
+              <button class="btn btn-outline-danger">Delete</button>
+            </div>
+          </div>
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ router.post("/projects", auth.isAdminOrTeacher, projectController.postNewProject
 router.get("/projects/:id/edit", auth.isAdminOrTeacher, projectController.getEditProject);
 
 /* POST: edit project*/
-router.post("/projects/:id/edit", auth.isAdminOrTeacher, projectController.postEditProject);
+router.put("/projects/:id", auth.isAdminOrTeacher, projectController.putProject);
 
 /* Delete: delete project*/
 router.delete("/projects/:id", auth.isAdminOrTeacher, projectController.deleteProject);
