@@ -73,6 +73,11 @@ flatpickr('#date-picker', {
                             // today
                             minDate: new Date()
                           });
+flatpickr('#to-date-picker', {
+                            dateFormat: 'm/d/Y',
+                            // today
+                            minDate: new Date()
+                          });
 flatpickr('#from-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
 flatpickr('#to-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
 

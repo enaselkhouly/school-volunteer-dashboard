@@ -86,24 +86,12 @@ function postNewTask (req, res) {
       // Update the estimated time
       req.body.task.estimatedTime = req.body.task.volunteerTime;
 
-      // Update the deadline
-      let time, hrs, mins;
-
-      time = req.body.fromTime.split ( ":" );
-      hrs = time[0].trim();
-      mins = time[1].trim();
-
-      newTask.deadline.setHours(hrs);
-      newTask.deadline.setMinutes(mins);
-
       // Initialize and update the end time if exists
+      let endTime = req.body.task.endTime;
       newTask.endTime = new Date(newTask.deadline.getTime());
-
-      time = req.body.toTime.split ( ":" );
-      hrs = time[0].trim();
-      mins = time[1].trim();
-      newTask.endTime.setHours(hrs);
-      newTask.endTime.setMinutes(mins);
+      let time = endTime.split ( ":" );
+      newTask.endTime.setHours(time[0].trim());
+      newTask.endTime.setMinutes(time[1].trim());
 
       // Get project name
       helpers.getProject(req.query.project, (err, project) => {
@@ -156,7 +144,7 @@ function postNewTask (req, res) {
 
     if (err) {
       req.flash("error", err.message);
-      res.redirect(`back`);
+      res.redirect(`/projects`);
     } else {
       req.flash("success", "The task is created successfully!")	;
       res.redirect('/projects');
@@ -197,6 +185,7 @@ function putTask (req, res) {
         if (err) {
           return callback(err);
         }
+
         callback(null, task, "Task is successfully edited!");
       });
     },

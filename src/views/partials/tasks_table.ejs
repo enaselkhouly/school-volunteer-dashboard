@@ -31,7 +31,8 @@
               <td class="row-head truncate-container">
                 <h6 class="truncate-text"><a href="/tasks/<%=task._id%>"><%= task.name %></a></h6>
                 <p class="secondary-data">
-                  <%= ("0" + (task.deadline.getMonth() + 1)).slice(-2)%>/<%= ("0" + task.deadline.getDate()).slice(-2)%>/<%= task.deadline.getFullYear()%>
+                  <!-- <%= ("0" + (task.deadline.getMonth() + 1)).slice(-2)%>/<%= ("0" + task.deadline.getDate()).slice(-2)%>/<%= task.deadline.getFullYear()%> -->
+                  <%= task.deadline.toDateString()%>
                 </p>
               </td>
               <td>
