@@ -1,3 +1,5 @@
+
+
 $("#sidebar-toggler").click(function(e){
 
   e.stopPropagation();
@@ -63,6 +65,16 @@ $(".actions-form").submit(function (e) {
   $(this).attr('action', `${formAction}&${val}=1`);
   return true;
 });
+
+/* Date and time picker*/
+// Datepicker Popups calender to Choose date.
+flatpickr('#date-picker', {
+                            dateFormat: 'm/d/Y',
+                            // today
+                            minDate: new Date()
+                          });
+flatpickr('#from-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
+flatpickr('#to-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
 
 /* Add event listener to set the URL query for statusFilter*/
 var statusElement = document.getElementById("statusFilter");

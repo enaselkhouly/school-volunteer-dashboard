@@ -84,6 +84,10 @@ var taskSchema = mongoose.Schema({
   deadline: {
             type: Date,
             default: Date.now
+          },
+  endTime: {
+            type: Date,
+            default: Date.now
           }
 });
 
