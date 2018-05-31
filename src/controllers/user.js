@@ -101,7 +101,7 @@ function getUser (req, res) {
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
 
-  helpers.getUserProjects( req.user, (err, projects) => {
+  helpers.getUserProjects( req.user, status, category, (err, projects) => {
     if(err){
       req.flash("error", err.message);
       res.redirect(`/`);
@@ -138,11 +138,19 @@ function getEditUser (req, res) {
 
   let userDir = req.user.userType.toLowerCase();
 
-  res.render( `user/${userDir}`, {
-              title: 'Edit User',
-              user: req.user,
-              page: "user/edit"
-            });
+  User.findById(req.params.id, (err, user) => {
+
+    if(err){
+       req.flash("error", err.message);
+       res.redirect("/users");
+    } else {
+      res.render( `user/${userDir}`, {
+                  title: 'Edit User',
+                  user: user,
+                  page: "edit"
+                });
+    }
+  });
 } // getEditUser
 
 /* Update user */
@@ -153,10 +161,11 @@ function putUser (req, res){
 
       if(err){
          req.flash("error", err.message);
-         res.redirect("/users");
       } else {
-        res.redirect(`/users/${updatedUser._id}`);
+         req.flash("success", "User is edited successfully!");
       }
+
+      res.redirect(`/users`);
   });
 } // putUser
 

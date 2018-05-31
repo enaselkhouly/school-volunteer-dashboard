@@ -19,19 +19,23 @@ function allUsers ( callback ) {
 * Project helper functions
 */
 
-function getUserProjects ( user, callback ) {
+function getUserProjects ( user, status, category, callback ) {
 
-  let info;
-  var populate = {  path: "projects",
-     populate: {
+  var populate = {
+    path: "projects",
+    populate: {
        path: 'tasks',
        model: 'Task',
-       match: {$or: [{'assignedTo.id': user._id}, {'author.id': user._id}]}
-     }
+       match: {
+                  $or: [{'assignedTo.id': user._id}, {'author.id': user._id}],
+                  category: {$in: category},
+                  status: {$in: status}
+              }
+    }
    };
 
     User.findById(user._id).populate(populate).exec( (err, user) => {
-        callback(err, user.projects, info);
+        callback(err, user.projects);
     });
 }
 
@@ -62,9 +66,21 @@ function removeProjectFromUser ( userId, projectId, callback ) {
   });
 }
 
-function allProjects (user, callback ) {
+function allProjects (user, status, category, callback ) {
 
-  Project.find().populate({path: "tasks"}).exec( (err, allProjects) => {
+  var populate = {
+    path: "projects",
+    populate: {
+       path: 'tasks',
+       model: 'Task',
+       match: {
+                  category: {$in: category},
+                  status: {$in: status}
+              }
+    }
+   };
+
+  Project.find().populate(populate).exec( (err, allProjects) => {
       callback(err, allProjects);
   });
 
@@ -107,8 +123,6 @@ function removeAllProjectTasks (project, callback) {
   var condition = {
       _id: project.tasks
   };
-
-  console.log("project tasks", project.tasks);
 
   Task.remove (condition, (err, tasks) => {
       callback(err);
@@ -206,34 +220,42 @@ function deleteTask (task, callback) {
 
 function statusQuery (statusQuery) {
 
-  let options = ['All', 'Open', 'In-progress', 'Pending Approval', 'Closed'];
+  let options = ['Open', 'In-progress', 'Pending Approval', 'Closed'];
 
-  let status = (!statusQuery)? 'All' : statusQuery;
+  let status = [];
 
-  for (var i = 0; i < options.length; i++) {
-    let option = options[i].toLowerCase();
-    option = option.replace(/ /g,'');
-    if (option == status) {
-      return status = options[i]
+  if (statusQuery) {
+    for (var i = 0; i < options.length; i++) {
+      let option = options[i].toLowerCase();
+      option = option.replace(/ /g,'');
+      if (statusQuery.indexOf(`${option}`) > -1) {
+        status.push(options[i]);
+      }
     }
+  } else {
+    status = options;
   }
 
   return status;
 }
 
 
-function categoryQuery (categoryQuery) {
+function categoryQuery (categories) {
 
   let options = ['Uncategorized', 'At Home', 'In-campus', 'Outdoors'];
 
-  let category = (!categoryQuery)? 'Uncategorized' : categoryQuery;
+  let category = [];
 
-  for (var i = 0; i < options.length; i++) {
-    let option = options[i].toLowerCase();
-    option = option.replace(/ /g,'');
-    if (option == category) {
-      return category = options[i]
+  if (categories) {
+    for (var i = 0; i < options.length; i++) {
+      let option = options[i].toLowerCase();
+      option = option.replace(/ /g,'');
+      if (categories.indexOf(`${option}`) > -1) {
+        category.push(options[i]);
+      }
     }
+  } else {
+      category = options;
   }
 
   return category;

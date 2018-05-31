@@ -15,8 +15,10 @@ function getProjects (req, res) {
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
 
-  helpers.allProjects(req.user, (err, allProjects) => {
+  helpers.allProjects(req.user, status, category, (err, allProjects) => {
 
+    console.log(category);
+    console.log(status);
     if(err){
       req.flash("error", err.message);
       res.redirect(`/`);

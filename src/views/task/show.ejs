@@ -37,15 +37,8 @@
               <%
                let hrs = task.deadline.getHours();
                let mins = task.deadline.getMinutes();
-
-               suffix = (hrs >= 12)? 'PM' : 'AM';
-
-               hrs = (hrs > 12)? (hrs - 12) : hrs;
-
-               //if 00 then it is 12 AM
-               hrs = (hrs == '00')? 12 : hrs;
               %>
-              <%= (hrs <10?'0':'') + hrs%> : <%=(mins<10?'0':'') + mins%> <%= suffix%>
+              <%= ( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%> : <%= ("0" + mins).slice(-2)%> <%= hrs >= 12 ? "PM":"AM"%>
             </h5>
           </div>
         </div>
@@ -58,15 +51,8 @@
               <%
                hrs = task.endTime.getHours();
                mins = task.endTime.getMinutes();
-
-               suffix = (hrs >= 12)? 'PM' : 'AM';
-
-               hrs = (hrs > 12)? (hrs - 12) : hrs;
-
-               //if 00 then it is 12 AM
-               hrs = (hrs == '00')? 12 : hrs;
               %>
-              <%= (hrs<10?'0':'') + hrs%> : <%=(mins<10?'0':'') + mins %> <%= suffix%>
+              <%= ( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%> : <%= ("0" + mins).slice(-2)%> <%= hrs >= 12 ? "PM":"AM"%>
             </h5>
           </div>
         </div>

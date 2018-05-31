@@ -1,38 +1,31 @@
-<div class="table-responsive table-wrapper">
+<div class="table-responsive table-wrapper" id='table-wrapper'>
      <table class="table" id="table-data">
       <thead>
         <tr>
           <th scope="col"><h5>Task</h5></th>
-          <th scope="col">
-            <h5>Status</h5>
-            <!-- <select name='statusFilter' id='statusFilter'>
-            <%
-            let options = ['All', 'Open', 'In-progress', 'Pending Approval', 'Closed'];
-            for ( let i = 0; i < options.length; i++ )
-            {
-                var selected = ( status == options[i] ) ? "selected" : "";
-                %><option value="<%=options[ i ] %>" <%=selected %>><%=options[ i ] %></option><%
-            }
-            %>
-            </select> -->
-
-          </th>
+          <th scope="col"><h5>Status</h5></th>
           <th scope="col"><h5>Category</h5></th>
           <th scope="col"><h5>Description</h5></th>
           <th scope="col"><h5>Assigned to</h5></th>
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody>
         <% if(tasks){ %>
-        <% tasks.forEach( (task) => {%>
+        <% tasks.forEach ( (task) => {%>
           <div class="row">
             <tr>
               <td class="row-head truncate-container">
                 <h6 class="truncate-text"><a href="/tasks/<%=task._id%>"><%= task.name %></a></h6>
                 <p class="secondary-data">
-                  <!-- <%= ("0" + (task.deadline.getMonth() + 1)).slice(-2)%>/<%= ("0" + task.deadline.getDate()).slice(-2)%>/<%= task.deadline.getFullYear()%> -->
-                  <%= task.deadline.toDateString()%>
+                  <%= task.deadline.toDateString()%><br>
+                  <%
+                   hrs = task.endTime.getHours();
+                   mins = task.endTime.getMinutes();
+                   toHrs = task.endTime.getHours();
+                   toMins = task.endTime.getMinutes();
+                  %>
+                  (<%=( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%>  : <%=("0" + mins).slice(-2)%>  <%=hrs >= 12 ? "PM":"AM"%> -
+                  <%=( "0" + ((toHrs + 11) % 12 + 1)).slice(-2)%> : <%=("0" + toMins).slice(-2)%> <%=toHrs >= 12 ? "PM":"AM"%>)
                 </p>
               </td>
               <td>

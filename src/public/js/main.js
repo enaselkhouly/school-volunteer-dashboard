@@ -81,28 +81,187 @@ flatpickr('#to-date-picker', {
 flatpickr('#from-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
 flatpickr('#to-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
 
-/* Add event listener to set the URL query for statusFilter*/
-var statusElement = document.getElementById("statusFilter");
+$("#filter-submit").click(function (e) {
 
-if (statusElement) {
-  statusElement.addEventListener('change', function() {
-    let filter = this.value.toLowerCase();
-    filter = filter.replace(/ /g,'');
+  let url = window.location.href;
 
-    let url = window.location.href;
-    if(url.indexOf(filter) > -1) {
-      // Filter is not changed
-      return;
-    }
+  $('.categoryCheckBox:checkbox').each( function () {
+    let filter = $(this).attr('name');
 
-    if(url.indexOf('status') > -1) {
-      url = url.replace(/status=[^&]+&*/,`status=${filter}`);
-      // \A?var1=[^&]+&*
+    if ($(this).is(':checked')) {
+      // Add the filter if it was not added before
+      if (url.indexOf(`${filter}`) <= -1) {
+        if(url.indexOf('?') > -1) {
+            url = `${url}&category=${filter}`;
+          } else {
+            url = `${url}?category=${filter}`;
+          }
+      }
     } else {
-        url = `${url}?status=${filter}`;
+       // Remove the filter if it became unchecked
+       if (url.indexOf(`&category=${filter}`) > -1) {
+         url = url.replace(`&category=${filter}`,"");
+       }
+       // This will match when the query after the '?'
+       else if (url.indexOf(`category=${filter}`) > -1){
+         url = url.replace(`category=${filter}`,"");
+       }
+       // remove the ? if this is the last query
+       let parts;
+       if(url.indexOf('?') > -1) {
+         parts = url.split('?');
+         if (!parts[1]) {
+           url = url.replace("?", "");
+         }
+       }
+     }
+  });
+
+  // Filter by status
+  $('.statusCheckBox:checkbox').each( function () {
+    let filter = $(this).attr('name');
+
+    if ($(this).is(':checked')) {
+
+      // Add the filter if it was not added before
+      if (url.indexOf(`${filter}`) <= -1) {
+        if(url.indexOf('?') > -1) {
+            url = `${url}&status=${filter}`;
+          } else {
+            url = `${url}?status=${filter}`;
+          }
+      }
+    } else {
+      // Remove the filter if it became unchecked
+      if (url.indexOf(`&status=${filter}`) > -1) {
+        url = url.replace(`&status=${filter}`,"");
+      }
+      // This will match when the query after the '?'
+      else if (url.indexOf(`status=${filter}`) > -1){
+        url = url.replace(`status=${filter}`,"");
+      }
+      // remove the ? if this is the last query
+      let parts;
+      if(url.indexOf('?') > -1) {
+        parts = url.split('?');
+        if (!parts[1]) {
+          url = url.replace("?", "");
+        }
+      }
     }
+  });
+  window.location.href = url;
+});
+/* Category filter*/
+$("#category-filter").click(function (e) {
+  e.stopPropagation();
 
-    window.location.href = url;
-  }, false);
+  var checkedBoxes = [];
+  let url = window.location.href;
 
-}
+  $('.categoryCheckBox:checkbox').each( function () {
+    let filter = $(this).attr('name');
+
+    if ($(this).is(':checked')) {
+
+      // Add the filter if it was not added before
+      if (url.indexOf(`${filter}`) <= -1) {
+        if(url.indexOf('?') > -1) {
+            url = `${url}&category=${filter}`;
+          } else {
+            url = `${url}?category=${filter}`;
+          }
+      }
+    } else {
+      // Remove the filter if it became unchecked
+      if (url.indexOf(filter) > -1) {
+        url = url.replace(`category=${filter}`,"");
+        let parts;
+        if(url.indexOf('?') > -1) {
+          parts = url.split('?');
+          if (!parts[1]) {
+            url = url.replace("?", "");
+          }
+        }
+        if(url.indexOf('&') > -1) {
+          parts = url.split('&');
+          if (!parts[1]) {
+            url = url.replace("&", "");
+          }
+        }
+    }
+  }
+  });
+  // update the url with the status and category queries
+ window.location.href = url;
+});
+
+/* Category filter*/
+$("#status-filter").click(function (e) {
+  e.stopPropagation();
+
+  var checkedBoxes = [];
+  let url = window.location.href;
+
+  $('.statusCheckBox:checkbox').each( function () {
+    let filter = $(this).attr('name');
+
+    if ($(this).is(':checked')) {
+
+      // Add the filter if it was not added before
+      if (url.indexOf(`${filter}`) <= -1) {
+        if(url.indexOf('?') > -1) {
+            url = `${url}&status=${filter}`;
+          } else {
+            url = `${url}?status=${filter}`;
+          }
+      }
+    } else {
+      // Remove the filter if it became unchecked
+      if (url.indexOf(filter) > -1) {
+        url = url.replace(`status=${filter}`,"");
+        let parts;
+        if(url.indexOf('?') > -1) {
+          parts = url.split('?');
+          if (!parts[1]) {
+            url = url.replace("?", "");
+          }
+        }
+        if(url.indexOf('&') > -1) {
+          parts = url.split('&');
+          if (!parts[1]) {
+            url = url.replace("&", "");
+          }
+        }
+    }
+  }
+  });
+ window.location.href = url;
+});
+
+
+// /* Add event listener to set the URL query for statusFilter*/
+// var statusElement = document.getElementById("statusFilter");
+//
+// if (statusElement) {
+//   statusElement.addEventListener('change', function() {
+//     let filter = this.value.toLowerCase();
+//     filter = filter.replace(/ /g,'');
+//
+//     let url = window.location.href;
+//     if(url.indexOf(filter) > -1) {
+//       // Filter is not changed
+//       return;
+//     }
+//
+//     if(url.indexOf('status') > -1) {
+//       url = url.replace(/status=[^&]+&*/,`status=${filter}`);
+//       // \A?var1=[^&]+&*
+//     } else {
+//         url = `${url}?status=${filter}`;
+//     }
+//
+//     window.location.href = url;
+//   }, false);
+//
+// }

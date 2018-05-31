@@ -1,9 +1,56 @@
 <div class="row main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-12">
+      <div class="col-6">
         <h1 class="main-page-title">All projects <%=text%></h1>
       </div>
+      <div class="col-6 filter">
+        <div class="btn-group main-page-title float-right" >
+          <button type="button" class="btn btn-success pr-4 pl-4"><i data-feather="filter" class="icon-holder filter"></i>Filter</button>
+          <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <div class="container">
+            <div class="dropdown-menu w-100">
+              <div class="form container w-100">
+                  <h6>Filter by category: <%=category%></h6>
+                      <%
+                        let checkboxes = ['Uncategorized', 'At Home', 'In-campus', 'Outdoors'];
+                        let checkboxesNames = ['uncategorized', 'athome', 'in-campus', 'outdoors'];
+                        let checked = "";
+                        for (let i = 0; i < checkboxes.length; i++) {
+                          checked = (category.indexOf(checkboxes[i]) > -1) ? "checked" : ""; %>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input categoryCheckBox" name="<%=checkboxesNames[i]%>" id="<%=checkboxes[i]%>" <%=checked%>>
+                            <label class="form-check-label" for="<%=checkboxes[i]%>">
+                              <%=checkboxes[i]%>
+                            </label>
+                          </div>
+                      <%}%>
+                    <hr>
+                    <h6>Filter by status:</h6>
+                      <%
+                      checkboxes = ['Open', 'In-progress', 'Pending Approval', 'Closed'];
+                      checkboxesNames = ['open', 'in-progress', 'pendingapproval', 'closed'];
+                      checked = "";
+                      for ( let i = 0; i < checkboxes.length; i++ )
+                      {
+                          checked = (status.indexOf(checkboxes[i]) > -1) ? "checked" : ""; %>
+                          <div class="form-check">
+                            <input type="checkbox" class="form-check-input statusCheckBox" name="<%=checkboxesNames[i]%>" id="<%=checkboxes[i]%>" <%=checked%>>
+                            <label class="form-check-label" for="<%=checkboxes[i]%>">
+                              <%=checkboxes[i]%>
+                            </label>
+                          </div>
+                      <%}%>
+                  <div class="mt-3">
+                    <button type="button" id="filter-submit" class="btn btn-outline-success pl-4 pr-4" value="Filter">Fitler</button>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
     </div>
     <div class="row">
       <div class="col-12">
