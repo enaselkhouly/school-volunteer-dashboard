@@ -144,10 +144,10 @@ function postNewTask (req, res) {
 
     if (err) {
       req.flash("error", err.message);
-      res.redirect(`/projects`);
+      res.redirect(`back`);
     } else {
       req.flash("success", "The task is created successfully!")	;
-      res.redirect('/projects');
+      res.redirect(`/users/${req.user._id}`);
     }
   });
 } // postNewTask
@@ -160,7 +160,7 @@ function getEditTask (req, res) {
   Task.findById(req.params.id, (err, task) => {
     if (err) {
       req.flash("error", err.message);
-      res.redirect("/projects");
+      res.redirect(`/users/${req.user._id}`);
     } else {
       res.render(`user/${userDir}`, {
         task: task,
@@ -221,7 +221,7 @@ function putTask (req, res) {
     } else {
       req.flash("success", msg);
     }
-    res.redirect('/projects');
+    res.redirect(`/users/${req.user._id}`);
   });
 } // postEditTask
 
@@ -341,7 +341,6 @@ function approveTask (req, res) {
 } // approveTask
 
 function postApproveTask (req, res) {
-  console.log('approved time ', req.body.task.volunteerTime);
   res.redirect('back');
 }
 function unapproveTask (req, res) {
@@ -368,7 +367,7 @@ function deleteTask (req, res) {
   async.waterfall([
     // Get Task info
     function getTaskinfo (callback) {
-
+      console.log('Get task info');
       Task.findById (req.params.id, (err, task) => {
         if (err) {
           return callback(err);
@@ -379,31 +378,19 @@ function deleteTask (req, res) {
     },
     // remove Task from Author user
     function removeTaskFromUser(task, callback) {
-
+      console.log('removeTaskFromUser');
       if (task.author) {
         helpers.removeTaskFromUser (task.author.id, task._id, function (err) {
           if (err) {
             return callback(err);
           }
-
           callback(null, task);
-        });
-      }
-    },
-    // remove task from project
-    function removeTaskFromProject (task, callback) {
-      if (task.project) {
-        helpers.removeTaskFromProject(task.project.id, task._id, function (err) {
-          if (err) {
-            return callback(err);
-          }
-          callback(null, task);
-
         });
       }
     },
     // remove Task from Assigned user
     function removeTaskFromAssigneeUser(task, callback) {
+      console.log(removeTaskFromAssigneeUser);
       if (task.assignedTo) {
         helpers.removeTaskFromUser (task.assignedTo.id, task._id, function (err) {
           if (err) {
@@ -411,10 +398,23 @@ function deleteTask (req, res) {
           }
           callback(null, task);
         });
-        // TODO if this is the last task in the project, remove the project
+      }
+    },
+    // remove task from project
+    function removeTaskFromProject (task, callback) {
+      console.log('remove task from project');
+      if (task.project) {
+        helpers.removeTaskFromProject(req.user._id, task.project.id, task._id, function (err) {
+          if (err) {
+            return callback(err);
+          }
+          callback(null, task);
+
+        });
       }
     },
     function removeTask (task, callback) {
+      console.log('remove Task');
       // Delete task
       task.remove(task._id, function (err) {
         if (err) {
@@ -426,10 +426,10 @@ function deleteTask (req, res) {
   ], function (err) {
     if (err) {
       req.flash("error", err.message);
-      res.redirect(`back`);
+      res.redirect(`/projects`);
     } else {
-      req.flash("success", "Successfully deleted the Task!");
-      res.redirect("back");
+      req.flash("success", "The task is successfully deleted!");
+      res.redirect("/projects");
     }
   });
 } // deleteTask

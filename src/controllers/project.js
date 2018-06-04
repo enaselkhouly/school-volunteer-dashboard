@@ -15,10 +15,12 @@ function getProjects (req, res) {
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
 
+  if (req.user.isFamily()) {
+    status = 'Open';
+  }
+
   helpers.allProjects(req.user, status, category, (err, allProjects) => {
 
-    console.log(category);
-    console.log(status);
     if(err){
       req.flash("error", err.message);
       res.redirect(`/`);
@@ -43,7 +45,7 @@ function getProject (req, res) {
 
     if(err){
       req.flash("error", err.message);
-      res.redirect(`/projects`);
+      res.redirect(`back`);
     } else {
       res.render(`user/${userDir}`, {
         user: user,
@@ -98,7 +100,7 @@ function postNewProject (req, res) {
     }
     // New project created Successfully
     req.flash("success", "Successfully created a new Project!");
-    res.redirect(`/projects`);
+    res.redirect(`/users/${req.user._id}`);
   });
 } // postNewProject
 
@@ -130,7 +132,7 @@ function putProject (req, res) {
          req.flash("success", 'The project is successfully edited!');
       }
 
-      res.redirect("/projects");
+      res.redirect(`/users/${req.user._id}`);
 
   });
 } // postEditProject
@@ -143,10 +145,11 @@ function deleteProject (req, res) {
           if (err) {
             return callback(err);
           }
+
           return callback(null, project);
         });
       },
-      function removeTaskFromUser(project, callback) {
+      function removeProjectFromUser(project, callback) {
         // remove Project from Author user
         helpers.removeProjectFromUser (project.author.id, project._id, function (err) {
           if (err) { return callback(err) }
@@ -173,10 +176,10 @@ function deleteProject (req, res) {
   ], function (err) {
     if (err) {
       req.flash("error", err.message);
-      res.redirect(`/projects`);
+      res.redirect(`/users/${req.user._id}`);
     } else {
       req.flash("success", "Successfully deleted the Project!");
-      res.redirect("/projects");
+      res.redirect(`/users/${req.user._id}`);
     }
   });
 } // deleteProject

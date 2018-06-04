@@ -3,7 +3,7 @@
 const User    = require('../models/User');
 const Project = require('../models/Project');
 const Task    = require('../models/Task');
-
+const async   = require('async');
 /*
 * User helper functions.
 */
@@ -69,15 +69,12 @@ function removeProjectFromUser ( userId, projectId, callback ) {
 function allProjects (user, status, category, callback ) {
 
   var populate = {
-    path: "projects",
-    populate: {
        path: 'tasks',
        model: 'Task',
        match: {
                   category: {$in: category},
                   status: {$in: status}
               }
-    }
    };
 
   Project.find().populate(populate).exec( (err, allProjects) => {
@@ -108,13 +105,59 @@ function addTaskToProject (projectId, taskId, callback){
   });
 }
 
-function removeTaskFromProject (projectId, taskId, callback) {
+function removeTaskFromProject (userId, projectId, taskId, callback) {
 
+  async.waterfall([
+  function getProjectTasks (callback) {
+
+      var populate = {
+           path: 'tasks',
+           model: 'Task',
+           match: { $or: [{'assignedTo.id': userId}, {'author.id': userId}]}
+       };
+
+        Project.findById(projectId).populate(populate).exec( (err, project) => {
+
+          if (err) {
+            console.log(err);
+              callback(err);
+          } else {
+            console.log(project);
+            callback(null, project)
+          }
+        });
+  },
+  function removeTask(project, callback) {
+    var taskAuthorId = null;
+    console.log('remove task', project);
+    if (project.tasks && project.tasks.length == 1) {
+      taskAuthorId = project.tasks[0].author.id;
+    }
     Project.findByIdAndUpdate(projectId,
                           {$pull: {"tasks": taskId}},
                           (err, project) => {
-        callback (err);
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, project, taskAuthorId);
+      }
     });
+  },
+  function removeProject(project, taskAuthorId, callback) {
+    console.log('remove project', taskAuthorId);
+    if (!project.author.id.equals(userId) && taskAuthorId) {
+        // remove project from user
+        removeProjectFromUser(taskAuthorId, projectId, (err) => {
+        callback(err);
+        });
+      } else {
+        callback(null);
+      }
+  }
+  ],
+  function (err) {
+    callback(err);
+  });
 }
 
 
@@ -205,8 +248,9 @@ function getTask ( taskId, callback ) {
 }
 
 function createTask( task, callback) {
-
+  console.log(task);
   Task.create(task, (err, task) => {
+    console.log(task);
     callback(err, task);
   });
 }
@@ -218,9 +262,33 @@ function deleteTask (task, callback) {
     });
 }
 
+function getVolunteerTime (user, callback) {
+
+  Task.aggregate([
+    {
+      $match: {
+              'status': 'Closed',
+               "assignedTo.id": user._id
+             }
+    },
+    {
+      $group: {_id: 0, total: {$sum: "$volunteerTime"}}
+    }], (err, results) => {
+
+      let volunteerTime = 0;
+
+      if (!err) {
+        if (results.length > 0) {
+          volunteerTime = results[0].total;
+        }
+      }
+      return callback(err, volunteerTime);
+  });
+}
+
 function statusQuery (statusQuery) {
 
-  let options = ['Open', 'In-progress', 'Pending Approval', 'Closed'];
+  let options = ['Open', 'In-progress', 'Pending Review', 'Closed'];
 
   let status = [];
 
@@ -276,10 +344,10 @@ module.exports = {
   deleteProject         : deleteProject,
   addTaskToUser         : addTaskToUser,
   removeTaskFromUser      : removeTaskFromUser,
-  // cancelTaskAssign      : cancelTaskAssign,
   allTasks              : allTasks,
   getTask               : getTask,
   createTask            : createTask,
+  getVolunteerTime      : getVolunteerTime,
   statusQuery           : statusQuery,
   categoryQuery         : categoryQuery
 }

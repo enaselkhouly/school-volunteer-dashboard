@@ -22,19 +22,19 @@
                       </thead>
                       <tbody>
                         <% if(users){ %>
-                        <% users.forEach( (user) => {%>
+                        <% users.forEach( (foundUser) => {%>
                           <div class="row">
                             <tr>
                               <td class="row-head truncate-container">
-                                <h6 class="truncate-text"><a href="/users/<%=user._id%>/profile"><%= user.displayName %></a></h6>
+                                <h6 class="truncate-text"><a href="/users/<%=foundUser._id%>/profile"><%= foundUser.displayName %></a></h6>
                               </td>
                               <td>
                                 <h7 class="table-head-view">Type</h7>
-                                <%= user.userType %>
+                                <%= foundUser.userType %>
                               </td>
                               <td>
-                                <button class="btn btn-outline-warning"><a href="/users/<%=user._id%>/edit">Edit</a></button>
-                                <form id="delete-form" action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                                <button class="btn btn-outline-warning"><a href="/users/<%=foundUser._id%>/edit">Edit</a></button>
+                                <form id="delete-form" action="/users/<%=foundUser._id%>?_method=DELETE" method="POST">
                                   <button class="btn btn-outline-danger">Delete</button>
                                 </form>
                               </td>

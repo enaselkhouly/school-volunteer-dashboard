@@ -20,13 +20,13 @@ router.get("/projects/:id", auth.isLoggedIn, projectController.getProject);
 router.post("/projects", auth.isAdminOrTeacher, projectController.postNewProject);
 
 /* GET: show form to edit project*/
-router.get("/projects/:id/edit", auth.isAdminOrTeacher, projectController.getEditProject);
+router.get("/projects/:id/edit", auth.isAdminOrProjectOwner, projectController.getEditProject);
 
 /* POST: edit project*/
-router.put("/projects/:id", auth.isAdminOrTeacher, projectController.putProject);
+router.put("/projects/:id", auth.isAdminOrProjectOwner, projectController.putProject);
 
 /* Delete: delete project*/
-router.delete("/projects/:id", auth.isAdminOrTeacher, projectController.deleteProject);
+router.delete("/projects/:id", auth.isAdminOrProjectOwner, projectController.deleteProject);
 
 
 module.exports = router;

@@ -56,15 +56,16 @@ $("form input[type=submit]").click(function() {
     $(this).attr("clicked", "true");
 });
 
-$(".actions-form").submit(function (e) {
+$(".form-actions").submit(function (e) {
 
   var val = $("input[type=submit][clicked=true]").val();
   let formAction = $(this).attr('action');
 
-  // TODO make sure that there is no other & in the url
-  $(this).attr('action', `${formAction}&${val}=1`);
+  $(this).attr('action', `${formAction}?_method=PUT&${val}=1`);
+
   return true;
 });
+
 
 /* Date and time picker*/
 // Datepicker Popups calender to Choose date.

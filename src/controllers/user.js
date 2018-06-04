@@ -126,11 +126,29 @@ function getUserProfile (req, res) {
 
   let userDir = req.user.userType.toLowerCase();
 
-  res.render(`user/${userDir}`, {
-              user: req.user,
-              title: 'Profile',
-              page: 'profile'
-            });
+  User.findById(req.params.id, (err, user) => {
+    if (err) {
+      req.flash("error", err.message);
+      res.redirect("/");
+    } else {
+
+      helpers.getVolunteerTime(user, (err, volunteerTime) => {
+
+        if (err) {
+          req.flash("error", err.message);
+          res.redirect("/");
+        } else {
+          console.log(volunteerTime);
+          res.render(`user/${userDir}`, {
+                      user: user,
+                      volunteerTime: volunteerTime,
+                      title: 'Profile',
+                      page: 'profile'
+                    });
+        }
+      });
+    }
+  })
 }
 
 /* Show form to update user */

@@ -10,29 +10,29 @@
       <div class="innerpage-container">
         <% if(task.author) {%>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Created by:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Created by</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.author.displayName %></h5>
           </div>
         </div>
         <%}%>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Date:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Date</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5>
               <%= ("0" + (task.deadline.getMonth() + 1)).slice(-2)%>/<%= ("0" + task.deadline.getDate()).slice(-2)%>/<%= task.deadline.getFullYear()%>
             </h5>
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">From:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">From</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5>
               <%
                let hrs = task.deadline.getHours();
@@ -43,10 +43,10 @@
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">To:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">To</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5>
               <%
                hrs = task.endTime.getHours();
@@ -57,26 +57,26 @@
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Project:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Project</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.project.name %></h5>
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Status:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Status</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.status %></h5>
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Assignee:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Assignee</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <% if(task.assignedTo) {%>
             <h5><%= task.assignedTo.displayName %></h5>
             <%} else {%>
@@ -85,34 +85,34 @@
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Estimated time:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Estimated time</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.estimatedTime %></h5>
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Volunteer time:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Volunteer time</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.volunteerTime %></h5>
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Category:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Category</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.category %></h5>
           </div>
         </div>
         <div class="row justify-content-between">
-          <div class="col-2">
-            <h5 class="font-weight-bold">Description:</h5>
+          <div class="col-4">
+            <h5 class="font-weight-bold text-info">Description</h5>
           </div>
-          <div class="col-10">
+          <div class="col-8">
             <h5><%= task.description %></h5>
           </div>
         </div>

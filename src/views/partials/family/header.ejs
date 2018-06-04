@@ -24,12 +24,18 @@
                 <li class="sidebar-item">
                   <a href="/projects" class="sidebar-link">
 										<i data-feather="list" class="icon-holder list"></i>
-                    <span class="sidebar-title">All Tasks</span>
+                    <span class="sidebar-title">All Open Tasks</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a href="/users/<%=currentUser._id%>/profile" class="sidebar-link">
+                    <hr>
+                    <i data-feather="user" class="icon-holder user"></i>
+                    <span class="sidebar-title"> Profile</span>
                   </a>
                 </li>
                 <li class="sidebar-item">
                   <a href="/logout" class="sidebar-link">
-										<hr>
                     <i data-feather="log-out" class="icon-holder log-out"></i>
                     <span class="sidebar-title"> Log Out</span>
                   </a>

@@ -42,6 +42,9 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
+.projectDescription {
+  white-space: pre-wrap;
+}
 table .truncate-container {
   max-width: 210px;
 }
@@ -199,6 +202,15 @@ ul {
 
 .bookmark {
   color: #2196f3!important;
+}
+
+.brand-logo {
+  fill: #82EBE2;
+  color: #009688;
+}
+.user-logo {
+  fill: #94CFFE;
+  color: #2196f3;
 }
 
 .list, .users{

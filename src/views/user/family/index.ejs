@@ -3,13 +3,14 @@
 
 <% let text = ""%>
 <% if (page === 'show') {%>
-<% text = "you signed up for" %>
+<% myView = true %>
 <%- include ../../project/index%>
 <% } else if (page === 'profile') {%>
 <%- include ../profile%>
 <%} else if (page === 'project/show') {%>
 <%- include ../../project/show%>
 <%} else if (page === 'project/index') {%>
+<% myView = false %>
 <%- include ../../project/index%>
 <%} else if (page === 'task/index') {%>
 <%- include ../../task/index%>
@@ -17,4 +18,4 @@
 <%- include ../../task/show%>
 <%}%>
 
-<%- include ../../partials/admin/footer%>
+<%- include ../../partials/family/footer%>

@@ -12,12 +12,25 @@
 					<div class="innerpage-container">
           <div class="row justify-content-between">
             <div class="col-4">
-              <h5 class="font-weight-bold">User Type:</h5>
+              <h5 class="font-weight-bold text-info">User Type</h5>
             </div>
             <div class="col-8">
               <h5><%= user.userType%></h5>
             </div>
           </div>
+          <%if (user.userType === 'Family') {%>
+            <hr>
+            <div class="row justify-content-between">
+            <div class="col-4">
+              <h5 class="font-weight-bold text-info">Total volunteer time</h5>
+            </div>
+            <div class="col-8">
+              <h5><%= volunteerTime%> mins</h5>
+            </div>
+          </div>
+          <hr>
+          <%}%>
+          <% if (user.userType === 'Admin') {%>
           <div class="row mt-5">
             <div class="col-12">
               <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
@@ -25,6 +38,7 @@
               <button class="btn btn-outline-danger">Delete</button>
             </div>
           </div>
+          <%}%>
           </div>
         </div>
       </div>

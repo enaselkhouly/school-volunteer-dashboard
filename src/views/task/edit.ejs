@@ -20,24 +20,28 @@
                 <div class="form-group">
                     <label for="category">Select Category</label>
                     <select class="form-control" name='task[category]' id="category">
-                      <option value="<%=task.category%>" selected><%=task.category%></option>
-                      <option value="Uncategorized">Uncategorized</option>
-  										<option value="In-campus">In-campus</option>
-  										<option value='Outdoors'>Outdoors</option>
-  										<option value='At Home'>At Home</option>
+                      <%
+                        let options = ['Uncategorized', 'At Home', 'In-campus', 'Outdoors'];
+                        let selected = "";
+                        for (let i = 0; i < options.length; i++) {
+                          selected = (task.category === options[i]) ? "selected" : ""; %>
+                          <option value="<%=options[i]%>" <%=selected%>><%=options[i]%></option>
+                      <%}%>
                     </select>
                 </div>
                 <fieldset class="form-group">
                     <legend>Is Fixed time?</legend>
                     <div class="form-check">
+                      <% let checked = (task.isFixedTime == true) ? "checked" : ""; %>
                       <label class="form-check-label">
-                        <input type="radio" class="form-check-input" value="<%=task.isFixedTime%>" name="task[isFixedTime]" id="optionsRadiosYes">
+                        <input type="radio" class="form-check-input" value="true" name="task[isFixedTime]" id="optionsRadiosYes" <%=checked%>>
                 				Yes
                 			</label>
                     </div>
                     <div class="form-check">
+                      <% checked = (task.isFixedTime == false) ? "checked" : ""; %>
                     	<label class="form-check-label">
-                        <input type="radio" class="form-check-input" value="<%=task.isFixedTime%>" name="task[isFixedTime]" id="optionsRadiosNo">
+                        <input type="radio" class="form-check-input" value="false" name="task[isFixedTime]" id="optionsRadiosNo" <%=checked%>>
                 				No
                 			</label>
                     </div>
@@ -66,7 +70,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+                    <button class="btn btn-lg btn-success btn-block">Edit</button>
                 </div>
               </form>
             </div>

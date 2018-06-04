@@ -12,28 +12,31 @@
 					<div class="innerpage-container">
           <div class="row justify-content-between">
             <div class="col-4">
-              <h5 class="font-weight-bold">Created by:</h5>
+              <h5 class="font-weight-bold text-info">Created by</h5>
             </div>
             <div class="col-8">
               <h5><%= project.author.displayName%></h5>
             </div>
           </div>
+          <hr>
           <div class="row justify-content-between">
             <div class="col-4">
-              <h5 class="font-weight-bold">Date:</h5>
+              <h5 class="font-weight-bold text-info">Date</h5>
             </div>
             <div class="col-8">
               <h5><%= ("0" + (project.created.getMonth() + 1)).slice(-2)%>/<%= ("0" + project.created.getDate()).slice(-2)%>/<%= project.created.getFullYear()%></h5>
             </div>
           </div>
+          <hr>
           <div class="row justify-content-between">
             <div class="col-4">
-              <h5 class="font-weight-bold">Description:</h5>
+              <h5 class="font-weight-bold text-info">Description</h5>
             </div>
             <div class="col-8">
               <h5><%= project.description%></h5>
             </div>
           </div>
+          <hr>
           <div class="row mt-5">
             <div class="col-12">
               <a class="btn btn-outline-warning" href="/projects/<%=project._id%>/edit">Edit</a>

@@ -6,13 +6,14 @@
 <%} else if (page === 'index') {%>
 <%- include ../index%>
 <%} else if (page === 'show') {%>
-<% text = "created by you" %>
+<% myView = true %>
 <%- include ../../project/index%>
 <%} else if (page === 'edit') {%>
 <%- include ../edit%>
 <% } else if (page === 'profile') {%>
 <%- include ../profile%>
 <%} else if (page === 'project/index') {%>
+<% myView = false %>
 <%- include ../../project/index%>
 <%} else if (page === 'project/show') {%>
 <%- include ../../project/show%>
