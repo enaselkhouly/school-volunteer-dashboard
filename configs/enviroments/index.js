@@ -2,8 +2,8 @@
 
 const
     _ = require('lodash'),
-    env = process.env.NODE_ENV || 'local',
-    // envConfig = require('./' + env);
+    env = process.env.NODE_ENV || 'local';
+    // const envConfig = require('./' + env);
 
 let defaultConfig = {
     env: env
