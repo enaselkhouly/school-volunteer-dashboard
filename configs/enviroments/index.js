@@ -9,4 +9,5 @@ let defaultConfig = {
     env: env
 };
 
-module.exports = _.merge(defaultConfig, envConfig);
+//module.exports = _.merge(defaultConfig, envConfig);
+module.exports = defaultConfig;
