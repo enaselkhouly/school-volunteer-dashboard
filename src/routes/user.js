@@ -7,7 +7,7 @@ const userController = require('../controllers/user'),
 let router = express.Router();
 
 /* Show the registeration form for new User.*/
-router.get("/register", auth.isAdmin, userController.getRegister);
+router.get("/register",  userController.getRegister);
 
 /* Register new User.*/
 router.post("/register", auth.isAdmin, userController.postRegister);
