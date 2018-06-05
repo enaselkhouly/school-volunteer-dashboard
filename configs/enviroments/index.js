@@ -2,10 +2,11 @@
 
 const
     _ = require('lodash'),
-    env = process.env.NODE_ENV || 'local';
+    env = process.env.NODE_ENV || 'local',
+    envConfig = require('./' + env);
 
 let defaultConfig = {
     env: env
 };
 
-module.exports = defaultConfig;
+module.exports = _.merge(defaultConfig, envConfig);
