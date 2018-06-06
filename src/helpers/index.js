@@ -127,9 +127,11 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
   },
   function removeTask(project, callback) {
     var taskAuthorId = null;
+    var taskAssigneeId = null;
 
     if (project.tasks && project.tasks.length == 1) {
       taskAuthorId = project.tasks[0].author.id;
+      taskAssigneeId = project.tasks[0].assignedTo.id;
     }
     Project.findByIdAndUpdate(projectId,
                           {$pull: {"tasks": taskId}},
@@ -137,20 +139,31 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
       if (err) {
         callback(err);
       } else {
-        callback(null, project, taskAuthorId);
+        callback(null, project, taskAuthorId, taskAssigneeId);
       }
     });
   },
-  function removeProject(project, taskAuthorId, callback) {
+  function removeProject(project, taskAuthorId, taskAssigneeId, callback) {
 
     if (!project.author.id.equals(userId) && taskAuthorId) {
         // remove project from user
         removeProjectFromUser(taskAuthorId, projectId, (err) => {
-        callback(err);
+          if (err) {
+              callback(err);
+          }
         });
-      } else {
-        callback(null);
       }
+
+      if (taskAssigneeId){
+        removeProjectFromUser(taskAssigneeId, projectId, (err) => {
+          if (err) {
+              callback(err);
+          }
+        });
+      }
+
+      callback(null);
+
   }
   ],
   function (err) {

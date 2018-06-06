@@ -366,7 +366,7 @@ function deleteTask (req, res) {
   async.waterfall([
     // Get Task info
     function getTaskinfo (callback) {
-      console.log('delete task', req.params.task_id);
+
       Task.findById (req.params.task_id, (err, task) => {
         if (err) {
           return callback(err);
