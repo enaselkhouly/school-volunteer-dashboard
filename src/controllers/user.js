@@ -9,7 +9,7 @@ const User = require('../models/User'),
 /* Show the registeration form for new User.*/
 function getRegister ( req, res) {
 
-  let userDir = req.user.userType.toLowerCase();
+  //let userDir = req.user.userType.toLowerCase();
 
   res.render(`user/admin`, {
             title: 'Register',
