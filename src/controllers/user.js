@@ -37,7 +37,7 @@ function postRegister (req, res) {
 
 /* User login form. */
 function getLogin (req, res, next){
-  console.log('login');
+
   res.render('user/login', {
               title: 'Login'
             });

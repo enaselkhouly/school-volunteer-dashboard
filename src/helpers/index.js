@@ -119,17 +119,15 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
         Project.findById(projectId).populate(populate).exec( (err, project) => {
 
           if (err) {
-            console.log(err);
               callback(err);
           } else {
-            console.log(project);
             callback(null, project)
           }
         });
   },
   function removeTask(project, callback) {
     var taskAuthorId = null;
-    console.log('remove task', project);
+
     if (project.tasks && project.tasks.length == 1) {
       taskAuthorId = project.tasks[0].author.id;
     }
@@ -144,7 +142,7 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
     });
   },
   function removeProject(project, taskAuthorId, callback) {
-    console.log('remove project', taskAuthorId);
+
     if (!project.author.id.equals(userId) && taskAuthorId) {
         // remove project from user
         removeProjectFromUser(taskAuthorId, projectId, (err) => {
@@ -248,9 +246,9 @@ function getTask ( taskId, callback ) {
 }
 
 function createTask( task, callback) {
-  console.log(task);
+
   Task.create(task, (err, task) => {
-    console.log(task);
+
     callback(err, task);
   });
 }

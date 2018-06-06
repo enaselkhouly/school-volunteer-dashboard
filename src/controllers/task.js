@@ -366,7 +366,7 @@ function deleteTask (req, res) {
   async.waterfall([
     // Get Task info
     function getTaskinfo (callback) {
-
+      console.log('delete task', req.params.task_id);
       Task.findById (req.params.task_id, (err, task) => {
         if (err) {
           return callback(err);
@@ -378,7 +378,7 @@ function deleteTask (req, res) {
     // remove Task from Author user
     function removeTaskFromUser(task, callback) {
 
-      if (task.author) {
+      if (task && task.author) {
         helpers.removeTaskFromUser (task.author.id, task._id, function (err) {
           if (err) {
             return callback(err);
@@ -390,7 +390,7 @@ function deleteTask (req, res) {
     // remove Task from Assigned user
     function removeTaskFromAssigneeUser(task, callback) {
 
-      if (task.assignedTo) {
+      if (task && task.assignedTo) {
         helpers.removeTaskFromUser (task.assignedTo.id, task._id, function (err) {
           if (err) {
             return callback(err);
@@ -413,7 +413,7 @@ function deleteTask (req, res) {
       }
     },
     function removeTask (task, callback) {
-    
+
       // Delete task
       task.remove(task._id, function (err) {
         if (err) {

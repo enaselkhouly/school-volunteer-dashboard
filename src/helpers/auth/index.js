@@ -110,31 +110,31 @@ function isAdminOrProjectOwner (req, res, next) {
 
    In case of add new task (get/post), the project is provided as query.
    */
-function isAdminOrTaskProjectOwner (req, res, next) {
-
-  if (isLoggedInLocal(req, res)) {
-
-    Project.findById(req.query.project, (err, project) => {
-      if (err) {
-        req.flash("error", err.msg);
-        res.redirect("/projects");
-        return;
-      }
-
-      if ( req.user && (req.user.isAdmin() || project.author.id.equals(req.user._id)) ){
-        next();
-      } else {
-        req.flash("error", "You don't have permission!");
-        res.redirect("/projects");
-      }
-    });
-  } // if: isLoggedIn
-} // isAdminOrProjectOwner
+// function isAdminOrTaskProjectOwner (req, res, next) {
+//
+//   if (isLoggedInLocal(req, res)) {
+//
+//     Project.findById(req.params.id, (err, project) => {
+//       if (err) {
+//         req.flash("error", err.msg);
+//         res.redirect("/projects");
+//         return;
+//       }
+//
+//       if ( req.user && (req.user.isAdmin() || project.author.id.equals(req.user._id)) ){
+//         next();
+//       } else {
+//         req.flash("error", "You don't have permission!");
+//         res.redirect("/projects");
+//       }
+//     });
+//   } // if: isLoggedIn
+// } // isAdminOrProjectOwner
 
 function isAdminOrTaskOwner (req, res, next) {
   if (isLoggedInLocal(req, res)) {
 
-    Task.findById(req.params.id, (err, task) => {
+    Task.findById(req.params.task_id, (err, task) => {
       if (err) {
         req.flash("error", err.msg);
         res.redirect("/projects");
@@ -158,6 +158,5 @@ module.exports = {
   isFamily                  : isFamily,
   isAdminOrTeacher          : isAdminOrTeacher,
   isAdminOrTaskOwner        : isAdminOrTaskOwner,
-  isAdminOrProjectOwner     : isAdminOrProjectOwner,
-  isAdminOrTaskProjectOwner : isAdminOrTaskProjectOwner
+  isAdminOrProjectOwner     : isAdminOrProjectOwner
 }

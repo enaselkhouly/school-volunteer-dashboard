@@ -10,13 +10,13 @@ let router = express.Router();
 // router.get("/tasks", auth.isLoggedIn, taskController.getTasks);
 
 /* GET: show form to add new task*/
-router.get("/projects/:id/tasks/new", auth.isAdminOrTaskProjectOwner, taskController.getNewTask);
+router.get("/projects/:id/tasks/new", auth.isAdminOrProjectOwner, taskController.getNewTask);
 
 /* GET: Show more details about a task*/
 router.get("/projects/:id/tasks/:task_id", auth.isLoggedIn, taskController.getTask);
 
 /* POST: add new task*/
-router.post("/projects/:id/tasks", auth.isAdminOrTaskProjectOwner, taskController.postNewTask);
+router.post("/projects/:id/tasks", auth.isAdminOrProjectOwner, taskController.postNewTask);
 
 /* GET: show form to edit task*/
 router.get("/projects/:id/tasks/:task_id/edit", auth.isAdminOrTaskOwner, taskController.getEditTask);
