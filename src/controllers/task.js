@@ -38,7 +38,7 @@ function getTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  helpers.getTask(req.params.id, function (err, task) {
+  helpers.getTask(req.params.task_id, function (err, task) {
 
     if(err){
       req.flash("error", err.message);
@@ -57,8 +57,7 @@ function getTask (req, res) {
 function getNewTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
-
-  let projectId = req.query.project;
+  let projectId = req.params.id;
 
   res.render(`user/${userDir}`, {
     projectId: projectId,
@@ -94,7 +93,7 @@ function postNewTask (req, res) {
       newTask.endTime.setMinutes(time[1].trim());
 
       // Get project name
-      helpers.getProject(req.query.project, (err, project) => {
+      helpers.getProject(req.params.id, (err, project) => {
 
         if (err) {
           return callback(err);
@@ -157,7 +156,7 @@ function getEditTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  Task.findById(req.params.id, (err, task) => {
+  Task.findById(req.params.task_id, (err, task) => {
     if (err) {
       req.flash("error", err.message);
       res.redirect(`/users/${req.user._id}`);
@@ -181,7 +180,7 @@ function putTask (req, res) {
         req.body.task.estimatedTime = req.body.task.volunteerTime;
       }
 
-      Task.findByIdAndUpdate(req.params.id, req.body.task, (err, task) => {
+      Task.findByIdAndUpdate(req.params.task_id, req.body.task, (err, task) => {
         if (err) {
           return callback(err);
         }
@@ -229,7 +228,7 @@ function signupTask (req, res) {
 
   async.waterfall([
     function getTaskInfo (callback){
-      Task.findById(req.params.id, (err, task) => {
+      Task.findById(req.params.task_id, (err, task) => {
         if (err) {
           return callback(err);
         }
@@ -274,7 +273,7 @@ function cancelTask (req, res) {
 
   async.waterfall ([
     function removeTaskFromUser (callback) {
-      helpers.removeTaskFromUser(req.user._id, req.params.id, (err) => {
+      helpers.removeTaskFromUser(req.user._id, req.params.task_id, (err) => {
         if (err) {
             return callback(err);
         }
@@ -282,7 +281,7 @@ function cancelTask (req, res) {
       });
     },
     function cancelTask (callback) {
-      Task.findById(req.params.id, (err, task) => {
+      Task.findById(req.params.task_id, (err, task) => {
         if(err) {
           return callback(err);
         }
@@ -306,7 +305,7 @@ function cancelTask (req, res) {
 
 function completeTask (req, res) {
 
-  Task.findById(req.params.id, (err, task) => {
+  Task.findById(req.params.task_id, (err, task) => {
     if(err){
       req.flash("error", err.message);
       return res.redirect("back");
@@ -324,7 +323,7 @@ function completeTask (req, res) {
 
 function approveTask (req, res) {
 
-  Task.findById(req.params.id, (err, task) => {
+  Task.findById(req.params.task_id, (err, task) => {
       if (err){
         req.flash("error", err.message)	;
         return res.redirect(`back`);
@@ -345,7 +344,7 @@ function postApproveTask (req, res) {
 }
 function unapproveTask (req, res) {
 
-    Task.findById(req.params.id, (err, task) => {
+    Task.findById(req.params.task_id, (err, task) => {
         if (err){
           req.flash("error", err.message)	;
           return res.redirect(`back`);
@@ -367,8 +366,8 @@ function deleteTask (req, res) {
   async.waterfall([
     // Get Task info
     function getTaskinfo (callback) {
-      console.log('Get task info');
-      Task.findById (req.params.id, (err, task) => {
+
+      Task.findById (req.params.task_id, (err, task) => {
         if (err) {
           return callback(err);
         }
@@ -378,7 +377,7 @@ function deleteTask (req, res) {
     },
     // remove Task from Author user
     function removeTaskFromUser(task, callback) {
-      console.log('removeTaskFromUser');
+
       if (task.author) {
         helpers.removeTaskFromUser (task.author.id, task._id, function (err) {
           if (err) {
@@ -390,7 +389,7 @@ function deleteTask (req, res) {
     },
     // remove Task from Assigned user
     function removeTaskFromAssigneeUser(task, callback) {
-      console.log(removeTaskFromAssigneeUser);
+
       if (task.assignedTo) {
         helpers.removeTaskFromUser (task.assignedTo.id, task._id, function (err) {
           if (err) {
@@ -402,7 +401,7 @@ function deleteTask (req, res) {
     },
     // remove task from project
     function removeTaskFromProject (task, callback) {
-      console.log('remove task from project');
+
       if (task.project) {
         helpers.removeTaskFromProject(req.user._id, task.project.id, task._id, function (err) {
           if (err) {
@@ -414,7 +413,7 @@ function deleteTask (req, res) {
       }
     },
     function removeTask (task, callback) {
-      console.log('remove Task');
+    
       // Delete task
       task.remove(task._id, function (err) {
         if (err) {

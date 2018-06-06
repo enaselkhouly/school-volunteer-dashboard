@@ -102,7 +102,7 @@
             </div>
             <div class="card-body">
               <% if (user.userType != 'Family') {%>
-              <a class="btn btn-outline-success" href="/tasks/new?project=<%=project._id%>">New Task</a>
+              <a class="btn btn-outline-success" href="/projects/<%=project._id%>/tasks/new">New Task</a>
               <%}%>
               <% tasks = project.tasks%>
               <%- include ../partials/tasks_table%>

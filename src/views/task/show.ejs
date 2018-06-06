@@ -120,23 +120,23 @@
           <div class="col-12">
           <% if(user.userType == 'Family') {%>
             <% if(task.status == 'Open') {%>
-              <button class="btn btn-outline-success"><a href="/tasks/<%=task._id%>/signup">Signup</a></button>
+              <button class="btn btn-outline-success"><a href="/projects/<%=task.project.id%>/projects/<%=task.project.id%>/tasks/<%=task._id%>/signup">Signup</a></button>
 
             <% } else if(task.status == 'In-progress') {%>
-              <button class="btn btn-outline-danger"><a href="/tasks/<%=task._id%>/cancel">Cancel</a></button>
-              <button class="btn btn-outline-info"><a href="/tasks/<%=task._id%>/complete">Complete</a></button>
+              <button class="btn btn-outline-danger"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/cancel">Cancel</a></button>
+              <button class="btn btn-outline-info"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/complete">Complete</a></button>
             <% } %>
           <%} else {%>
             <% if(task.status == 'Open') {%>
-              <button class="btn btn-outline-warning"><a href="/tasks/<%=task._id%>/edit">Edit</a></button>
+              <button class="btn btn-outline-warning"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit">Edit</a></button>
             <% } %>
             <% if(task.status == 'Pending Review') {%>
-              <button class="btn btn-outline-success"><a href="/tasks/<%= task._id%>/approve">Approve</a></button>
-              <button class="btn btn-outline-secondary"><a href="/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
+              <button class="btn btn-outline-success"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/approve">Approve</a></button>
+              <button class="btn btn-outline-secondary"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
             <% } %>
           <% } %>
           <% if(user.userType == 'Admin') {%>
-            <form id="delete-form" action="/tasks/<%= task._id%>?_method=DELETE" method="POST">
+            <form id="delete-form" action="/projects/<%=task.project.id%>/tasks/<%= task._id%>?_method=DELETE" method="POST">
             <button class="btn btn-outline-danger">Delete</button>
             </form>
           <%}%>

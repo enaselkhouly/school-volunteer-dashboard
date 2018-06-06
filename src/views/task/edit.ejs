@@ -11,7 +11,7 @@
 				<div class="col-12 col-lg-10 col-xl-8">
 					<div class="innerpage-container">
             <div class="form">
-              <form action="/tasks/<%=task._id%>?_method=PUT" method="POST">
+              <form action="/projects/<%=task.project.id%>/tasks/<%=task._id%>?_method=PUT" method="POST">
                 <div class="form-group">
                 	<label for="task-name">Task Summary</label>
                 	<input id="task-name"class="form-control" type="text" value="<%=task.name%>" name="task[name]"

@@ -14,11 +14,21 @@ function init(server) {
 
       // link the server with the route
       let route = require(routePath);
+
+      // Special case for child routes
       server.use('', route);
     }
   }); // for each
-// const route = require('./user');
-// server.use('/user', route);
+
+// // link the server with the routes
+// const taskRoutes = require('./task');
+// const projectRoutes = require('./project');
+// const userRoutes = require('./user');
+//
+// server.use("/users", userRoutes);
+// server.use("/projects", projectRoutes);
+// server.use("/projects/:id/tasks", taskRoutes);
+
 
   /**
    * GET *
