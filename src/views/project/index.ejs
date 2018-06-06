@@ -37,7 +37,7 @@
                             </label>
                           </div>
                       <%}%>
-                    <% if (myView) {%>
+                    <% if (user.userType !== 'Family' || myView) {%>
                     <hr>
                     <h6>Filter by status:</h6>
                       <%

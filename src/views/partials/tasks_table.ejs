@@ -73,7 +73,7 @@
                         <%}%>
                         <button type="button" class="btn btn-outline-danger" type="button"><a href="/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
                     <%} else if((user.userType == 'Admin') || (task.author.id.equals(user._id))) {%>
-                      <% if(task.status == 'Pending Review') {%>
+                      <% if(task.status == 'Pending Approval') {%>
                         <button class="btn btn-outline-success form-btn" type="button">Approve</button>
                         <input class="btn btn-outline-success submit-action hide" type="submit" name="submit" value="Approve"/>
                         <button type="button" class="btn btn-outline-secondary" type="button"><a href="/tasks/<%= task._id%>/unapprove">Unapprove</a></button>

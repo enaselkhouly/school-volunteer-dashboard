@@ -288,7 +288,7 @@ function getVolunteerTime (user, callback) {
 
 function statusQuery (statusQuery) {
 
-  let options = ['Open', 'In-progress', 'Pending Review', 'Closed'];
+  let options = ['Open', 'In-progress', 'Pending Approval', 'Closed'];
 
   let status = [];
 

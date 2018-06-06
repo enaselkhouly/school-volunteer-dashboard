@@ -7,7 +7,7 @@ var mongoose          = require("mongoose");
 const Status = {
 		OPEN: "Open",
 		INPROGRESS: "In-progress",
-		PENDING: "Pending Review",
+		PENDING: "Pending Approval",
 		CLOSED: "Closed"
 };
 
