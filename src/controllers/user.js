@@ -11,7 +11,7 @@ function getRegister ( req, res) {
 
   let userDir = req.user.userType.toLowerCase();
 
-  res.render(`user/${userDir}`, {
+  res.render(`user/admin`, {
             title: 'Register',
             currentUser: req.user,
             page: "register"
