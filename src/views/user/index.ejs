@@ -2,54 +2,52 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h1 class="main-page-title">Users</h1>
+        <h1 class="main-page-title">All Users</h1>
       </div>
     </div>
     <div class="row">
-    <div class="col-12">
-      <div class="innerpage-container" id="tabs">
-        	<div class="container">
-        		<div class="row">
-        			<div class="col-12">
-                <div class="table-responsive table-wrapper">
-                     <table class="table" id="table-data">
-                      <thead>
-                        <tr>
-                          <th scope="col"><h5>Name</h5></th>
-                          <th scope="col"><h5>Type</h5></th>
-                          <th scope="col"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% if(users){ %>
-                        <% users.forEach( (foundUser) => {%>
-                          <div class="row">
-                            <tr>
-                              <td class="row-head truncate-container">
-                                <h6 class="truncate-text"><a href="/users/<%=foundUser._id%>/profile"><%= foundUser.displayName %></a></h6>
-                              </td>
-                              <td>
-                                <h7 class="table-head-view">Type</h7>
-                                <%= foundUser.userType %>
-                              </td>
-                              <td>
-                                <button class="btn btn-outline-warning"><a href="/users/<%=foundUser._id%>/edit">Edit</a></button>
-                                <form id="delete-form" action="/users/<%=foundUser._id%>?_method=DELETE" method="POST">
-                                  <button class="btn btn-outline-danger">Delete</button>
-                                </form>
-                              </td>
-                            </tr>
-                          </div>
-                        <%}); %>
-                        <%}%>
-                      </tbody>
-                    </table>
+      <div class="col-12">
+        <% var i = 0;
+          color = ['blue', 'purple', 'brown', 'green' , 'red'];
+          if(users){
+           users.forEach( (foundUser) => {%>
+          <div class="card  border-<%=color[i]%> mb-3">
+            <div class="card-body">
+              <h4 class="card-title truncate-text"><a href="/users/<%=foundUser._id%>/profile"><%= foundUser.displayName %></a></h4>
+              <div class='card-text'>
+                <div class="containe-fluid">
+                  <div class="row">
+                    <div class="col-6 col-sm-3 col-lg-2">
+                      <h5>User Name</h5>
+                    </div>
+                    <div class="col-6 col-sm-9 col-lg-10">
+                      <h6><%= foundUser.username %></h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4 col-sm-3 col-lg-2">
+                      <h5>User Type</h5>
+                    </div>
+                    <div class="col-8 col-sm-9 col-lg-10">
+                      <h6><%= foundUser.userType %></h6>
+                    </div>
+                  </div>
                 </div>
-        			</div>
-        		</div>
-        	</div>
-        </div>
+              </div>
+              <div class="row">
+                <div class="col-12 mt-4">
+                  <button class="btn btn-outline-warning"><a href="/users/<%=foundUser._id%>/edit">Edit</a></button>
+                  <form id="delete-form" action="/users/<%=foundUser._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-outline-danger">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <%
+        (i == (color.length -1)) ? (i = 0) : i++;
+        });
+        }%>
       </div>
     </div>
   </div>
-</div>

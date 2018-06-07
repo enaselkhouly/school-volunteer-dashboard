@@ -111,6 +111,27 @@ ul {
 .border-red {
   border-color: #e91e63;
 }
+
+
+.text-green {
+  color: #009688;
+}
+
+.text-blue {
+  color: #17a2b8 /*#2196f3*/;
+}
+
+.text-brown {
+  color: #795548;
+}
+
+.text-purple {
+  color: #8262BB;
+}
+
+.text-red {
+  color: #e91e63;
+}
 /*
 * ************ Sidebar
 */
