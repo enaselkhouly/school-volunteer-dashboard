@@ -70,6 +70,8 @@ $(".form-actions").submit(function (e) {
 /* Date and time picker*/
 // Datepicker Popups calender to Choose date.
 flatpickr('#date-picker', {
+                            altInput: true,
+                            altFormat: "F j, Y",
                             dateFormat: 'm/d/Y',
                             // today
                             minDate: new Date()
@@ -81,6 +83,14 @@ flatpickr('#to-date-picker', {
                           });
 flatpickr('#from-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
 flatpickr('#to-time', { enableTime: true, noCalendar: true, dateFormat: "H:i",});
+
+
+function isDateEmpty(){
+  let val = $("#date-picker").val();
+  if (!val) {
+    alert("Date could not be empty");
+  }
+}
 
 $("#filter-submit").click(function (e) {
 
@@ -239,30 +249,3 @@ $("#status-filter").click(function (e) {
   });
  window.location.href = url;
 });
-
-
-// /* Add event listener to set the URL query for statusFilter*/
-// var statusElement = document.getElementById("statusFilter");
-//
-// if (statusElement) {
-//   statusElement.addEventListener('change', function() {
-//     let filter = this.value.toLowerCase();
-//     filter = filter.replace(/ /g,'');
-//
-//     let url = window.location.href;
-//     if(url.indexOf(filter) > -1) {
-//       // Filter is not changed
-//       return;
-//     }
-//
-//     if(url.indexOf('status') > -1) {
-//       url = url.replace(/status=[^&]+&*/,`status=${filter}`);
-//       // \A?var1=[^&]+&*
-//     } else {
-//         url = `${url}?status=${filter}`;
-//     }
-//
-//     window.location.href = url;
-//   }, false);
-//
-// }

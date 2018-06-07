@@ -1,5 +1,6 @@
 <div class="table-responsive table-wrapper" id='table-wrapper'>
      <table class="table" id="table-data">
+      <% if(tasks && tasks.length > 0){ %>
       <thead>
         <tr>
           <th scope="col"><h5>Task</h5></th>
@@ -10,7 +11,7 @@
           <th scope="col"></th>
         </tr>
       </thead>
-        <% if(tasks){ %>
+    <tbody>
         <% tasks.forEach ( (task) => {%>
           <div class="row">
             <tr>
@@ -91,7 +92,7 @@
             </tr>
           </div>
         <%}); %>
-        <%}%>
       </tbody>
+    <%}%>
     </table>
 </div>
