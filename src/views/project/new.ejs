@@ -11,14 +11,14 @@
 				<div class="col-12 col-lg-10 col-xl-8">
 					<div class="innerpage-container">
 						<div class="form">
-						<form action="/projects" method="POST">
+						<form class="validate" action="/projects" method="POST">
 							<div class="form-group">
-								<label for="project-name">Project Summary:</label>
-								<input id="project-name"class="form-control" type="text" placeholder="Enter project summary ..." name="project[name]"
+								<label for="project-name"><strong>Project Summary</strong></label>
+								<input id="project-name"class="form-control" type="text" placeholder="Enter project summary ..." maxlength="80" name="project[name]"
 								required/>
 							</div>
 							<div class="form-group">
-								<label for="description">Description:</label>
+								<label for="description"><strong>Description</strong></label>
 								<textarea id="description" class="form-control" type="text" placeholder="Enter project description ..." rows="10"
 								name="project[description]"></textarea>
 							</div>

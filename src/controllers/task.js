@@ -85,12 +85,20 @@ function postNewTask (req, res) {
       // Update the estimated time
       req.body.task.estimatedTime = req.body.task.volunteerTime;
 
+      if (!newTask.deadline || !req.body.task.endTime) {
+        return callback(new Error('Task date, start and end time could not be left empty.'));
+      }
+      
       // Initialize and update the end time if exists
       let endTime = req.body.task.endTime;
       newTask.endTime = new Date(newTask.deadline.getTime());
       let time = endTime.split ( ":" );
-      newTask.endTime.setHours(time[0].trim());
-      newTask.endTime.setMinutes(time[1].trim());
+      if (time[0]) {
+        newTask.endTime.setHours(time[0].trim());
+      }
+      if (time[1]) {
+        newTask.endTime.setMinutes(time[1].trim());
+      }
 
       // Get project name
       helpers.getProject(req.params.id, (err, project) => {

@@ -32,6 +32,23 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
+
+/**
+ * Errors
+ */
+.error {
+	border-color: red;
+}
+
+.error-message {
+	color: red;
+	font-style: italic;
+	margin-bottom: 1em;
+}
+
+/**
+* Cards
+*/
 .card-header a:link {
   color: inherit;
   text-decoration: none;
