@@ -190,16 +190,23 @@ function putUser (req, res){
 /* Delete user */
 function deleteUser (req, res) {
 
-  User.findByIdAndRemove(req.params.id, function(err){
+  if (req.user._id.equals(req.params.id)){
+      let error = new Error("You can not delete your own account!")
+      req.flash("error", error.message);
+      res.redirect("/users");
+   } else {
 
-    if(err){
-       req.flash("error", err.message);
-       res.redirect("/users");
-    } else {
-        req.flash("success", "Successfully deleted the User!");
-        res.redirect("/users");
-    }
-  });
+     User.findByIdAndRemove(req.params.id, function(err){
+
+       if(err){
+          req.flash("error", err.message);
+          res.redirect("/users");
+       } else {
+           req.flash("success", "Successfully deleted the User!");
+           res.redirect("/users");
+       }
+     });
+   }
 } // deleteUser
 
 module.exports = {
