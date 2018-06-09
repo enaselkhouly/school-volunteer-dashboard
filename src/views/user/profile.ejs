@@ -35,7 +35,11 @@
             <div class="col-12">
               <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
               <form id="delete-form" action="/users/<%= user._id%>?_method=DELETE" method="POST">
-              <button class="btn btn-outline-danger">Delete</button>
+                <% if (user._id.equals(currentUser._id)){%>
+                  <button class="btn btn-outline-secondary" disabled>Delete</button>
+                <%} else {%>
+                <button class="btn btn-outline-danger">Delete</button>
+                <%}%>
             </div>
           </div>
           <%}%>
