@@ -20,8 +20,8 @@
                 <p class="secondary-data">
                   <%= task.deadline.toDateString()%><br>
                   <%
-                   hrs = task.endTime.getHours();
-                   mins = task.endTime.getMinutes();
+                   hrs = task.deadline.getHours();
+                   mins = task.deadline.getMinutes();
                    toHrs = task.endTime.getHours();
                    toMins = task.endTime.getMinutes();
                   %>
@@ -73,7 +73,7 @@
                         <input class="btn btn-outline-warning submit-action" type="submit" name="submit" value="Complete">
                         <%}%>
                         <button type="button" class="btn btn-outline-danger" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
-                    <%} else if((user.userType == 'Admin') || (task.author.id.equals(user._id))) {%>
+                    <%} else if(task.author.id.equals(user._id)) {%>
                       <% if(task.status == 'Pending Approval') {%>
                         <button class="btn btn-outline-success form-btn" type="button">Approve</button>
                         <input class="btn btn-outline-success submit-action hide" type="submit" name="submit" value="Approve"/>
@@ -81,10 +81,11 @@
                       <% } %>
                       <% if(task.status == 'Open') {%>
                         <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
+                        <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                       <% } else { %>
                         <button class="btn btn-outline-secondary" type="button" disabled><i data-feather="edit" class="edit"></i></button>
+                        <button class="btn btn-outline-secondary" type="buttom" value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                       <%}%>
-                        <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                     <% } %>
                   </div>
                 </form>

@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="card-body">
-              <% if (user.userType != 'Family') {%>
+              <% if(project.author.id.equals(user._id)) {%>
               <a class="btn btn-outline-success" href="/projects/<%=project._id%>/tasks/new">New Task</a>
               <%}%>
               <% tasks = project.tasks%>

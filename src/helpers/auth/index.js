@@ -104,33 +104,6 @@ function isAdminOrProjectOwner (req, res, next) {
   } // if: isLoggedIn
 } // isAdminOrProjectOwner
 
-
-/* Check if User type is admin, or owner (author) of the
-   project of this task.
-
-   In case of add new task (get/post), the project is provided as query.
-   */
-// function isAdminOrTaskProjectOwner (req, res, next) {
-//
-//   if (isLoggedInLocal(req, res)) {
-//
-//     Project.findById(req.params.id, (err, project) => {
-//       if (err) {
-//         req.flash("error", err.msg);
-//         res.redirect("/projects");
-//         return;
-//       }
-//
-//       if ( req.user && (req.user.isAdmin() || project.author.id.equals(req.user._id)) ){
-//         next();
-//       } else {
-//         req.flash("error", "You don't have permission!");
-//         res.redirect("/projects");
-//       }
-//     });
-//   } // if: isLoggedIn
-// } // isAdminOrProjectOwner
-
 function isAdminOrTaskOwner (req, res, next) {
   if (isLoggedInLocal(req, res)) {
 
@@ -151,6 +124,46 @@ function isAdminOrTaskOwner (req, res, next) {
   } // if: isLoggedIn
 } // isAdminOrTaskOwner
 
+function isProjectOwner (req, res, next) {
+  if (isLoggedInLocal(req, res)) {
+
+    Project.findById(req.params.id, (err, project) => {
+      if (err) {
+        req.flash("error", err.msg);
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( project.author.id.equals(req.user._id)){
+        next();
+      } else {
+        req.flash("error", "You don't have permission!");
+        res.redirect("/projects");
+      }
+    });
+  } // if: isLoggedIn
+} // isProjectOwner
+
+function isTaskOwner (req, res, next) {
+  if (isLoggedInLocal(req, res)) {
+
+    Task.findById(req.params.task_id, (err, task) => {
+      if (err) {
+        req.flash("error", err.msg);
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( task.author.id.equals(req.user._id)){
+        next();
+      } else {
+        req.flash("error", "You don't have permission!");
+        res.redirect("/projects");
+      }
+    });
+  } // if: isLoggedIn
+} // isTaskOwner
+
 module.exports = {
   isLoggedIn                : isLoggedIn,
   isAdmin                   : isAdmin,
@@ -158,5 +171,8 @@ module.exports = {
   isFamily                  : isFamily,
   isAdminOrTeacher          : isAdminOrTeacher,
   isAdminOrTaskOwner        : isAdminOrTaskOwner,
-  isAdminOrProjectOwner     : isAdminOrProjectOwner
+  isAdminOrProjectOwner     : isAdminOrProjectOwner,
+  isTaskOwner               : isTaskOwner,
+  isProjectOwner            : isProjectOwner
+
 }

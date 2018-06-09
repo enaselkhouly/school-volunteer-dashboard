@@ -127,6 +127,7 @@
               <button class="btn btn-outline-info"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/complete">Complete</a></button>
             <% } %>
           <%} else {%>
+            <% if(task.author.id.equals(user._id)) {%>
             <% if(task.status == 'Open') {%>
               <button class="btn btn-outline-warning"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit">Edit</a></button>
             <% } %>
@@ -135,7 +136,6 @@
               <button class="btn btn-outline-secondary"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
             <% } %>
           <% } %>
-          <% if(user.userType == 'Admin') {%>
             <form id="delete-form" action="/projects/<%=task.project.id%>/tasks/<%= task._id%>?_method=DELETE" method="POST">
             <button class="btn btn-outline-danger">Delete</button>
             </form>
