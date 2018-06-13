@@ -9,7 +9,11 @@
   },
   "author": "enas.a.elkhouly@gmail.com",
   "license": "ISC",
+  "config": {
+    "dbName": "men-dashboard"
+  },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "connect-flash": "^0.1.1",
     "ejs": "^2.5.9",
     "express": "^4.16.3",
@@ -17,9 +21,12 @@
     "git-init": "^1.0.0",
     "method-override": "^2.3.10",
     "mongoose": "^5.0.16",
+    "nodemailer": "^4.6.6",
+    "nodemailer-html-to-text": "^2.1.0",
     "nodemon": "^1.17.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^5.0.0"
+    "passport-local-mongoose": "^5.0.0",
+    "uuid-token-generator": "^1.0.0"
   }
 }
