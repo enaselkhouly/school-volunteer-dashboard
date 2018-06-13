@@ -27,6 +27,10 @@
                 pattern="^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$" maxlength='30' required></input>
               </div>
               <div class="form-group">
+                <label for="email"><strong>Email</strong></label>
+                <input id="email" class="form-control" type="email" name="user[email]" placeholder="email" required></input>
+              </div>
+              <div class="form-group">
                 <label for="userType"><strong>User Type</strong></label>
                 <select id="userType" class="form-control" name="user[userType]" required>
                   <option>Family</option>
@@ -41,7 +45,7 @@
                 pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$" required></input>
               </div>
               <div class="form-group">
-                  <input type="submit" class="button btn btn-primary btn-block" value="Submit">
+                  <input type="submit" class="button btn btn-primary btn-block" value="Register">
               </div>
               </form>
             </div>

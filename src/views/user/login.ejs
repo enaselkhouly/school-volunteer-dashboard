@@ -1,25 +1,26 @@
 <%- include ../partials/common/header%>
-<%- include ../partials/common/flash%>
 
 <div class="home-page">
   <div class="row h-100">
     <div class="col-12 col-lg-6 mx-auto my-auto">
       <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
         <main role="main" class="inner cover my-auto">
+          <%- include ../partials/common/flash%>
           <h1 class="cover-heading">Welcome to the school volunteer dashboard</h1>
           <div class="container innerpage-container">
             <h2 class="form-header">Login!</h2>
 
-            <div class="form">
+            <div class="form" class="validate">
               <form action="/login" method="POST">
                 <div class="form-group">
-                    <input class="form-control" type="text" name="username" placeholder="usename"></input>
+                    <input class="form-control" type="text" name="username" placeholder="Enter your usename or email" required></input>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="password" name="password" placeholder="password"></input>
+                    <input class="form-control" type="password" name="password" placeholder="Enter your password" required></input>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary btn-block">Login</button>
+                    
                 </div>
               </form>
             </div>

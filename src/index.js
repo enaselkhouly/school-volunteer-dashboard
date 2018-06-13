@@ -2,7 +2,7 @@
 
 const server    = require('../configs/initializers/server')(),
       database  = require('../configs/initializers/database'),
-      config    = require('../configs/enviroments');
+      config    = require('../configs');
 
 
 database.connect(config);

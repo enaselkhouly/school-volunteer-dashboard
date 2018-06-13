@@ -5,9 +5,10 @@ const mongoose = require('mongoose');
 function connect (config) {
 
 		mongoose.Promise = require('bluebird');
-		var dbURL = process.env.DATABASEURL || config.dbURL;
+		var dbURL = process.env.DATABASEURL || config.db.url;
+		console.log(dbURL);
 		mongoose.connect(dbURL);
-		console.log('Database is connected');
+		console.log('Database is connected...');
 }
 
 

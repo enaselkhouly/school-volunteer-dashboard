@@ -20,6 +20,12 @@ var userSchema = new  mongoose.Schema({
                   },
     username    : {
                     type: String,
+                    unique: true,
+                    required: true
+                  },
+    email       : {
+                    type: String,
+                    unique: true,
                     required: true
                   },
     userType    : {
@@ -43,7 +49,9 @@ var userSchema = new  mongoose.Schema({
                 type: Date,
                 default: Date.now
             },
-    passport: String
+    password: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 userSchema.methods.isAdmin = function ( ) {

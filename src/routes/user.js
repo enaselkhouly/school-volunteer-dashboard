@@ -21,6 +21,12 @@ router.post("/login", userController.postLogin);
 /* User logout. */
 router.get("/logout", auth.isLoggedIn, userController.getLogout);
 
+/* Forgot password form.*/
+router.get('/forgot', userController.getForgot);
+
+/* Post forgot password form.*/
+router.post('/forgot', userController.postForgot);
+
 /* Get all users */
 router.get("/users", auth.isAdmin, userController.getUsers);
 

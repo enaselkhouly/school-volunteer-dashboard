@@ -1,10 +1,14 @@
 'use strict';
 
-const User = require('../models/User'),
-      Task = require('../models/Task'),
-      Project = require('../models/Project'),
-      passport = require('passport'),
-      helpers = require("../helpers");
+const User        = require('../models/User'),
+      Task        = require('../models/Task'),
+      Project     = require('../models/Project'),
+      passport    = require('passport'),
+      helpers     = require("../helpers"),
+      async       = require("async"),
+      crypto      = require("crypto"),
+      mailer      = require("../services/mailer"),
+      config      = require("../../configs");
 
 /* Show the registeration form for new User.*/
 function getRegister ( req, res) {
@@ -71,6 +75,82 @@ function getLogout (req, res){
   res.redirect("/");
 
 } // getLogout
+
+/* User forgot password form. */
+function getForgot (req, res, next){
+
+  res.render('user/forgot', {
+              title: 'forgot'
+            });
+} // getForgot
+
+/* User forgot password. */
+function postForgot (req, res, next){
+
+  async.waterfall([
+    function generateToken (callback) {
+      crypto.randomBytes(20, function(err, buf) {
+        if (err) {
+          return callback (err);
+        } else {
+          var token = buf.toString('hex');
+          callback(null, token);
+        }
+      });
+    },
+    function findUser (token, callback) {
+      User.findOne({ email: req.body.email }, function(err, user) {
+        if (!user) {
+          return callback(new Error('No account with that email address exists.'));
+        }
+
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+        user.save(function(err) {
+          callback(null, token, user);
+        });
+      });
+    },
+    function sendResetEmailToUser(token, user, callback) {
+
+        let subject = `✔ Reset your password on ${config.app.title}`;
+
+        res.render("mail/passwordReset", {
+					name: user.fullName,
+					resetLink: "http://" + req.headers.host + "/reset/" + token
+				}, function(err, html) {
+
+					if (err) {
+            return callback(err);
+          }
+
+					mailer.send(user.email, subject, html, function(err, info) {
+
+            if (err) {
+              callback(err);
+            } else {
+
+              console.log('Message sent: %s', info.messageId);
+              // Preview only available when sending through an Ethereal account
+              //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+              callback(null);
+            }
+					});
+				});
+			}
+  ], function(err) {
+    if (err) {
+      req.flash('error', err.message);
+      res.redirect('/forgot');
+    } else {
+      req.flash('success', "An email has been sent to you with further instructions.");
+      res.redirect('/login');
+    }
+
+  });
+} // getForgot
 
 /* Get all users */
 function getUsers (req, res){
@@ -215,6 +295,8 @@ module.exports = {
   getLogin        : getLogin,
   postLogin       : postLogin,
   getLogout       : getLogout,
+  getForgot       : getForgot,
+  postForgot      : postForgot,
   getUsers        : getUsers,
   getUser         : getUser,
   getUserProfile  : getUserProfile,

@@ -30,7 +30,6 @@ module.exports = function() {
         server.set("views", path.join(serverFolder, "views"));
         server.use(express.static(path.join(serverFolder, "public")));
 
-        // server.set('views', path.join(__dirname, '../../src/views'));
         server.set("view engine", config.viewEngine);
 
         server.use(flash());
@@ -55,7 +54,7 @@ module.exports = function() {
             port = process.env.PORT || server.get('port');
 
         server.listen(port, function () {
-            console.log('Express server listening on - http://' + hostname + ':' + port);
+            console.log('Express server listening on - http://'+ hostname);
         });
     };
 
