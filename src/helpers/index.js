@@ -4,6 +4,7 @@ const User    = require('../models/User');
 const Project = require('../models/Project');
 const Task    = require('../models/Task');
 const async   = require('async');
+const config = require('../../configs');
 /*
 * User helper functions.
 */
@@ -279,11 +280,13 @@ function getVolunteerTime (user, callback) {
     {
       $match: {
               'status': 'Closed',
-               "assignedTo.id": user._id
+               "assignedTo.id": user._id,
              }
     },
     {
-      $group: {_id: 0, total: {$sum: "$volunteerTime"}}
+      $group: {_id: 0,
+               total: {$sum: "$volunteerTime"}
+             }
     }], (err, results) => {
 
       let volunteerTime = 0;
@@ -345,7 +348,7 @@ module.exports = {
   getUserTasks          : getUserTasks,
   getUserProjects       : getUserProjects,
   addProjectToUser      : addProjectToUser,
-  removeProjectFromUser   : removeProjectFromUser,
+  removeProjectFromUser : removeProjectFromUser,
   allProjects           : allProjects,
   getProject            : getProject,
   createProject         : createProject,
@@ -354,7 +357,7 @@ module.exports = {
   removeAllProjectTasks : removeAllProjectTasks,
   deleteProject         : deleteProject,
   addTaskToUser         : addTaskToUser,
-  removeTaskFromUser      : removeTaskFromUser,
+  removeTaskFromUser    : removeTaskFromUser,
   allTasks              : allTasks,
   getTask               : getTask,
   createTask            : createTask,

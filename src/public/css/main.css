@@ -231,7 +231,6 @@ ul {
 
 .tools {
   margin-top: 2px;
-  float: right;
 }
 
 .tools .chevron-up, .chevron-down, .x {
@@ -320,6 +319,7 @@ ul {
     margin-bottom: 30px;
     text-transform: uppercase;
     color: #313435;
+    text-align: center;
 }
 
 .innerpage-container {
@@ -557,6 +557,11 @@ ul {
 }
 
 @media screen and (min-width: 1200px) {
+
+  .main-page-title {
+    text-align: left;
+  }
+
   #sidebar {
     width: 16.7%;
   }

@@ -206,29 +206,39 @@ function getUserProfile (req, res) {
 
   let userDir = req.user.userType.toLowerCase();
 
-  User.findById(req.params.id, (err, user) => {
-    if (err) {
-      req.flash("error", err.message);
-      res.redirect("/");
-    } else {
-
-      helpers.getVolunteerTime(user, (err, volunteerTime) => {
-
+  async.waterfall([
+    function getUser (callback) {
+      User.findById(req.params.id, (err, user) => {
         if (err) {
-          req.flash("error", err.message);
-          res.redirect("/");
-        } else {
-          console.log(volunteerTime);
-          res.render(`user/${userDir}`, {
-                      user: user,
-                      volunteerTime: volunteerTime,
-                      title: 'Profile',
-                      page: 'profile'
-                    });
+          return callback(err);
         }
+
+        callback(null, user);
+      });
+    },
+    function get1stSemesterVolunteerTime (user, callback) {
+      helpers.getVolunteerTime(user, (err, volunteerTime) => {
+        if (err) {
+          return callback(err);
+        }
+
+        callback(null, user, volunteerTime);
       });
     }
-  })
+  ], function (err, user, volunteerTime) {
+    if (err) {
+      req.flash("error", err.message);
+      res.redirect(`/users/${req.params.id}`);
+    } else {
+      res.render(`user/${userDir}`, {
+                  user: user,
+                  volunteerTime: volunteerTime,
+                  title: 'Profile',
+                  page: 'profile'
+                });
+    }
+  }
+  );
 }
 
 /* Show form to update user */

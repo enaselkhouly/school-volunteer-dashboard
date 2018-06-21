@@ -33,6 +33,10 @@ var userSchema = new  mongoose.Schema({
                     enum: [UserType.ADMIN, UserType.TEACHER, UserType.FAMILY],
                     required: true
                    },
+    requiredVolunteerTime: {
+      type: Number,
+      default: 900 //mins
+    },
     projects     : [
   		{
   		type: mongoose.Schema.Types.ObjectId,
@@ -77,7 +81,6 @@ userSchema.methods.isFamily = function ( ) {
   }
   return result;
 };
-
 
 userSchema.plugin(passportLocalMongoose);
 

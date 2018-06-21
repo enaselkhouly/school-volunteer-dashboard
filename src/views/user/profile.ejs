@@ -19,13 +19,13 @@
             </div>
           </div>
           <%if (user.userType === 'Family') {%>
-            <hr>
-            <div class="row justify-content-between">
+          <hr>
+          <div class="row justify-content-between">
             <div class="col-4">
-              <h5 class="font-weight-bold text-info">Total volunteer time</h5>
+              <h5 class="font-weight-bold text-info">Volunteer Time</h5>
             </div>
             <div class="col-8">
-              <h5><%= volunteerTime%> mins</h5>
+              <h5><%= volunteerTime%> mins (out of <%= user.requiredVolunteerTime%> mins)</h5>
             </div>
           </div>
           <hr>

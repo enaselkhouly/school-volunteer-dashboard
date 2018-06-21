@@ -24,7 +24,12 @@
                   title="Username can only be one or two parts of letters and/or numbers separated by '_', '-', or '.'"
                   pattern="^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$" maxlength='30' required></input>
                 </div>
-
+                <% if (user.userType === 'Family') {%>
+                <div class="form-group">
+                  <label for="vtime"><strong>Required Volunteer Time</strong></label>
+                  <input id="vtime" class="form-control" type="number" name="user[requiredVolunteerTime]" value="<%=user.requiredVolunteerTime%>" required></input>
+                </div>
+                <%}%>
                 <div class="form-group">
                   <button class="btn btn-lg btn-primary btn-block">Edit</button>
                 </div>
