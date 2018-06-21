@@ -5,11 +5,9 @@
       <div class="col-12 col-xl-8">
         <%
         if (user.userType === 'Family') {
-          text = (myView)? "you signed up for": ""
-          pgTitle = 'All tasks' + " " + text
+          pgTitle = (myView)? "Your Tasks": "All Tasks"
         } else {
-          text = (myView)? "created by you" : ""
-          pgTitle = 'All ptojects' + " " + text
+          pgTitle = (myView)? "Your Projects" : "All Projects"
         }
         %>
         <h1 class="main-page-title"><%= pgTitle%></h1>
@@ -64,8 +62,8 @@
       </div>
     </div>
     </div>
-    <div class="row">
-      <div class="col-12">
+    <div class="row justify-content-center">
+      <div class="col-12 pl-0 pr-0 pl-md-3 pr-md-3">
         <% var i = 0;
           color = ['blue', 'purple', 'brown', 'green' , 'red'];
           projects.forEach( (project) => {%>
