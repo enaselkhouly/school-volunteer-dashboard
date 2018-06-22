@@ -94,7 +94,7 @@ ul {
 }
 
 .bg-blue {
-  background: #17a2b8 /*#2196f3*/;
+  background: #17a2b8;
 }
 
 .bg-brown {
@@ -261,7 +261,7 @@ ul {
   color: #673ab7;
 }
 .check-circle{
-    color: #009688
+    color: #17a2b8
 }
 
 .topbar {
@@ -417,6 +417,10 @@ ul {
   display: none;
 }
 
+.cell-head-view {
+  display: inline-block;
+}
+
 .hide {
   display: none;
 }
@@ -516,10 +520,20 @@ ul {
     width: 100%;
     border-collapse: collapse;
   }
-  table, thead, tbody, th, td, tr {
-  		display: block!important;
-      width: 100%!important;
+  table, thead, tbody, th, tr {
+  		display: block;
+      width: 100%;
   	}
+
+  .cell-view {
+    display: inline-block;
+    width: 30%;
+  }
+
+  .cell-view-full {
+    display: block;
+    width: 100%;
+  }
 
   thead tr {
   		position: absolute;
@@ -532,7 +546,7 @@ ul {
   }
 
   .table td {
-    width: 100%;
+    padding: 0.25rem 0.75rem;
     border: none;
   }
 
