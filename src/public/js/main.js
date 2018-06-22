@@ -97,6 +97,11 @@ flatpickr('#to-time', { enableTime: true,
 /**
 * Filters
 */
+
+$("#filter").click( function (e) {
+  $(this).parent().find('.hide').toggle();
+});
+
 $("#filter-submit").click(function (e) {
 
   let url = window.location.href;
@@ -167,92 +172,6 @@ $("#filter-submit").click(function (e) {
     }
   });
   window.location.href = url;
-});
-/* Category filter*/
-$("#category-filter").click(function (e) {
-  e.stopPropagation();
-
-  var checkedBoxes = [];
-  let url = window.location.href;
-
-  $('.categoryCheckBox:checkbox').each( function () {
-    let filter = $(this).attr('name');
-
-    if ($(this).is(':checked')) {
-
-      // Add the filter if it was not added before
-      if (url.indexOf(`${filter}`) <= -1) {
-        if(url.indexOf('?') > -1) {
-            url = `${url}&category=${filter}`;
-          } else {
-            url = `${url}?category=${filter}`;
-          }
-      }
-    } else {
-      // Remove the filter if it became unchecked
-      if (url.indexOf(filter) > -1) {
-        url = url.replace(`category=${filter}`,"");
-        let parts;
-        if(url.indexOf('?') > -1) {
-          parts = url.split('?');
-          if (!parts[1]) {
-            url = url.replace("?", "");
-          }
-        }
-        if(url.indexOf('&') > -1) {
-          parts = url.split('&');
-          if (!parts[1]) {
-            url = url.replace("&", "");
-          }
-        }
-    }
-  }
-  });
-  // update the url with the status and category queries
- window.location.href = url;
-});
-
-/* Category filter*/
-$("#status-filter").click(function (e) {
-  e.stopPropagation();
-
-  var checkedBoxes = [];
-  let url = window.location.href;
-
-  $('.statusCheckBox:checkbox').each( function () {
-    let filter = $(this).attr('name');
-
-    if ($(this).is(':checked')) {
-
-      // Add the filter if it was not added before
-      if (url.indexOf(`${filter}`) <= -1) {
-        if(url.indexOf('?') > -1) {
-            url = `${url}&status=${filter}`;
-          } else {
-            url = `${url}?status=${filter}`;
-          }
-      }
-    } else {
-      // Remove the filter if it became unchecked
-      if (url.indexOf(filter) > -1) {
-        url = url.replace(`status=${filter}`,"");
-        let parts;
-        if(url.indexOf('?') > -1) {
-          parts = url.split('?');
-          if (!parts[1]) {
-            url = url.replace("?", "");
-          }
-        }
-        if(url.indexOf('&') > -1) {
-          parts = url.split('&');
-          if (!parts[1]) {
-            url = url.replace("&", "");
-          }
-        }
-    }
-  }
-  });
- window.location.href = url;
 });
 
 /*
@@ -430,7 +349,7 @@ var removeError = function (field) {
 document.addEventListener('blur', function (event) {
 
     // Only run if the field is in a form to be validated
-    if (!event.target.form.classList.contains('validate')) return;
+    if (!event.target.form || !event.target.form.classList || !event.target.form.classList.contains('validate')) return;
 
     // Validate the field
     var error = hasError(event.target);
