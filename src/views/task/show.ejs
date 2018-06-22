@@ -1,140 +1,108 @@
 <div class="row main-content">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <h5 class="main-page-title"><%= task.name %></h5>
-      </div>
-    </div>
-    <div class="row">
-    <div class="col-12">
-      <div class="innerpage-container">
-        <% if(task.author) {%>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Created by</h5>
-          </div>
-          <div class="col-8">
-            <h5><%= task.author.displayName %></h5>
-          </div>
+    <div class="card border-blue container-fluid">
+      <div class="card-body">
+        <div class="card-title">
+          <h3><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>"><%= task.name %></a></h3>
+          <p>Project | <%= task.project.name %></p>
+          <p>Created | <%= task.author.displayName%>, <%=task.created.toDateString()%></p>
         </div>
-        <%}%>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Date</h5>
-          </div>
-          <div class="col-8">
-            <h5>
-              <%= ("0" + (task.deadline.getMonth() + 1)).slice(-2)%>/<%= ("0" + task.deadline.getDate()).slice(-2)%>/<%= task.deadline.getFullYear()%>
-            </h5>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">From</h5>
-          </div>
-          <div class="col-8">
-            <h5>
-              <%
-               let hrs = task.deadline.getHours();
-               let mins = task.deadline.getMinutes();
-              %>
-              <%= ( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%> : <%= ("0" + mins).slice(-2)%> <%= hrs >= 12 ? "PM":"AM"%>
-            </h5>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">To</h5>
-          </div>
-          <div class="col-8">
-            <h5>
-              <%
-               hrs = task.endTime.getHours();
-               mins = task.endTime.getMinutes();
-              %>
-              <%= ( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%> : <%= ("0" + mins).slice(-2)%> <%= hrs >= 12 ? "PM":"AM"%>
-            </h5>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Project</h5>
-          </div>
-          <div class="col-8">
-            <h5><%= task.project.name %></h5>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Status</h5>
-          </div>
-          <div class="col-8">
-            <h5><%= task.status %></h5>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Assignee</h5>
-          </div>
-          <div class="col-8">
-            <% if(task.assignedTo) {%>
-            <h5><%= task.assignedTo.displayName %></h5>
+        <div class="card-text">
+          <div class="row">
+            <div class="col-12">
+              <p class="secondary-data">
+                Due: <%= task.deadline.toDateString()%><br>
+                <%
+                 hrs = task.deadline.getHours();
+                 mins = task.deadline.getMinutes();
+                 toHrs = task.endTime.getHours();
+                 toMins = task.endTime.getMinutes();
+                %>
+                (<%=( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%>  : <%=("0" + mins).slice(-2)%>  <%=hrs >= 12 ? "PM":"AM"%> -
+                <%=( "0" + ((toHrs + 11) % 12 + 1)).slice(-2)%> : <%=("0" + toMins).slice(-2)%> <%=toHrs >= 12 ? "PM":"AM"%>)
+              </p>
+            </div>
+            <div class="col-6">
+            <% if(task.assignedTo && task.assignedTo.displayName){ %>
+             <p><i data-feather="check-circle" class="icon-holder check-circle"></i><%= task.assignedTo.displayName%></p>
             <%} else {%>
-              <h5>No volunteer</h5>
+              <p><i data-feather="circle" class="icon-holder circle"></i>No Volunteer</p>
             <%}%>
+            </div>
+            <div class="col-6">
+            <%
+              colors = {
+                "Open"            : "primary",
+                "In-progress"     : "warning",
+                "Pending Approval": "info",
+                "Closed"          : "success"
+              }
+              color = (task.status == "Open" || task.status == "In-progress" || task.status == "Pending Approval" || task.status == "Closed")? colors[task.status] : 'secondary'
+            %>
+            <p class="text-<%=color%>"><%= task.status %></p>
           </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Volunteer time</h5>
+          <div class="col-6">
+            <p class="secondary-data" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= task.volunteerTime %> mins</p>
           </div>
-          <div class="col-8">
-            <h5><%= task.volunteerTime %></h5>
+          <div class="col-6">
+            <%
+            shapes = {
+              "Uncategorized": "code",
+              "At Home": "home",
+              "In-campus": "award",
+              "Outdoors": "sun"
+            }
+            shape = (task.category == 'Uncategorized' || task.category == "At Home" || task.category == "In-campus" || task.category == "Outdoors")? shapes[task.category] : "code"
+            %>
+              <p><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
           </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Category</h5>
-          </div>
-          <div class="col-8">
-            <h5><%= task.category %></h5>
-          </div>
-        </div>
-        <div class="row justify-content-between">
-          <div class="col-4">
-            <h5 class="font-weight-bold text-info">Description</h5>
-          </div>
-          <div class="col-8">
-            <h5><%= task.description %></h5>
-          </div>
-        </div>
-        <div class="row mt-5">
-          <div class="col-12">
-          <% if(user.userType == 'Family') {%>
-            <% if(task.status == 'Open') {%>
-              <button class="btn btn-outline-success"><a href="/projects/<%=task.project.id%>/projects/<%=task.project.id%>/tasks/<%=task._id%>/signup">Signup</a></button>
 
-            <% } else if(task.status == 'In-progress') {%>
-              <button class="btn btn-outline-danger"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/cancel">Cancel</a></button>
-              <button class="btn btn-outline-info"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/complete">Complete</a></button>
-            <% } %>
-          <%} else {%>
-            <% if(task.author.id.equals(user._id)) {%>
-            <% if(task.status == 'Open') {%>
-              <button class="btn btn-outline-warning"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit">Edit</a></button>
-            <% } %>
-            <% if(task.status == 'Pending Review') {%>
-              <button class="btn btn-outline-success"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/approve">Approve</a></button>
-              <button class="btn btn-outline-secondary"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
-            <% } %>
-          <% } %>
-            <form id="delete-form" action="/projects/<%=task.project.id%>/tasks/<%= task._id%>?_method=DELETE" method="POST">
-            <button class="btn btn-outline-danger">Delete</button>
-            </form>
+          <%if(task.description) {%>
+          <div class="col-12">
+            <h7>Description: </h7>
+            <p><%= task.description%></p>
+          </div>
           <%}%>
-        </div>
-        </div>
-      </div>
+          <div class="col-12 mt-3">
+            <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
+            </form>
+            <form id="form-actions" action="/projects/<%=task.project.id%>/tasks/<%=task._id%>" class="form-actions" name="form-actions" method="POST">
+              <div class="form-group form-input hide">
+                <label for="task-time">task time?</label>
+                <input id="task-time" class="form-control" type="text" value="<%=task.volunteerTime%>" name="task[volunteerTime]"
+                required/>
+              </div>
+              <div class="form-group">
+                <% if(user.userType == 'Family') {%>
+                  <% if(task.status == 'Open') {%>
+                    <button type="button" class="btn btn-outline-success" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/signup">Signup</a></button>
+                  <% } else if(task.status == 'In-progress') {%>
+                    <% if (task.isFixedTime == false) {%>
+                    <button type="button" class="btn btn-outline-warning form-btn" type="button">Complete</button>
+                    <input class="btn btn-outline-warning submit-action hide" type="submit" name="submit" value="Complete">
+                    <%} else {%>
+                    <input class="btn btn-outline-warning submit-action" type="submit" name="submit" value="Complete">
+                    <%}%>
+                    <button type="button" class="btn btn-outline-danger" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
+                <%} else if(task.author.id.equals(user._id)) {%>
+                  <% if(task.status == 'Pending Approval') {%>
+                    <button class="btn btn-outline-success form-btn" type="button">Approve</button>
+                    <input class="btn btn-outline-success submit-action hide" type="submit" name="submit" value="Approve"/>
+                    <button type="button" class="btn btn-outline-secondary" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
+                  <% } %>
+                  <% if(task.status == 'Open') {%>
+                    <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
+                    <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
+                  <% } else { %>
+                    <button class="btn btn-outline-secondary" type="button" disabled><i data-feather="edit" class="edit"></i></button>
+                    <button class="btn btn-outline-secondary" type="buttom" value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
+                  <%}%>
+                <% } %>
+                </div>
+              </form>
+            </div>
+          </div> <!-- row -->
+        </div> <!-- card text -->
       </div>
     </div>
   </div>

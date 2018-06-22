@@ -78,7 +78,7 @@ table .truncate-container .truncate-text {
   max-width: 200px;
 }
 
-table .secondary-data {
+.secondary-data {
   color: green;
   font-size: 95%;
 }

@@ -63,12 +63,12 @@
                 <p><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
               </td>
               <td class="truncate-container cell-view-full">
+                <p class="secondary-data cell-view" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= task.volunteerTime %> mins</p>
+                <p class="cell-view cell-view-only"><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
                 <%if(task.description) {%>
                 <h7 class="table-head-view">Description: </h7>
                 <p class="truncate-text"><%= task.description%></p>
                 <%}%>
-                <p class="secondary-data cell-view" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= task.volunteerTime %> mins</p>
-                <p class="cell-view cell-view-only"><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
               </td>
               <td>
                 <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
