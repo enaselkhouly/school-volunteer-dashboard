@@ -421,6 +421,10 @@ ul {
   display: inline-block;
 }
 
+.cell-view-only {
+  display: none;
+}
+
 .hide {
   display: none;
 }
@@ -527,7 +531,7 @@ ul {
 
   .cell-view {
     display: inline-block;
-    width: 30%;
+    width: 48%;
   }
 
   .cell-view-full {
@@ -546,12 +550,20 @@ ul {
   }
 
   .table td {
-    padding: 0.25rem 0.75rem;
+    padding: 0.25rem 0;
     border: none;
   }
 
   .table-head-view {
     display: inline-block;
+  }
+
+  .cell-view-only {
+    display: inline-block;
+  }
+
+  .cell-view-hide {
+    display: none;
   }
 
 
@@ -561,6 +573,15 @@ ul {
 
   table .truncate-container .truncate-text{
     max-width: 90%;
+  }
+
+  .card-body {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .icon-holder {
+    margin-right: 5px;
   }
 }
 

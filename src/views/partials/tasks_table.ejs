@@ -31,11 +31,11 @@
               </td>
               <% if(task.assignedTo && task.assignedTo.displayName){ %>
                 <td class="cell-view">
-                 <p><i data-feather="check-circle" class="icon-holder check-circle"></i> <%= task.assignedTo.displayName%></p>
+                 <p><i data-feather="check-circle" class="icon-holder check-circle"></i><%= task.assignedTo.displayName%></p>
                 </td>
               <%} else {%>
                 <td class="cell-view">
-                  <p><i data-feather="x-circle" class="icon-holder x-circle"></i> No Volunteer</p>
+                  <p><i data-feather="x-circle" class="icon-holder x-circle"></i>No Volunteer</p>
                 </td>
               <%}%>
               <td class="cell-view">
@@ -50,23 +50,25 @@
                 %>
                 <p class="text-<%=color%>"><%= task.status %></p>
               </td>
-              <td class="cell-view">
-                <%
-                  shapes = {
-                    "Uncategorized": "code",
-                    "At Home": "home",
-                    "In-campus": "award",
-                    "Outdoors": "sun"
-                  }
-                  shape = (task.category == 'Uncategorized' || task.category == "At Home" || task.category == "In-campus" || task.category == "Outdoors")? shapes[task.category] : "code"
-                %>
+              <%
+                shapes = {
+                  "Uncategorized": "code",
+                  "At Home": "home",
+                  "In-campus": "award",
+                  "Outdoors": "sun"
+                }
+                shape = (task.category == 'Uncategorized' || task.category == "At Home" || task.category == "In-campus" || task.category == "Outdoors")? shapes[task.category] : "code"
+              %>
+              <td class="cell-view-hide">
                 <p><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
               </td>
               <td class="truncate-container cell-view-full">
                 <%if(task.description) {%>
-                <p class="truncate-text">Description: <%= task.description%></p>
+                <h6 class="table-head-view">Description: </h6>
+                <p class="truncate-text"><%= task.description%></p>
                 <%}%>
-                <p class="secondary-data">Volunteer time: <%= task.volunteerTime %> mins</p>
+                <p class="secondary-data cell-view" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= task.volunteerTime %> mins</p>
+                <p class="cell-view cell-view-only"><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
               </td>
               <td>
                 <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
