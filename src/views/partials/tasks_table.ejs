@@ -18,7 +18,7 @@
               <td class="row-head truncate-container cell-view-full mt-3">
                 <h6 class="truncate-text"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>"><%= task.name %></a></h6>
                 <p class="secondary-data">
-                  <%= task.deadline.toDateString()%><br>
+                  Due: <%= task.deadline.toDateString()%><br>
                   <%
                    hrs = task.deadline.getHours();
                    mins = task.deadline.getMinutes();
@@ -35,7 +35,7 @@
                 </td>
               <%} else {%>
                 <td class="cell-view">
-                  <p><i data-feather="x-circle" class="icon-holder x-circle"></i>No Volunteer</p>
+                  <p><i data-feather="circle" class="icon-holder circle"></i>No Volunteer</p>
                 </td>
               <%}%>
               <td class="cell-view">
