@@ -27,6 +27,8 @@ function postRegister (req, res) {
 
   var newUser = new User(req.body.user);
 
+  newUser.requiredVolunteerTime *= 60; // Convert from hrs to mins
+
   User.register(newUser, req.body.password, (err, user) => {
       if(err){
         req.flash("error", err.message);
@@ -216,7 +218,7 @@ function getUserProfile (req, res) {
         callback(null, user);
       });
     },
-    function get1stSemesterVolunteerTime (user, callback) {
+    function getVolunteerTime (user, callback) {
       helpers.getVolunteerTime(user, (err, volunteerTime) => {
         if (err) {
           return callback(err);
@@ -264,6 +266,8 @@ function getEditUser (req, res) {
 /* Update user */
 function putUser (req, res){
   let user = req.body.user;
+
+  user.requiredVolunteerTime *= 60; // Convert from hrs to mins
 
   User.findByIdAndUpdate(req.params.id, user, (err, updatedUser) => {
 

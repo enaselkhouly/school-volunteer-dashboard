@@ -75,7 +75,8 @@ flatpickr('#date-picker', {
                             dateFormat: 'm/d/Y',
                             // today
                             minDate: "today",
-                            allowInput: true
+                            allowInput: true,
+                            disableMobile: true
                           });
 flatpickr('#to-date-picker', {
                             dateFormat: 'm/d/Y',
@@ -86,12 +87,14 @@ flatpickr('#from-time', {
                           enableTime: true,
                           noCalendar: true,
                           dateFormat: "H:i",
-                          allowInput: true
+                          allowInput: true,
+                          disableMobile: true
                         });
 flatpickr('#to-time', { enableTime: true,
                         noCalendar: true,
                         dateFormat: "H:i",
-                        allowInput: true
+                        allowInput: true,
+                        disableMobile: true
                       });
 
 /**
