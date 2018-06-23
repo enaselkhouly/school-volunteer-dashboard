@@ -69,7 +69,7 @@
                 vHr = (!vHr && !vMin)? "N/A" : vHr
                 %>
 
-                <p class="secondary-data cell-view-only" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= vHr %><%= vMin%></p>
+                <p class="secondary-data cell-view cell-view-only" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= vHr %><%= vMin%></p>
                 <p class="cell-view cell-view-only"><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
                 <%if(task.description) {%>
                 <h7 class="table-head-view">Description: </h7>
