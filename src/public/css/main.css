@@ -406,6 +406,11 @@ ul {
     display: inline;
 }
 
+.btn {
+  min-height: 44px;
+  margin-top: 5px;
+}
+
 .table-head-view {
   display: none;
 }

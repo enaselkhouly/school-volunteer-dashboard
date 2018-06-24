@@ -88,6 +88,8 @@ flatpickr('#from-time', {
                           noCalendar: true,
                           dateFormat: "H:i",
                           allowInput: true,
+                          defaultHour: 14,
+                          defaultMinute: 45,
                           disableMobile: true
                         });
 flatpickr('#to-time', { enableTime: true,

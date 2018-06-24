@@ -20,13 +20,21 @@
                 <p class="secondary-data">
                   Due: <%= task.deadline.toDateString()%><br>
                   <%
-                   hrs = task.deadline.getHours();
-                   mins = task.deadline.getMinutes();
-                   toHrs = task.endTime.getHours();
-                   toMins = task.endTime.getMinutes();
+                   hrs = ( "0" + ((task.deadline.getHours() + 11) % 12 + 1)).slice(-2);
+                   mins = ("0" + task.deadline.getMinutes()).slice(-2);
+                   zone = (hrs >= 12) ? "PM":"AM"
+                   fromTime =  hrs + ':' + mins + zone
+
+                   if (task.endTime) {
+                   toHrs = ( "0" + ((task.endTime.getHours() + 11) % 12 + 1)).slice(-2);
+                   toMins = ("0" + task.endTime.getMinutes()).slice(-2);
+                   zone = (toHrs >= 12) ? "PM":"AM"
+                   toTime = "- " + toHrs + ':' + toMins + zone
+                 } else {
+                   toTime = ""
+                 }
                   %>
-                  (<%=( "0" + ((hrs + 11) % 12 + 1)).slice(-2)%>  : <%=("0" + mins).slice(-2)%>  <%=hrs >= 12 ? "PM":"AM"%> -
-                  <%=( "0" + ((toHrs + 11) % 12 + 1)).slice(-2)%> : <%=("0" + toMins).slice(-2)%> <%=toHrs >= 12 ? "PM":"AM"%>)
+                  (<%=fromTime%> <%=toTime%>)
                 </p>
               </td>
               <% if(task.assignedTo && task.assignedTo.displayName){ %>

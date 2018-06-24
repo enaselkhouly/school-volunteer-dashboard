@@ -13,7 +13,7 @@
 						<div class="form" id="newTask">
 						<form class="validate" action="/projects/<%=projectId%>/tasks" method="POST">
 							<div class="form-group">
-								<label for="task-name"><strong>Task Summary</strong></label>
+								<label for="task-name"><strong>Task Summary <span class="text-danger">*</span></strong></label>
 								<input id="task-name"class="form-control" type="text" placeholder="Enter task summary ..." maxlength="80" name="task[name]"
 								required/>
 							</div>
@@ -46,16 +46,16 @@
 									<input id="estimated-time" class="form-control" type="number" value="30" name="task[volunteerTime]" required/>
 								</div>
                 <div class="form-group">
-                  <label for="date"><strong>Deadline/Date</strong></label>
+                  <label for="date"><strong>Date or Deadline<span class="text-danger"> *</span></strong></label>
                   <input type="text"  class="form-control" id="date-picker" name="task[deadline]" placeholder="select a date .." required>
                 </div>
                 <div class="form-group">
-                  <label for="from"><strong>From</strong></label>
-                  <input type="text"  class="form-control" id="from-time" name="task[deadline]" placeholder="select a start time" required>
+                  <label for="from"><strong>Time or From</strong></label>
+                  <input type="text"  class="form-control" id="from-time" name="startTime" placeholder="select a start time">
                 </div>
                 <div class="form-group">
                   <label for="to"><strong>To</strong></label>
-                  <input type="text"  class="form-control" id="to-time" name="task[endTime]" placeholder="select an end time" required>
+                  <input type="text"  class="form-control" id="to-time" name="endTime" placeholder="select an end time">
                 </div>
   							<div class="form-group">
   								<label for="description"><strong>Description</strong></label>

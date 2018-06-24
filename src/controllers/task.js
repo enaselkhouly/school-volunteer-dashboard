@@ -85,19 +85,33 @@ function postNewTask (req, res) {
       // Update the estimated time
       req.body.task.estimatedTime = req.body.task.volunteerTime;
 
-      if (!newTask.deadline || !req.body.task.endTime) {
-        return callback(new Error('Task date, start and end time could not be left empty.'));
+      if (!newTask.deadline) {
+        return callback(new Error('Task deadline/date could not be left empty.'));
+      }
+
+      let time ="";
+      if (req.body.startTime) {
+        let endTime = req.body.startTime;
+        time = endTime.split ( ":" );
+        if (time[0]) {
+          req.body.task.deadline.setHours(time[0].trim());
+        }
+        if (time[1]) {
+          req.body.task.deadline.setMinutes(time[1].trim());
+        }  
       }
 
       // Initialize and update the end time if exists
-      let endTime = req.body.task.endTime;
-      newTask.endTime = new Date(newTask.deadline.getTime());
-      let time = endTime.split ( ":" );
-      if (time[0]) {
-        newTask.endTime.setHours(time[0].trim());
-      }
-      if (time[1]) {
-        newTask.endTime.setMinutes(time[1].trim());
+      if (req.body.endTime) {
+        endTime = req.body.endTime;
+        newTask.endTime = new Date(newTask.deadline.getTime());
+        let time = endTime.split ( ":" );
+        if (time[0]) {
+          newTask.endTime.setHours(time[0].trim());
+        }
+        if (time[1]) {
+          newTask.endTime.setMinutes(time[1].trim());
+        }
       }
 
       // Get project name
@@ -186,6 +200,19 @@ function putTask (req, res) {
       // Update the estimated time
       if (!req.query.Approve && !req.query.Complete) {
         req.body.task.estimatedTime = req.body.task.volunteerTime;
+      }
+
+      // Initialize and update the end time if exists
+      if (req.body.endTime) {
+        req.body.task.endTime = new Date(req.body.task.deadline);
+        let endTime = req.body.endTime;
+        let time = endTime.split ( ":" );
+        if (time[0]) {
+          req.body.task.endTime.setHours(time[0].trim());
+        }
+        if (time[1]) {
+          req.body.task.endTime.setMinutes(time[1].trim());
+        }
       }
 
       Task.findByIdAndUpdate(req.params.task_id, req.body.task, (err, task) => {
