@@ -91,19 +91,19 @@ function postNewTask (req, res) {
 
       let time ="";
       if (req.body.startTime) {
-        let endTime = req.body.startTime;
-        time = endTime.split ( ":" );
+        let startTime = req.body.startTime;
+        time = startTime.split ( ":" );
         if (time[0]) {
-          req.body.task.deadline.setHours(time[0].trim());
+          newTask.deadline.setHours(time[0].trim());
         }
         if (time[1]) {
-          req.body.task.deadline.setMinutes(time[1].trim());
-        }  
+          newTask.deadline.setMinutes(time[1].trim());
+        }
       }
 
       // Initialize and update the end time if exists
       if (req.body.endTime) {
-        endTime = req.body.endTime;
+        let endTime = req.body.endTime;
         newTask.endTime = new Date(newTask.deadline.getTime());
         let time = endTime.split ( ":" );
         if (time[0]) {
