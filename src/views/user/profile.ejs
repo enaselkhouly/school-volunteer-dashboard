@@ -30,10 +30,10 @@
               vMin = (volunteerTime %60)? volunteerTime %60+"mins ": ""
               vHr = (!vHr && !vMin)? "0 " : vHr
               rHr = (Math.floor(user.requiredVolunteerTime/60))? Math.floor(user.requiredVolunteerTime/60)+ "hrs ": ""
-              rMin = (user.requiredVolunteerTime%60) ? (user.requiredVolunteerTime%60)+ " mins" : ""
+              rMin = (user.requiredVolunteerTime%60) ? (user.requiredVolunteerTime%60)+ "mins " : ""
               rHr = (!rHr && !rMin)? "0 " : rHr
               %>
-              <h5><%= vHr%> <%= vMin%> (out of <%= rHr%> <%= rMin%>)</h5>
+              <h5><%= vHr%> <%= vMin%> ( out of <%= rHr%> <%= rMin%> )</h5>
             </div>
           </div>
           <hr>
