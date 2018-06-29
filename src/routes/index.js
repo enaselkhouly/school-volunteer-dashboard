@@ -8,12 +8,10 @@ function init(server) {
   fs.readdirSync(__dirname).forEach(function (file) {
     // get file names with extension '.js' except 'index.js'
     if( (file.substr(-3) == '.js') && (file !== 'index.js') ) {
-      let routePath = './' + file;
-      // get the http path from the filename without the extension
-      let httpPath = '/' + file.slice(0,-3);
+      const routePath = './' + file;
 
       // link the server with the route
-      let route = require(routePath);
+      const route = require(routePath);
 
       // Special case for child routes
       server.use('', route);

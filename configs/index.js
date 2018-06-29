@@ -1,9 +1,8 @@
 "use strict";
 
 let path 	= require("path");
-let fs 		= require("fs");
 let _ 		= require("lodash");
-let chalk	= require("chalk");
+//let chalk	= require("chalk");
 let tokgen	= require("../libs/tokgen");
 
 global.rootPath = path.normalize(path.join(__dirname, ".."));

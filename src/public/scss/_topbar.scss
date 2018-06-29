@@ -1,0 +1,28 @@
+.topbar {
+    border-bottom: 1px solid rgba(0,0,0,.0625);
+    color: $dark-grey;
+    line-height: 65px;
+    font-size: $font-size-large2;
+    padding-bottom: $no-spacing;
+    background: $white;
+}
+
+.nav-left {
+  float: left;
+}
+.nav-right {
+  float: right;
+}
+
+.user-text {
+  color: $dark-grey;
+  margin-left: $spacing-10;
+}
+
+.user-logo {
+  vertical-align: middle;
+}
+
+#topbar-header {
+  padding: $no-spacing $spacing-15;
+}

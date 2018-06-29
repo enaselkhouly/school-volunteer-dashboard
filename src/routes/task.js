@@ -4,7 +4,7 @@ const taskController = require('../controllers/task'),
       auth           = require('../helpers/auth'),
       express        = require('express');
 
-let router = express.Router();
+const router = express.Router();
 
 /* GET: all Tasks*/
 // router.get("/tasks", auth.isLoggedIn, taskController.getTasks);

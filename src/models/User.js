@@ -13,7 +13,7 @@ const UserType = {
 }
 
 // User schema definition
-var userSchema = new  mongoose.Schema({
+let userSchema = new  mongoose.Schema({
     displayName : {
                     type: String,
                     required: true
@@ -38,17 +38,17 @@ var userSchema = new  mongoose.Schema({
       default: 900 //mins
     },
     projects     : [
-  		{
-  		type: mongoose.Schema.Types.ObjectId,
-  		ref: "Project"
-  		}
-  	],
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project"
+      }
+    ],
     tasks  : [
-  		{
-  		type: mongoose.Schema.Types.ObjectId,
-  		ref: "Task"
-  		}
-  	],
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Task"
+      }
+    ],
     created: {
                 type: Date,
                 default: Date.now
@@ -59,7 +59,7 @@ var userSchema = new  mongoose.Schema({
 });
 
 userSchema.methods.isAdmin = function ( ) {
-  var result = false;
+  let result = false;
   if (this.userType === UserType.ADMIN) {
     result = true;
   }
@@ -67,7 +67,7 @@ userSchema.methods.isAdmin = function ( ) {
 };
 
 userSchema.methods.isTeacher = function ( ) {
-  var result = false;
+  let result = false;
   if (this.userType === UserType.TEACHER) {
     result = true;
   }
@@ -75,7 +75,7 @@ userSchema.methods.isTeacher = function ( ) {
 };
 
 userSchema.methods.isFamily = function ( ) {
-  var result = false;
+  let result = false;
   if (this.userType === UserType.FAMILY) {
     result = true;
   }

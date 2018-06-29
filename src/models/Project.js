@@ -1,10 +1,10 @@
 'use-strict'
 
-var mongoose          = require("mongoose");
+const mongoose          = require("mongoose");
     mongoose.promise  = require('bluebird');
 
 // Task Schema definition
-var projectSchema = mongoose.Schema({
+let projectSchema = mongoose.Schema({
 	name: String,
   author: {
 		id: {
@@ -15,11 +15,11 @@ var projectSchema = mongoose.Schema({
 	},
 	description: String,
   tasks: [
-  		{
-  		type: mongoose.Schema.Types.ObjectId,
-  		ref: "Task"
-  		}
-  	],
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Task"
+    }
+  ],
   assignedTo: [
     {
     type: mongoose.Schema.Types.ObjectId,

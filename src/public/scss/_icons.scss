@@ -1,0 +1,50 @@
+.icon-holder {
+  margin-right: 12px;
+  line-height: 35px;
+  /*height: 35px;
+  width: 35px;*/
+  font-size: $font-size-large2;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+
+  @include media-breakpoint-down(md) {
+  margin-right: $spacing-5;
+  }
+}
+
+.tools {
+  margin-top: 2px;
+}
+
+.tools .chevron-up, .chevron-down, .x {
+  color: $white;
+}
+
+.bookmark {
+  color: $dark-blue;
+}
+
+.brand-logo {
+  fill: $light-green;
+  color: $green;
+}
+.user-logo {
+  fill: $blue;
+  color: $dark-blue;
+}
+
+.list, .users{
+  color: $brown;
+}
+.log-out {
+  color: #ff5722;
+}
+
+.plus-square, .user-plus {
+  color: #673ab7;
+}
+
+.check-circle{
+    color: $blue
+}

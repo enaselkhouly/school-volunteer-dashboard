@@ -1,0 +1,116 @@
+table .truncate-container {
+  max-width: 210px;
+}
+
+table .truncate-container .truncate-text:hover, table .truncate-container .truncate-text:active{
+  overflow: visible;
+  white-space: pre-wrap;
+}
+
+table .truncate-container .truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.secondary-data {
+  color: green;
+  font-size: 13px;
+}
+
+.table-header {
+  margin-top: $spacing-20;
+  margin-bottom: $spacing-20;
+  color: $dark-grey;
+}
+
+.table-wrapper {
+  /*width: 100%;*/
+  padding-top: $spacing-30;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table-borderless > tbody > tr > td,
+.table-borderless > thead > tr > td,
+.table-borderless {
+    border-bottom:0;
+    border-top: 0;
+}
+
+.table-head-view {
+  display: none;
+}
+
+.cell-head-view {
+  display: inline-block;
+}
+
+.cell-view-only {
+  display: none;
+}
+
+.hide {
+  display: none;
+}
+
+@include media-breakpoint-down(md) {
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table, thead, tbody, th, tr {
+  		display: block;
+      width: 100%;
+  	}
+
+  .cell-view {
+    display: inline-block;
+    width: 48%;
+  }
+
+  .cell-view-full {
+    display: block;
+    width: 100%;
+  }
+
+  thead tr {
+  		position: absolute;
+  		top: -9999px;
+  		left: -9999px;
+  	}
+
+  .table tr {
+    border-top: 1px solid grey;
+  }
+
+  .table td {
+    padding: 0.25rem 0;
+    border: none;
+  }
+
+  .table-head-view {
+    display: inline-block;
+  }
+
+  .cell-view-only {
+    display: inline-block;
+  }
+
+  .cell-view-hide {
+    display: none;
+  }
+
+
+  table .truncate-container {
+    max-width: 100%;
+  }
+
+  table .truncate-container .truncate-text{
+    max-width: 90%;
+  }
+}

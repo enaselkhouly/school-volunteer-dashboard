@@ -40,8 +40,8 @@ $(".hideProject").click(function (e){
 $(".form-btn").click(function (e) {
   e.stopPropagation();
 
-  let formText = $(this).parent().parent().find('.form-input');
-  let formAction = $(this).parent().parent().find('.submit-action');
+  var formText = $(this).parent().parent().find('.form-input');
+  var formAction = $(this).parent().parent().find('.submit-action');
 
   formText.removeClass('hide');
 
@@ -59,7 +59,7 @@ $("form input[type=submit]").click(function() {
 $(".form-actions").submit(function (e) {
 
   var val = $("input[type=submit][clicked=true]").val();
-  let formAction = $(this).attr('action');
+  var formAction = $(this).attr('action');
 
   $(this).attr('action', `${formAction}?_method=PUT&${val}=1`);
 
@@ -112,7 +112,7 @@ $("#filter-submit").click(function (e) {
   let url = window.location.href;
 
   $('.categoryCheckBox:checkbox').each( function () {
-    let filter = $(this).attr('name');
+    const filter = $(this).attr('name');
 
     if ($(this).is(':checked')) {
       // Add the filter if it was not added before
@@ -145,7 +145,7 @@ $("#filter-submit").click(function (e) {
 
   // Filter by status
   $('.statusCheckBox:checkbox').each( function () {
-    let filter = $(this).attr('name');
+    const filter = $(this).attr('name');
 
     if ($(this).is(':checked')) {
 
@@ -184,20 +184,20 @@ $("#filter-submit").click(function (e) {
 */
 
 // Add the novalidate attribute when the JS loads
-var forms = document.querySelectorAll('.validate');
-for (var i = 0; i < forms.length; i++) {
+const forms = document.querySelectorAll('.validate');
+for (let i = 0; i < forms.length; i++) {
     forms[i].setAttribute('novalidate', true);
 }
 
 
 // Validate the field
-var hasError = function (field) {
+const hasError = function (field) {
 
     // Don't validate submits, buttons, file and reset inputs, and disabled fields
     if (field.disabled || field.type === 'file' || field.type === 'reset' || field.type === 'submit' || field.type === 'button') return;
 
     // Get validity
-    var validity = field.validity;
+    const validity = field.validity;
 
     // If valid, return null
     if (validity.valid) return;
@@ -252,16 +252,16 @@ var hasError = function (field) {
 
 
 // Show an error message
-var showError = function (field, error) {
+const showError = function (field, error) {
 
     // Add error class to field
     field.classList.add('error');
 
     // If the field is a radio button and part of a group, error all and get the last item in the group
     if (field.type === 'radio' && field.name) {
-        var group = document.getElementsByName(field.name);
+        const group = document.getElementsByName(field.name);
         if (group.length > 0) {
-            for (var i = 0; i < group.length; i++) {
+            for (let i = 0; i < group.length; i++) {
                 // Only check fields in current form
                 if (group[i].form !== field.form) continue;
                 group[i].classList.add('error');
@@ -271,19 +271,19 @@ var showError = function (field, error) {
     }
 
     // Get field id or name
-    var id = field.id || field.name;
+    const id = field.id || field.name;
     if (!id) return;
 
     // Check if error message field already exists
     // If not, create one
-    var message = field.form.querySelector('.error-message#error-for-' + id );
+    let message = field.form.querySelector('.error-message#error-for-' + id );
     if (!message) {
         message = document.createElement('div');
         message.className = 'error-message';
         message.id = 'error-for-' + id;
 
         // If the field is a radio button or checkbox, insert error after the label
-        var label;
+        let label;
         if (field.type === 'radio' || field.type ==='checkbox') {
             label = field.form.querySelector('label[for="' + id + '"]') || field.parentNode;
             if (label) {
@@ -312,7 +312,7 @@ var showError = function (field, error) {
 
 
 // Remove the error message
-var removeError = function (field) {
+const removeError = function (field) {
 
     // Remove error class to field
     field.classList.remove('error');
@@ -322,9 +322,9 @@ var removeError = function (field) {
 
     // If the field is a radio button and part of a group, remove error from all and get the last item in the group
     if (field.type === 'radio' && field.name) {
-        var group = document.getElementsByName(field.name);
+        const group = document.getElementsByName(field.name);
         if (group.length > 0) {
-            for (var i = 0; i < group.length; i++) {
+            for (let i = 0; i < group.length; i++) {
                 // Only check fields in current form
                 if (group[i].form !== field.form) continue;
                 group[i].classList.remove('error');
@@ -334,12 +334,12 @@ var removeError = function (field) {
     }
 
     // Get field id or name
-    var id = field.id || field.name;
+    const id = field.id || field.name;
     if (!id) return;
 
 
     // Check if an error message is in the DOM
-    var message = field.form.querySelector('.error-message#error-for-' + id + '');
+    const message = field.form.querySelector('.error-message#error-for-' + id + '');
     if (!message) return;
 
     // If so, hide it
@@ -357,7 +357,7 @@ document.addEventListener('blur', function (event) {
     if (!event.target.form || !event.target.form.classList || !event.target.form.classList.contains('validate')) return;
 
     // Validate the field
-    var error = hasError(event.target);
+    const error = hasError(event.target);
 
     // If there's an error, show it
     if (error) {
@@ -378,12 +378,12 @@ document.addEventListener('submit', function (event) {
     if (!event.target.classList.contains('validate')) return;
 
     // Get all of the form elements
-    var fields = event.target.elements;
+    const fields = event.target.elements;
 
     // Validate each field
     // Store the first field with an error to a variable so we can bring it into focus later
-    var error, hasErrors;
-    for (var i = 0; i < fields.length; i++) {
+    let error, hasErrors;
+    for (let i = 0; i < fields.length; i++) {
         error = hasError(fields[i]);
         if (error) {
             showError(fields[i], error);

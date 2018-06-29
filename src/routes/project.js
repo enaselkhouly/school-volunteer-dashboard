@@ -4,7 +4,7 @@ const projectController = require('../controllers/project'),
       auth           = require('../helpers/auth'),
       express        = require('express');
 
-let router = express.Router();
+const router = express.Router();
 
 
 /* GET: all Projects*/

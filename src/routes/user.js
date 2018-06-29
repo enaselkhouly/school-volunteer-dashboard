@@ -4,7 +4,7 @@ const userController = require('../controllers/user'),
       auth           = require('../helpers/auth'),
       express        = require('express');
 
-let router = express.Router();
+const router = express.Router();
 
 /* Show the registeration form for new User.*/
 router.get("/register", auth.isAdmin, userController.getRegister);

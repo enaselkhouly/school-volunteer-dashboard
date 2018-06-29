@@ -1,8 +1,6 @@
 'use strict';
 
 const User        = require('../models/User'),
-      Task        = require('../models/Task'),
-      Project     = require('../models/Project'),
       passport    = require('passport'),
       helpers     = require("../helpers"),
       async       = require("async"),
@@ -25,11 +23,11 @@ function getRegister ( req, res) {
 /* Register new User.*/
 function postRegister (req, res) {
 
-  var newUser = new User(req.body.user);
+  let newUser = new User(req.body.user);
 
   newUser.requiredVolunteerTime *= 60; // Convert from hrs to mins
 
-  User.register(newUser, req.body.password, (err, user) => {
+  User.register(newUser, req.body.password, (err) => {
       if(err){
         req.flash("error", err.message);
         res.redirect("/register");
@@ -52,7 +50,7 @@ function getLogin (req, res, next){
 /* User login.*/
 function postLogin (req, res, next) {
 
-  passport.authenticate('local', function(err, user, info) {
+  passport.authenticate('local', function(err, user) {
 
     if (err) {
       return next(err);
@@ -95,7 +93,7 @@ function postForgot (req, res, next){
         if (err) {
           return callback (err);
         } else {
-          var token = buf.toString('hex');
+          let token = buf.toString('hex');
           callback(null, token);
         }
       });
@@ -110,6 +108,9 @@ function postForgot (req, res, next){
         user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
         user.save(function(err) {
+          if (err) {
+            return callback(err);
+          }
           callback(null, token, user);
         });
       });
@@ -127,13 +128,12 @@ function postForgot (req, res, next){
             return callback(err);
           }
 
-					mailer.send(user.email, subject, html, function(err, info) {
+					mailer.send(user.email, subject, html, function(err) {
 
             if (err) {
               callback(err);
             } else {
 
-              console.log('Message sent: %s', info.messageId);
               // Preview only available when sending through an Ethereal account
               //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
@@ -269,7 +269,7 @@ function putUser (req, res){
 
   user.requiredVolunteerTime *= 60; // Convert from hrs to mins
 
-  User.findByIdAndUpdate(req.params.id, user, (err, updatedUser) => {
+  User.findByIdAndUpdate(req.params.id, user, (err) => {
 
       if(err){
          req.flash("error", err.message);

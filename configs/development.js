@@ -31,7 +31,7 @@ module.exports = {
 				secure: false,
 				auth: {
 					user: 'hllmmt4fhdlbwkwk@ethereal.email',
-	 				pass: '8s2txRyFJZDEux5grW'
+          pass: '8s2txRyFJZDEux5grW'
 				}
 			}
 		}

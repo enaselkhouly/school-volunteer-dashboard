@@ -1,8 +1,6 @@
 'use strict';
 
-const User = require('../models/User'),
-      Task = require('../models/Task'),
-      Project = require('../models/Project'),
+const Project = require('../models/Project'),
       helpers = require("../helpers"),
       async  = require("async");
 
@@ -57,7 +55,7 @@ function getProject (req, res) {
 } //getProject
 
 function getNewProject (req, res) {
-  let user = req.user;
+
   let userDir = req.user.userType.toLowerCase();
 
   res.render(`user/${userDir}`, {
@@ -85,7 +83,7 @@ function postNewProject (req, res) {
         });
       },
       function addProjectToUser(project, callback) {
-        helpers.addProjectToUser(req.user, project._id, (err, user) => {
+        helpers.addProjectToUser(req.user, project._id, (err) => {
           if (err) {
             return callback(err);
           }
@@ -106,7 +104,6 @@ function postNewProject (req, res) {
 
 function getEditProject (req, res) {
 
-  let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
   Project.findById(req.params.id, (err, project) => {
@@ -124,7 +121,7 @@ function getEditProject (req, res) {
 
 function putProject (req, res) {
 
-  Project.findByIdAndUpdate(req.params.id, req.body.project, (err, project) => {
+  Project.findByIdAndUpdate(req.params.id, req.body.project, (err) => {
 
       if(err){
          req.flash("error", err.message);

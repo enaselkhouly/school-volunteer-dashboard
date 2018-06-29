@@ -1,8 +1,8 @@
 "use-strict";
 
-let config      = require("../../configs");
-let nodemailer 	= require("nodemailer");
-let htmlToText 	= require("nodemailer-html-to-text").htmlToText;
+const config      = require("../../configs");
+const nodemailer 	= require("nodemailer");
+const htmlToText 	= require("nodemailer-html-to-text").htmlToText;
 
 function init(callback) {
   // Generate SMTP service account from ethereal.email
@@ -19,14 +19,14 @@ function init(callback) {
 
 function send(recipients, subject, body, callback) {
 
-    let mailOptions = {
+    const mailOptions = {
       from: config.mailer.from,
       to: recipients,
       subject: subject,
       html: body
     };
 
-    let transporter = nodemailer.createTransport(config.mailer.smtp);
+    const transporter = nodemailer.createTransport(config.mailer.smtp);
 
     if (transporter) {
       // verify connection configuration
@@ -55,5 +55,6 @@ function send(recipients, subject, body, callback) {
 }
 
 module.exports = {
+  init: init,
 	send: send
 };

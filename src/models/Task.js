@@ -1,6 +1,6 @@
 'use-strict'
 
-var mongoose          = require("mongoose");
+const mongoose          = require("mongoose");
     mongoose.promise  = require('bluebird');
 
 // Enum defining the Task startus
@@ -33,7 +33,7 @@ const FIXED_TIME_VALUE = 30; // in mins
 
 
 // Task Schema definition
-var taskSchema = mongoose.Schema({
+let taskSchema = mongoose.Schema({
 	name: String,
   author: {
 		id: {
@@ -91,7 +91,7 @@ var taskSchema = mongoose.Schema({
 });
 
 taskSchema.methods.assignTask = function(userId, userName) {
-	var success = false;
+	let success = false;
 	if (this.status === Status.OPEN) {
 		this.assignedTo = {
 			id: userId,
@@ -112,7 +112,7 @@ taskSchema.methods.assignTask = function(userId, userName) {
 
 // Sign up for a task
 taskSchema.methods.signUp = function(userId, userName) {
-	var success = false;
+	let success = false;
 	if (this.status === Status.OPEN) {
 		this.assignedTo = {
 			id: userId,
@@ -129,7 +129,7 @@ taskSchema.methods.signUp = function(userId, userName) {
 
 // Cancel Task
 taskSchema.methods.cancelTask = function( ) {
-	var success = false;
+	let success = false;
 
 	if (this.status === Status.INPROGRESS) {
 		this.assignedTo.id = null;
@@ -143,7 +143,7 @@ taskSchema.methods.cancelTask = function( ) {
 
 // Complete Task
 taskSchema.methods.completeTask = function(userId) {
-	var success = false;
+	let success = false;
 	if ( (this.status === Status.INPROGRESS)
 			&& (this.assignedTo) && (this.assignedTo.id) && (this.assignedTo.id.toString() == userId.toString()) ) {
 		this.status	= Status.PENDING;
@@ -155,7 +155,7 @@ taskSchema.methods.completeTask = function(userId) {
 
 // Approve task
 taskSchema.methods.approveTask = function( ) {
-	var success = false;
+	let success = false;
 
 	if (this.status === Status.PENDING) {
 		this.status	= Status.CLOSED;
@@ -169,7 +169,7 @@ taskSchema.methods.approveTask = function( ) {
 
 // Unapprove Task
 taskSchema.methods.unapproveTask = function( ) {
-	var success = false;
+	let success = false;
 
 	if (this.status === Status.PENDING) {
 		this.status	= Status.INPROGRESS;

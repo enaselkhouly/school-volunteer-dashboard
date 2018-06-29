@@ -1,8 +1,6 @@
 'use strict';
 
-const User = require('../models/User'),
-      Task = require('../models/Task'),
-      Project = require('../models/Project'),
+const Task = require('../models/Task'),
       helpers = require("../helpers"),
       async = require('async');
 
@@ -55,7 +53,7 @@ function getTask (req, res) {
 } //getTask
 
 function getNewTask (req, res) {
-  let user = req.user;
+
   let userDir = req.user.userType.toLowerCase();
   let projectId = req.params.id;
 
@@ -74,7 +72,7 @@ function postNewTask (req, res) {
     function fillTaskParams (callback){
 
       // Read new task information
-      var newTask = new Task (req.body.task);
+      let newTask = new Task (req.body.task);
 
       // link the task with the user
       newTask.author = {
@@ -144,7 +142,7 @@ function postNewTask (req, res) {
   },
   // Add Task to user
   function addTaskToUser(task, project, callback){
-    helpers.addTaskToUser(req.user._id, task._id, (err, user) => {
+    helpers.addTaskToUser(req.user._id, task._id, (err) => {
       if (err) {
         return callback(err);
       }
@@ -153,7 +151,7 @@ function postNewTask (req, res) {
   },
   // Add the task'project to the user projects
   function addTaskProjectToUser(task, project, callback){
-    helpers.addProjectToUser(req.user._id, project._id, (err, user) => {
+    helpers.addProjectToUser(req.user._id, project._id, (err) => {
       if (err) {
         return callback(err);
       }
@@ -175,7 +173,6 @@ function postNewTask (req, res) {
 
 function getEditTask (req, res) {
 
-  let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
   Task.findById(req.params.task_id, (err, task) => {
@@ -284,7 +281,7 @@ function signupTask (req, res) {
         });
       },
     function addProjectToUser(task, callback){
-      helpers.addProjectToUser(req.user.id, task.project.id, (err, user) => {
+      helpers.addProjectToUser(req.user.id, task.project.id, (err) => {
         if (err) {
           return callback(err);
         }

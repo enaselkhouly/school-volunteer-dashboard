@@ -1,0 +1,76 @@
+// Color names
+
+$white: #ffffff;
+$off-white: #f9fafb;
+$red: #e91e63; /*#ff5722*/
+$light-green: #89c639; /*#82ebe2*/
+$green: #009688;
+$purple: #8262bb; /*#673ab7*/
+$brown: #795548;
+$grey: #72777a;
+$dark-grey: #313435;
+$dark-blue: #2196f3;
+$blue: #17a2b8; /*#94cffe*/
+$black: #000000;
+
+
+.bg-green {
+  background: $green;
+}
+
+.bg-blue {
+  background: $blue;
+}
+
+.bg-brown {
+  background: $brown;
+}
+
+.bg-purple {
+  background: $purple;
+}
+
+.bg-red {
+  background: $red;
+}
+
+.border-green {
+  border-color: $green;
+}
+
+.border-blue {
+  border-color: $blue;
+}
+
+.border-brown {
+  border-color: $brown;
+}
+
+.border-purple {
+  border-color: $purple;
+}
+
+.border-red {
+  border-color: $red;
+}
+
+
+.text-green {
+  color: $green;
+}
+
+.text-blue {
+  color: $blue;
+}
+
+.text-brown {
+  color: $brown;
+}
+
+.text-purple {
+  color: $purple;
+}
+
+.text-red {
+  color: $red;
+}

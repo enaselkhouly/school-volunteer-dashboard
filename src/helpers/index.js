@@ -4,7 +4,7 @@ const User    = require('../models/User');
 const Project = require('../models/Project');
 const Task    = require('../models/Task');
 const async   = require('async');
-const config = require('../../configs');
+
 /*
 * User helper functions.
 */
@@ -22,7 +22,7 @@ function allUsers ( callback ) {
 
 function getUserProjects ( user, status, category, callback ) {
 
-  var populate = {
+  let populate = {
     path: "projects",
     populate: {
        path: 'tasks',
@@ -42,12 +42,12 @@ function getUserProjects ( user, status, category, callback ) {
 
 function addProjectToUser (userId, projectId, callback){
 
-  var conditions = {
+  let conditions = {
       _id: userId,
       'projects.id': { $ne: projectId }
   };
 
-  var update = {
+  let update = {
       $addToSet: { projects: { _id: projectId } }
   }
 
@@ -69,7 +69,7 @@ function removeProjectFromUser ( userId, projectId, callback ) {
 
 function allProjects (user, status, category, callback ) {
 
-  var populate = {
+  let populate = {
        path: 'tasks',
        model: 'Task',
        match: {
@@ -111,7 +111,7 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
   async.waterfall([
   function getProjectTasks (callback) {
 
-      var populate = {
+      let populate = {
            path: 'tasks',
            model: 'Task',
            match: { $or: [{'assignedTo.id': userId}, {'author.id': userId}]}
@@ -127,8 +127,8 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
         });
   },
   function removeTask(project, callback) {
-    var taskAuthorId = null;
-    var taskAssigneeId = null;
+    let taskAuthorId = null;
+    let taskAssigneeId = null;
 
     if (project.tasks && project.tasks.length == 1) {
       taskAuthorId = project.tasks[0].author.id;
@@ -175,11 +175,11 @@ function removeTaskFromProject (userId, projectId, taskId, callback) {
 
 function removeAllProjectTasks (project, callback) {
 
-  var condition = {
+  let condition = {
       _id: project.tasks
   };
 
-  Task.remove (condition, (err, tasks) => {
+  Task.remove (condition, (err) => {
       callback(err);
   });
 }
@@ -213,12 +213,12 @@ function getUserTasks ( user, query, callback ) {
 
 function addTaskToUser (userId, taskId, callback){
 
-  var conditions = {
+  let conditions = {
       _id: userId,
       'tasks.id': { $ne: taskId }
   };
 
-  var update = {
+  let update = {
       $addToSet: { tasks: { _id: taskId } }
   }
 
@@ -229,7 +229,7 @@ function addTaskToUser (userId, taskId, callback){
 
 function removeTaskFromUser ( userId, taskId, callback ) {
 
-  var update = {
+  let update = {
     $pull: {"tasks": taskId}
   };
 
@@ -307,7 +307,7 @@ function statusQuery (statusQuery) {
   let status = [];
 
   if (statusQuery) {
-    for (var i = 0; i < options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       let option = options[i].toLowerCase();
       option = option.replace(/ /g,'');
       if (statusQuery.indexOf(`${option}`) > -1) {
@@ -329,7 +329,7 @@ function categoryQuery (categories) {
   let category = [];
 
   if (categories) {
-    for (var i = 0; i < options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       let option = options[i].toLowerCase();
       option = option.replace(/ /g,'');
       if (categories.indexOf(`${option}`) > -1) {
@@ -361,6 +361,7 @@ module.exports = {
   allTasks              : allTasks,
   getTask               : getTask,
   createTask            : createTask,
+  deleteTask            : deleteTask,
   getVolunteerTime      : getVolunteerTime,
   statusQuery           : statusQuery,
   categoryQuery         : categoryQuery

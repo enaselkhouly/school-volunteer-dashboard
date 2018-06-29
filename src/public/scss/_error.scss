@@ -1,0 +1,20 @@
+
+/**
+ * Errors
+ */
+.error {
+	border-color: $red;
+}
+
+.error-message {
+	color: $red;
+	font-style: italic;
+	margin-bottom: 1em;
+}
+
+/* Styling the flash messages*/
+.alert {
+  border-radius: 0;
+  width: 100%;
+  text-align: center;
+}
