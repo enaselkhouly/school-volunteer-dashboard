@@ -7,7 +7,7 @@
     "start": "nodemon src/index.js",
     "lint": "eslint",
     "sass": "node-sass src/public/scss/styles.scss -o src/public/css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "enas.a.elkhouly@gmail.com",
   "license": "ISC",
@@ -34,7 +34,12 @@
     "uuid-token-generator": "^1.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^5.0.1",
-    "node-sass": "^4.9.0"
+    "mocha": "^5.2.0",
+    "node-sass": "^4.9.0",
+    "sinon": "^6.0.1",
+    "sinon-mongoose": "^2.1.1",
+    "supertest": "^3.1.0"
   }
 }
