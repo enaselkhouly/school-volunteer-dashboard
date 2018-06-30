@@ -1,12 +1,12 @@
-# Full stack School Volunteer Dashboard using Node.js, Express, MongoDB
+# MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB
 
 <img src="https://coligo.io/images/express.svg" height="50"> <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png" height="50"> <img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" height="50">
 
 This is a MEN Stack application aims to manage and automate the volunteer activities at schools; through per user dashboard, organized project tasks, manageable task work flow, and a responsive mobile-first layout.
 
 The project is build with Node.js, Express, and Mongodb, Bootstrap 4, JavaScript, JQuery, SCSS and HTML.
-I initially created this project to practice what I am learning, but it found its way into deployment as well.
-The project is still under testing and is subject to a lot of enhancements. 
+I initially created this project to practice what I am learning, but it found its way into deployment.
+The project is still under test and is subject to a lot of enhancements. 
 
 ### [Live Demo] (https://sch-volunteer-dashboard.herokuapp.com/projects)
 Credentials:
@@ -23,7 +23,7 @@ password: Testfamily1
 
 * [x] **[Node.JS](https://nodejs.org)** 
 * [x] **[Express](https://github.com/expressjs/express)**
-* [x] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
+* [x] **[MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)**
 * [x] [SCSS](http://sass-lang.com/)
 * [x] [EJS](https://www.npmjs.com/package/ejs)
 * [x] [Passport.JS](http://passportjs.org/)
@@ -36,7 +36,19 @@ password: Testfamily1
 npm install
 npm start
 ```
+## Screenshots
 
+### Login screen
+
+![Login screen](../assets/login.png?raw=true)
+
+### Teacher account main page after login
+
+![Index page](../assets/teacher.png?raw=true)
+
+### Family account main page after login
+
+![Devices module](../assets/family.png?raw=true)
 
 ## Directory structure
 ```txt

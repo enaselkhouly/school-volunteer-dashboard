@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Server side of the project using RESTful APIs",
+  "description": "MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB",
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.js",
@@ -9,8 +9,19 @@
     "sass": "node-sass src/public/scss/styles.scss -o src/public/css",
     "test": "mocha"
   },
-  "author": "enas.a.elkhouly@gmail.com",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/enaselkhouly/school-volunteer-dashboard.git"
+  },
+  "keywords": [
+    "node.js",
+    "express",
+    "mongo",
+    "mongodb",
+    "bootstrap"
+  ],
+  "author": "enaselkhouly",
+  "license": "MIT",
   "config": {
     "dbName": "men-dashboard"
   },
