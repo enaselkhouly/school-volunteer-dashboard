@@ -1,9 +1,0 @@
-# Dependency directory
-node_modules
-
-# SASS temp files
-.sass-cache
-
-# Other temp files
-src/public/css/main.css
-twoSemsters.patch
