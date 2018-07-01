@@ -7,10 +7,6 @@ let tokgen	= require("../libs/tokgen");
 
 global.rootPath = path.normalize(path.join(__dirname, ".."));
 
-console.log("process.argv: " + process.argv);
-
-console.log("Application root path: " + global.rootPath);
-
 /* Export build mode */
 module.exports = {
 

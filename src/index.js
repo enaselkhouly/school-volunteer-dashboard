@@ -8,3 +8,5 @@ const server    = require('../configs/initializers/server')(),
 database.connect(config);
 server.create(config);
 server.start();
+
+module.exports = server;

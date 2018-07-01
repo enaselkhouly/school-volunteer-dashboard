@@ -4,7 +4,7 @@
 
 This is a MEN Stack application aims to manage and automate the volunteer activities at schools; through per user dashboard, organized project tasks, manageable task work flow, and a responsive mobile-first layout.
 
-The project is build with Node.js, Express, and Mongodb, Bootstrap 4, JavaScript, JQuery, SCSS and HTML. The project is still under test and is subject to a lot of enhancements. 
+The project is build with Node.js, Express, and Mongodb, Bootstrap 4, JavaScript, JQuery, SCSS and HTML. The project is under test and is subject to enhancements. 
 
 ### [Live Demo] (https://sch-volunteer-dashboard.herokuapp.com/projects)
 Credentials:
@@ -83,3 +83,6 @@ npm start
 +---package.json
 
 ```
+## License
+
+The school-volunteer-dashboard is available under the [MIT license](https://tldrlegal.com/license/mit-license).

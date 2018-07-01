@@ -52,14 +52,14 @@ module.exports = function() {
     start = function() {
         let hostname = server.get('hostname'),
             port = process.env.PORT || server.get('port');
-
         server.listen(port, function () {
-            console.log('Express server listening on - http://'+ hostname);
+            console.log('Express server listening on - http://'+ hostname +':' + port);
         });
     };
 
     return {
         create: create,
-        start: start
+        start: start,
+        server : server
     };
 };
