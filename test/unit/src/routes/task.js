@@ -3,31 +3,17 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 const should = chai.should();
 
-describe('User routes', function() {
-  //let dbStub;
+describe('Task routes', function() {
   let app;
   let server;
-
-  // dbStub = {
-  //     run: function() {
-  //       return Promise.resolve({
-  //         stmt: {
-  //           lastID: 1349
-  //         }
-  //       });
-  //     }
-  //   };
-  // dbStub['@global'] = true;
-
   app = require('../../../../src');
 
   server = app.server;
 
-
-  context('GET /', function() {
+  context('GET /projects/:id/tasks', function() {
     it('should return 200 OK', function(done) {
       chai.request(server)
-        .get('/')
+        .get('/projects/:id/tasks')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -37,10 +23,10 @@ describe('User routes', function() {
   });
 
 
-  context('GET /register', () => {
+  context('GET /projects/:id/tasks/new', () => {
     it('should return 200 OK', (done) => {
       chai.request(server)
-        .get('/register')
+        .get('/projects/:id/tasks/new')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -49,10 +35,10 @@ describe('User routes', function() {
     });
   });
 
-  context('POST /register', () => {
+  context('GET /projects/:id/tasks/:taskId', () => {
     it('should return 200 OK', (done) => {
       chai.request(server)
-        .post('/register')
+        .get('/projects/:id/tasks/:taskId')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -61,10 +47,10 @@ describe('User routes', function() {
     });
   });
 
-  context('GET /login', () => {
+  context('POST /projects/:id/tasks', () => {
     it('should return 200 OK', (done) => {
       chai.request(server)
-        .get('/login')
+        .post('/projects/:id/tasks')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -73,10 +59,10 @@ describe('User routes', function() {
     });
   });
 
-  context('POST /login', () => {
+  context('GET /projects/:id/tasks/:taskId/edit', () => {
     it('should return 200 OK', (done) => {
       chai.request(server)
-        .post('/login')
+        .get('/projects/:id/tasks/:taskId/edit')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -85,10 +71,10 @@ describe('User routes', function() {
     });
   });
 
-  context('GET /logout', () => {
+  context('PUT /projects/:id/tasks/:taskId', () => {
     it('should return 200 OK', (done) => {
       chai.request(server)
-        .get('/logout')
+        .put('/projects/:id/tasks/:taskId')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -97,10 +83,10 @@ describe('User routes', function() {
     });
   });
 
-  context('GET /users', () => {
+  context('DELETE /projects/:id/tasks/:id', () => {
     it('should return 200 OK', (done) => {
       chai.request(server)
-        .get('/users')
+        .delete('/projects/:id/tasks/:taskId')
         .end(function(err, res) {
           res.should.have.status(200);
           res.text.should.not.contain('Page could not be found!');
@@ -109,27 +95,4 @@ describe('User routes', function() {
     });
   });
 
-  context('GET /users/:id', () => {
-    it('should return 200 OK', (done) => {
-      chai.request(server)
-        .get('/users/abcd')
-        .end(function(err, res) {
-          res.should.have.status(200);
-          res.text.should.not.contain('Page could not be found!');
-          done(err);
-        });
-    });
-  });
-
-  context('GET /random-url', () => {
-    it('should return 200 OK', (done) => {
-      chai.request(server)
-        .get('/reset')
-        .end(function(err, res) {
-          res.should.have.status(200);
-          res.text.should.contain('Page could not be found!');
-          done(err);
-        });
-    });
-  });
 });

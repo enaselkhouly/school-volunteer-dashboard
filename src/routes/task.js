@@ -7,7 +7,7 @@ const taskController = require('../controllers/task'),
 const router = express.Router();
 
 /* GET: all Tasks*/
-// router.get("/tasks", auth.isLoggedIn, taskController.getTasks);
+router.get("/projects/:id/tasks", auth.isLoggedIn, taskController.getTasks);
 
 /* GET: show form to add new task*/
 router.get("/projects/:id/tasks/new", auth.isProjectOwner, taskController.getNewTask);

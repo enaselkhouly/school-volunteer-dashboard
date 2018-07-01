@@ -6,29 +6,7 @@ const Task = require('../models/Task'),
 
 /* Show all tasks */
 function getTasks (req, res) {
-
-  let user = req.user;
-  let userDir = req.user.userType.toLowerCase();
-
-  let status = helpers.statusQuery(req.query.status);
-  let category = helpers.categoryQuery(req.query.category);
-
-  helpers.allTasks(status, function(err, allTasks){
-
-    if(err){
-      req.flash("error", err.message);
-      return res.redirect(`/`);
-    }
-
-    res.render(`user/${userDir}`, {
-      user: user,
-      tasks: allTasks,
-      status: status,
-      category: category,
-      page: 'task/index'
-    });
-
-  });
+  return res.redirect(`/projects/${req.params.id}`);
 } //getTasks
 
 /* Show all tasks */
