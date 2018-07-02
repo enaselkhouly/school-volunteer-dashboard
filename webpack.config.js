@@ -7,8 +7,14 @@ module.exports = {
     externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
     mode: "production", // "production" | "development" | "none",
 
+    node: {
+      __dirname: true
+    },
+
+    entry: "./src/index.js",
     output: {
-      filename: "index.bundle.js"
+      filename: "index.bundle.js",
+      path: path.join(__dirname, "dist")
     },
 
     module: {
@@ -43,7 +49,13 @@ module.exports = {
         use: [
           {loader: "url-loader"}
         ]
-      }
+      },
+      { test: /\.ejs$/,
+        use: [
+          {loader: 'ejs-html-loader'}
+        ]
+      },
+
     ]
   }
 };

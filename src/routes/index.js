@@ -19,13 +19,13 @@ function init(server) {
   // }); // for each
   //
   // link the server with the routes
-  const taskRoutes = require('./task');
   const projectRoutes = require('./project');
+  const taskRoutes = require('./task');
   const userRoutes = require('./user');
 
-  server.use("/users", userRoutes);
-  server.use("/projects", projectRoutes);
-  server.use("/projects/:id/tasks", taskRoutes);
+  server.use('', projectRoutes);
+  server.use('', taskRoutes);
+  server.use('', userRoutes);
 
 
   /**
