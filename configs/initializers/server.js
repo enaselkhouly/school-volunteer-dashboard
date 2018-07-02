@@ -5,7 +5,10 @@ const
     bodyParser          = require('body-parser'),
     flash               = require("connect-flash"),
     methodOverride      = require("method-override"),
-    path                = require('path');
+    path                = require('path'),
+    session 		        = require("express-session"),
+    mongoose            = require("mongoose"),
+    MongoStore 		     = require("connect-mongo")(session);
 
 module.exports = function() {
     let server = express(),
@@ -36,6 +39,18 @@ module.exports = function() {
 
         // Initialize passport
         passport.init(config, server);
+
+
+        // Express MongoDB session storage
+        server.use(session({
+          saveUninitialized: false,
+          resave: false,
+          secret: config.sessionSecret,
+          store: new MongoStore({
+            mongooseConnection: mongoose.connection,
+            autoReconnect: true
+          })
+        }));
 
         //Initialize flash messages
         server.use(function(req, res, next){

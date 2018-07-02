@@ -4,6 +4,9 @@ node_modules
 # SASS temp files
 .sass-cache
 
+# webpack bundle
+dist
+
 # Other temp files
 src/public/css/main.css
 twoSemsters.patch

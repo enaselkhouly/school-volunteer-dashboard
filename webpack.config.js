@@ -5,11 +5,12 @@ module.exports = {
 
     target: 'node', // in order to ignore built-in modules like path, fs, etc.
     externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
-    // mode: "production", // "production" | "development" | "none",
-    devServer: {
-      contentBase: path.join(__dirname, "dist"),
-      port: 3000
+    mode: "production", // "production" | "development" | "none",
+
+    output: {
+      filename: "index.bundle.js"
     },
+
     module: {
       rules: [ {
         test : /\.js$/,

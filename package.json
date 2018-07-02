@@ -4,8 +4,11 @@
   "description": "MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB",
   "main": "index.js",
   "scripts": {
+    "build": "webpack --progress",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "start": "cross-env NODE_ENV=production nodemon src/index.js",
+    "start:bundle": "cross-env NODE_ENV=production node dist/index.bundle.js",
+    "heroku-postbuild": "webpack -p --config ./webpack.prod.config.js --progress",
     "test": "cross-env NODE_ENV=test mocha",
     "lint": "eslint",
     "sass": "node-sass src/public/scss/styles.scss -o src/public/css"
@@ -30,6 +33,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^2.0.1",
     "ejs": "^2.5.9",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
@@ -47,6 +51,9 @@
     "uuid-token-generator": "^1.0.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
     "bootstrap": "^4.1.1",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
@@ -60,6 +67,9 @@
     "popper.js": "^1.14.3",
     "sinon": "^6.0.1",
     "sinon-chai": "^3.2.0",
-    "supertest": "^3.1.0"
+    "supertest": "^3.1.0",
+    "webpack": "^4.14.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-node-externals": "^1.7.2"
   }
 }
