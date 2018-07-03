@@ -49,13 +49,13 @@ function getLogin (req, res, next){
 
 /* User login.*/
 function postLogin (req, res, next) {
-
   passport.authenticate('local', function(err, user) {
 
     if (err) {
       return next(err);
     }
     if (!user) {
+      req.flash("error", "No user with those credentials is found!");
       return res.redirect('/login');
     }
     req.logIn(user, function(err) {

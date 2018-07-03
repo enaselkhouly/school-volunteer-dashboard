@@ -37,10 +37,6 @@ module.exports = function() {
 
         server.use(flash());
 
-        // Initialize passport
-        passport.init(config, server);
-
-
         // Express MongoDB session storage
         server.use(session({
           saveUninitialized: false,
@@ -51,6 +47,9 @@ module.exports = function() {
             autoReconnect: true
           })
         }));
+
+        // Initialize passport
+        passport.init(config, server);
 
         //Initialize flash messages
         server.use(function(req, res, next){
