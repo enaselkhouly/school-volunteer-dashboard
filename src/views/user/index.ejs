@@ -36,13 +36,14 @@
               </div>
               <div class="row">
                 <div class="col-12 mt-4">
+                  <% if (!foundUser._id.equals(currentUser._id)){%>
+                    <button class="btn btn-outline-info"><a href="/users/<%=foundUser._id%>/reset">Reset Password</a></button>
+                  <%}%>
                   <button class="btn btn-outline-warning"><a href="/users/<%=foundUser._id%>/edit">Edit</a></button>
                   <form id="delete-form" action="/users/<%=foundUser._id%>?_method=DELETE" method="POST">
-                    <% if (foundUser._id.equals(currentUser._id)){%>
-                      <button class="btn btn-outline-secondary" disabled>Delete</button>
-                    <%} else {%>
+                  <% if (!foundUser._id.equals(currentUser._id)){%>
                     <button class="btn btn-outline-danger">Delete</button>
-                    <%}%>
+                  <%}%>
                   </form>
                 </div>
               </div>
