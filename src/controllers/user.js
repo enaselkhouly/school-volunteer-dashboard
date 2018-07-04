@@ -161,7 +161,7 @@ function getReset (req, res, next){
 User.findById(req.params.id, (err, user) => {
   if (err || !user) {
     req.flash('error', 'User not found!');
-    res.redirect('/users');
+    res.redirect('back');
   } else {
     res.render('user/admin', {
               title: 'reset',
@@ -175,38 +175,54 @@ User.findById(req.params.id, (err, user) => {
 
 function postReset (req, res) {
 
-// Make sure the request is from and Admin user
-if (!req.user.isAdmin()) {
-  req.flash('error', 'Your must be admin to request the password reset!');
-  res.redirect(`back`);
-  return
-}
-// Compare the admin password with the saved password
-User.authenticate(req.user.username, req.body.password, (err) => {
-  if (err) {
-    req.flash('error', err.message);
-    res.redirect(`back`);
-    return
-  }
-});
+async.waterfall([
+  function checkCredentialls (callback) {
+    // Make sure the request is from Admin user
+    if (!req.user.isAdmin()) {
+      return callback(new Error("Invalid credentials, you must be admin to request a reset"));
+    }
+    // Compare the admin password with the saved password
+    req.user.authenticate(req.body.password, (err, result) => {
 
-//find the user
-User.findById(req.params.id, function (err, user) {
-  if (err){
-    req.flash('error', err.message);
-    res.redirect(`/users`);
-    return;
-  }
-  user.setPassword(req.body.newPassword, function (err) {
-      if (err){
-        req.flash('error', err.message);
-        res.redirect(`/users/${req.params.id}`);
-        return;
+      if (err) {
+        return callback(err);
       }
-      user.save();
+
+      if (result === false) {
+        return callback(new Error("Wrong Admin password!"));
+      }
+
+      return callback(null);
+    });
+  },
+  function findUser(callback){
+
+    //find the user
+    User.findById(req.params.id, function (err, user) {
+      if (err){
+        return callback(err);
+      }
+
+      return callback(null, user);
+    });
+  },
+  function resetPassword(user, callback){
+
+    user.setPassword(req.body.newPassword, function (err) {
+        if (err){
+          return callback(err);
+        }
+        user.save();
+        return callback(null);
+      });
+  }], function(err) {
+    if (err) {
+      req.flash('error', err.message);
+      res.redirect(`back`);
+    } else {
       req.flash('success', 'Password is successfully reset!');
       res.redirect(`/users/${req.params.id}`);
-    });
+    }
   });
 } // postReset
 
