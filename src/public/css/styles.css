@@ -6351,6 +6351,9 @@ ul {
   padding: 0;
   margin: 0; }
 
+strong {
+  font-weight: bold; }
+
 .main {
   padding: 0px; }
 

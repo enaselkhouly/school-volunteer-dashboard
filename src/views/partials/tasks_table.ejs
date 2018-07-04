@@ -115,9 +115,6 @@
                       <% if(task.status == 'Open') {%>
                         <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
                         <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
-                      <% } else { %>
-                        <button class="btn btn-outline-secondary" type="button" disabled><i data-feather="edit" class="edit"></i></button>
-                        <button class="btn btn-outline-secondary" type="buttom" value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                       <%}%>
                     <% } %>
                   </div>
