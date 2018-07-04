@@ -1,0 +1,29 @@
+<div class="row main-content">
+  <div class="container-fluid">
+		<div class="row">
+      <div class="col-12">
+        <h5 class="main-page-title">Password Reset for <%=user.displayName%></h5>
+      </div>
+    </div>
+		<div class="row">
+			<div class="col-12 col-lg-10 col-xl-8">
+				<div class="innerpage-container">
+          <div class="form">
+          <form action="/users/<%=user._id%>/reset" class="validate" method="POST">
+            <div class="form-group">
+              <label for="password"><strong>Enter your admin password</strong></label>
+              <input class="form-control" type="password" name="password" placeholder="Your password" required></input>
+            </div>
+            <div class="form-group">
+              <label for="newPassword"><strong>Enter the user's new password</strong></label>
+              <input class="form-control" type="password" name="newPassword" placeholder="User's new password" required></input>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block">Reset Password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

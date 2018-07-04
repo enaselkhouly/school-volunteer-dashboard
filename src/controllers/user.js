@@ -37,6 +37,7 @@ function postRegister (req, res) {
       res.redirect(`/users`);
 
   });
+
 } // postRegister
 
 /* User login form. */
@@ -152,7 +153,62 @@ function postForgot (req, res, next){
     }
 
   });
-} // getForgot
+} // postForgot
+
+/* User reset password form. */
+function getReset (req, res, next){
+
+User.findById(req.params.id, (err, user) => {
+  if (err || !user) {
+    req.flash('error', 'User not found!');
+    res.redirect('/users');
+  } else {
+    res.render('user/admin', {
+              title: 'reset',
+              page: 'reset',
+              user: user
+            });
+  }
+});
+
+} // getReset
+
+function postReset (req, res) {
+
+// Make sure the request is from and Admin user
+if (!req.user.isAdmin()) {
+  req.flash('error', 'Your must be admin to request the password reset!');
+  res.redirect(`back`);
+  return
+}
+// Compare the admin password with the saved password
+User.authenticate(req.user.username, req.body.password, (err) => {
+  if (err) {
+    req.flash('error', err.message);
+    res.redirect(`back`);
+    return
+  }
+});
+
+//find the user
+User.findById(req.params.id, function (err, user) {
+  if (err){
+    req.flash('error', err.message);
+    res.redirect(`/users`);
+    return;
+  }
+  user.setPassword(req.body.newPassword, function (err) {
+      if (err){
+        req.flash('error', err.message);
+        res.redirect(`/users/${req.params.id}`);
+        return;
+      }
+      user.save();
+      req.flash('success', 'Password is successfully reset!');
+      res.redirect(`/users/${req.params.id}`);
+    });
+  });
+} // postReset
 
 /* Get all users */
 function getUsers (req, res){
@@ -311,6 +367,8 @@ module.exports = {
   getLogout       : getLogout,
   getForgot       : getForgot,
   postForgot      : postForgot,
+  getReset        : getReset,
+  postReset       : postReset,
   getUsers        : getUsers,
   getUser         : getUser,
   getUserProfile  : getUserProfile,

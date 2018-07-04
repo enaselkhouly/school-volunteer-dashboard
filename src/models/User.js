@@ -1,9 +1,10 @@
 'use-strict'
 
-const mongoose                = require("mongoose"),
-      passportLocalMongoose   = require("passport-local-mongoose");
+const mongoose    = require("mongoose");
+const bcrypt      = require('bcrypt');
+const passportLocalMongoose   = require("passport-local-mongoose");
 
-      mongoose.promise        = require('bluebird');
+mongoose.promise  = require('bluebird');
 
 // User Type definition
 const UserType = {
@@ -83,5 +84,30 @@ userSchema.methods.isFamily = function ( ) {
 };
 
 userSchema.plugin(passportLocalMongoose);
+
+/**
+ * Password hashing
+ */
+// userSchema.pre("save", function(next) {
+// 	let user = this;
+//   const SALT_ROUNDS = 12;
+//
+// 	bcrypt.genSalt(SALT_ROUNDS, function(err, salt) {
+// 		bcrypt.hashSync(user.password, salt, null, function(err, hash) {
+//
+// 			user.password = hash;
+// 			next();
+//     });
+// 	});
+// });
+
+/**
+ * Password compare
+ */
+userSchema.methods.comparePassword = function(password, cb) {
+	bcrypt.compare(password, this.password, function(err, isMatch) {
+		cb(err, isMatch);
+	});
+};
 
 module.exports = mongoose.model("User", userSchema);
