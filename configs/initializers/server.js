@@ -6,9 +6,11 @@ const
     flash               = require("connect-flash"),
     methodOverride      = require("method-override"),
     path                = require('path'),
+    helmet              = require('helmet'),
+    crossdomain         = require('helmet-crossdomain'),
     session 		        = require("express-session"),
     mongoose            = require("mongoose"),
-    MongoStore 		     = require("connect-mongo")(session);
+    MongoStore 		      = require("connect-mongo")(session);
 
 module.exports = function() {
     let server = express(),
@@ -36,6 +38,14 @@ module.exports = function() {
         server.set("view engine", config.viewEngine);
 
         server.use(flash());
+
+        // Use helmet to secure Express headers
+        server.use(helmet.xssFilter());
+        server.use(helmet.noSniff());
+        server.use(helmet.frameguard());
+        server.use(helmet.ieNoOpen());
+        server.use(crossdomain());
+        server.use(helmet.hidePoweredBy());
 
         // Express MongoDB session storage
         server.use(session({

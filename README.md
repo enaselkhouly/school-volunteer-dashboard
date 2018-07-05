@@ -25,6 +25,7 @@ password: Testfamily1
 * [x] [SCSS](http://sass-lang.com/)
 * [x] [EJS](https://www.npmjs.com/package/ejs)
 * [x] [Passport.JS](http://passportjs.org/)
+* [x] [Helmet](https://github.com/helmetjs/helmet)
 * [x] [Eslint](http://eslint.org)
 * [x] [EditorConfig](http://editorconfig.org)
 

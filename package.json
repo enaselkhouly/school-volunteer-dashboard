@@ -40,6 +40,8 @@
     "express-session": "^1.15.6",
     "flatpickr": "^4.5.0",
     "git-init": "^1.0.0",
+    "helmet": "^3.12.1",
+    "helmet-crossdomain": "^0.2.0",
     "hoek": "^4.2.1",
     "method-override": "^2.3.10",
     "mongoose": "^5.0.16",
