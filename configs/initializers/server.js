@@ -47,6 +47,9 @@ module.exports = function() {
         server.use(crossdomain());
         server.use(helmet.hidePoweredBy());
 
+        // trust first proxy
+        server.set('trust proxy', 1)
+
         // Express MongoDB session storage
         server.use(session({
           saveUninitialized: true,
