@@ -10,11 +10,11 @@ The project is build with Node.js, Express, and Mongodb, Bootstrap 4, JavaScript
 
 Credentials:
 
-Teacher account:
+**Teacher account:**
 username: testteacher
 password: Testteacher1
 
-Family account:
+**Family account:**
 username: testfamily
 password: Testfamily1
 
