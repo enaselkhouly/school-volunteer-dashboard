@@ -49,11 +49,12 @@ module.exports = function() {
 
         // Express MongoDB session storage
         server.use(session({
-          saveUninitialized: false,
+          saveUninitialized: true,
           resave: false,
           secret: config.sessionSecret,
           store: new MongoStore({
             mongooseConnection: mongoose.connection,
+            collection: config.sessions.collection,
             autoReconnect: true
           }),
           /*Preventing XSS vulnerabilities*/
