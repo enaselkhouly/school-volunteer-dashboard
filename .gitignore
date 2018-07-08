@@ -3,6 +3,7 @@ node_modules
 
 # SASS temp files
 .sass-cache
+public/css.styles.css
 
 # webpack bundle
 dist
