@@ -7,6 +7,7 @@ This is a MEN Stack application aims to manage and automate the volunteer activi
 The project is build with Node.js, Express, and Mongodb, Bootstrap 4, JavaScript, JQuery, SCSS and HTML. The project is under test and is subject to enhancements. 
 
 ### [Live Demo](https://sch-volunteer-dashboard.herokuapp.com/projects)
+
 Credentials:
 Teacher account:
 username: testteacher
