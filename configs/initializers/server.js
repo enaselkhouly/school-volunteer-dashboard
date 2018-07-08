@@ -40,7 +40,7 @@ module.exports = function() {
         server.use(flash());
 
         // Use helmet to secure Express headers
-        server.use(helmet.xssFilter());
+        server.use(helmet.xssFilter({ setOnOldIE: true }));
         server.use(helmet.noSniff());
         server.use(helmet.frameguard());
         server.use(helmet.ieNoOpen());
@@ -49,13 +49,17 @@ module.exports = function() {
 
         // Express MongoDB session storage
         server.use(session({
-          saveUninitialized: false,
+          saveUninitialized: true,
           resave: false,
           secret: config.sessionSecret,
           store: new MongoStore({
             mongooseConnection: mongoose.connection,
+            collection: config.sessions.collection,
             autoReconnect: true
-          })
+          }),
+          /*Preventing XSS vulnerabilities*/
+          cookie: config.sessions.cookie,
+          name: config.sessions.name
         }));
 
         // Initialize passport

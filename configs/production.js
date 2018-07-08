@@ -7,6 +7,15 @@ module.exports = {
     title: pkg.name + " [Development mode]"
   },
 
+  sessions: {
+		cookie: {
+			// secure cookie should be turned to true to provide additional
+			// layer of security so that the cookie is set only when working
+			// in HTTPS mode.
+			secure: true
+		},
+	},
+
   db: {
     url: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-production",
   },

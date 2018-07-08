@@ -1,4 +1,4 @@
-# MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB
+# MEN Full stack using Node.js, Express, MongoDB
 
 <img src="https://coligo.io/images/express.svg" height="50"> <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png" height="50"> <img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" height="50">
 
