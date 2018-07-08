@@ -9,6 +9,7 @@ The project is build with Node.js, Express, and Mongodb, Bootstrap 4, JavaScript
 ### [Live Demo](https://sch-volunteer-dashboard.herokuapp.com/projects)
 
 Credentials:
+
 Teacher account:
 username: testteacher
 password: Testteacher1
