@@ -6,7 +6,6 @@ node_modules
 public/css/styles.css
 
 # webpack bundle
-dist
 
 # Other temp files
 src/public/css/main.css
