@@ -33,10 +33,34 @@ password: Testfamily1
 
 ## Usage
 
+Install dependencies
 ```bash
 npm install
+```
+Run using development environment  
+```bash
+npm run dev
+```
+
+## Other available commands
+
+Bundle the code
+```bash
+npm run build
+```
+Run using deployment environment  
+```bash
 npm start
 ```
+Run using deployment environment through the bundled code  
+```bash
+npm run start:bundle
+```
+Run the test cases
+```bash
+npm run test
+```
+
 ## Screenshots
 
 ### Login screen
