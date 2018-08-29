@@ -41,7 +41,7 @@ function postRegister (req, res) {
 } // postRegister
 
 /* User login form. */
-function getLogin (req, res, next){
+function getLogin (req, res){
 
   res.render('user/login', {
               title: 'Login'
@@ -78,7 +78,7 @@ function getLogout (req, res){
 } // getLogout
 
 /* User forgot password form. */
-function getForgot (req, res, next){
+function getForgot (req, res){
 
   res.render('user/forgot', {
               title: 'forgot'
@@ -86,7 +86,7 @@ function getForgot (req, res, next){
 } // getForgot
 
 /* User forgot password. */
-function postForgot (req, res, next){
+function postForgot (req, res){
 
   async.waterfall([
     function generateToken (callback) {
@@ -156,7 +156,7 @@ function postForgot (req, res, next){
 } // postForgot
 
 /* User reset password form. */
-function getReset (req, res, next){
+function getReset (req, res){
 
 User.findById(req.params.id, (err, user) => {
   if (err || !user) {

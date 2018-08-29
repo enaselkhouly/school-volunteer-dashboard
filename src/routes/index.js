@@ -4,20 +4,6 @@
 
 function init(server) {
 
-  // // Include all routes in the routes folder
-  // fs.readdirSync(__dirname).forEach(function (file) {
-  //   // get file names with extension '.js' except 'index.js'
-  //   if( (file.substr(-3) == '.js') && (file !== 'index.js') ) {
-  //     const routePath = './' + file;
-  //
-  //     // link the server with the route
-  //     const route = require(routePath);
-  //
-  //     // Special case for child routes
-  //     server.use('', route);
-  //   }
-  // }); // for each
-  //
   // link the server with the routes
   const projectRoutes = require('./project');
   const taskRoutes = require('./task');
