@@ -2,7 +2,7 @@ const nodeExternals = require('webpack-node-externals'),
       miniCssExtractPlugin = require("mini-css-extract-plugin"),
       path = require('path');
 
-const devMode = process.env.Noed_ENV !== 'production';
+//const devMode = process.env.Noed_ENV !== 'production';
 
 module.exports = {
 
@@ -40,14 +40,14 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          devMode ? 'style-loader' : miniCssExtractPlugin.loader,
+          miniCssExtractPlugin.loader,
             'css-loader',
             'postcss-loader',
             'sass-loader',
           ],
       },
       {
-        test: /\.jpg$/,
+        test: /\.(jpg|png)$/,
         use: [
           {loader: "url-loader"}
         ]
