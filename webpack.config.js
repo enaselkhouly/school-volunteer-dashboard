@@ -14,7 +14,9 @@ module.exports = {
       __dirname: true
     },
 
-    entry: "./src/index.js",
+    entry: {
+      main: ["./src/index.js", "./src/public/scss/styles.scss"]
+    },
     output: {
       filename: "index.bundle.js",
       path: path.join(__dirname, "dist")
@@ -22,7 +24,7 @@ module.exports = {
 
     plugins: [
     new miniCssExtractPlugin({
-        filename: "styles.css"
+        filename: "../src/public/css/styles.css"
       })
     ],
     module: {
