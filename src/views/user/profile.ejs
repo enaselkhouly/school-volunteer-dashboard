@@ -12,6 +12,24 @@
 					<div class="innerpage-container">
           <div class="row justify-content-between">
             <div class="col-4">
+              <h5 class="font-weight-bold text-info">Username</h5>
+            </div>
+            <div class="col-8">
+              <h5><%= user.username%></h5>
+            </div>
+          </div>
+          <hr>
+          <div class="row justify-content-between">
+            <div class="col-4">
+              <h5 class="font-weight-bold text-info">Email</h5>
+            </div>
+            <div class="col-8">
+              <h5><%= user.email%></h5>
+            </div>
+          </div>
+          <hr>
+          <div class="row justify-content-between">
+            <div class="col-4">
               <h5 class="font-weight-bold text-info">User Type</h5>
             </div>
             <div class="col-8">
@@ -36,9 +54,8 @@
               <h5><%= vHr%> <%= vMin%> ( out of <%= rHr%> <%= rMin%> )</h5>
             </div>
           </div>
-          <hr>
           <%}%>
-          <% if (user.userType === 'Admin') {%>
+          <% if (currentUser.userType === 'Admin') {%>
           <div class="row mt-5">
             <div class="col-12">
               <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
