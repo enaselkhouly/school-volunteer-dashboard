@@ -1,9 +1,12 @@
 # Dependency directory
 node_modules
 
+# Bundle output
+dist/index.bundle.js
+
 # SASS temp files
 .sass-cache
-# src/public/css/styles.css
+ src/public/css/styles.css
 
 # webpack bundle
 
