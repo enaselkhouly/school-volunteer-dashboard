@@ -50,19 +50,16 @@ function getLogin (req, res){
 
 /* User login.*/
 function postLogin (req, res, next) {
-  console.log('inside postlogin');
   passport.authenticate('local', function(err, user) {
-    console.log('inside authentication ', err);
+
     if (err) {
       return next(err);
     }
     if (!user) {
-      console.log('no user');
       req.flash("error", "No user with those credentials is found!");
       return res.redirect('/login');
     }
     req.logIn(user, function(err) {
-      console.log('login ', err);
       if (err) {
         return next(err);
       }
