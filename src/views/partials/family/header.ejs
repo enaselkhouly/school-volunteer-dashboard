@@ -57,23 +57,14 @@
                 </li>
               </ul>
               <ul class="nav-right">
-                <li class="dropdown">
-                  <a href="/users/<%=currentUser._id%>" class="dropdown-toggler" id="navbarDropdown"
-										 role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i data-feather="user" class="user-logo"></i>
-                    <span class="user-text"><%= currentUser.displayName %></span>
-                  </a>
-									<!-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<li>
-											<a class="dropdown-item" href="#">logged in as Family</a>
-										</li>
-										<li class="dropdown-divider">
-										</li>
-										<li>
-											<a class="dropdown-item" href=>Log out</a>
-										</li>
-					        </ul> -->
-                </li>
+                <ul class="nav-right">
+                  <li>
+                    <a href="/users/<%=currentUser._id%>/profile">
+                      <i data-feather="user" class="icon-holder user-logo user"></i>
+                      <span class="user-text"><%= currentUser.displayName %></span>
+                    </a>
+                  </li>
+                </ul>
 				      </li>
               </ul>
             </div>
