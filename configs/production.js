@@ -12,7 +12,7 @@ module.exports = {
 			// secure cookie should be turned to true to provide additional
 			// layer of security so that the cookie is set only when working
 			// in HTTPS mode.
-			secure: false
+			secure: true
 		},
 	},
 
