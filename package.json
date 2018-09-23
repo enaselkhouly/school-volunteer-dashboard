@@ -52,7 +52,8 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.0",
     "uuid-token-generator": "^1.0.0",
-    "webpack": "^4.14.0"
+    "webpack": "^4.14.0",
+    "cross-env": "^5.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -61,7 +62,6 @@
     "bootstrap": "^4.1.1",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
-    "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
     "ejs-html-loader": "^3.1.0",
     "eslint": "^5.0.1",
