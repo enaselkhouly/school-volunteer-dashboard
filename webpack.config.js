@@ -24,7 +24,7 @@ module.exports = {
 
     plugins: [
     new miniCssExtractPlugin({
-        filename: "../src/public/css/styles.css"
+        filename: "../dist/styles.css"
       })
     ],
     module: {
@@ -56,7 +56,7 @@ module.exports = {
       },
       { test: /\.ejs$/,
         use: [
-          {loader: 'ejs-html-loader'}
+          {loader: 'ejs-loader'}
         ]
       },
 
