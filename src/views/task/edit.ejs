@@ -21,7 +21,7 @@
                     <label for="category"><strong>Select Category</strong></label>
                     <select class="form-control" name='task[category]' id="category">
                       <%
-                        let options = ['Uncategorized', 'At Home', 'In-campus', 'Outdoors'];
+                        let options = ['Uncategorized', 'At Home', 'On-campus', 'Off-campus'];
                         let selected = "";
                         for (let i = 0; i < options.length; i++) {
                           selected = (task.category === options[i]) ? "selected" : ""; %>

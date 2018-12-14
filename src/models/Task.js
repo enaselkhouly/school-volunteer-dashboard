@@ -15,8 +15,8 @@ const Status = {
 const Category = {
 	UNCATEGORIZED: "Uncategorized",
   ATHOME: "At Home",
-	INCAMPUS: "In-campus",
-	OUTDOORS: "Outdoors"
+	ONCAMPUS: "On-campus",
+	OFFCAMPUS: "Off-campus"
 };
 
 // Enum defining the action to be applied on the task to change its status
@@ -64,7 +64,7 @@ let taskSchema = mongoose.Schema({
           },
   category: {
               type: String,
-              enum: [Category.UNCATEGORIZED, Category.ATHOME,Category.INCAMPUS, Category.OUTDOORS],
+              enum: [Category.UNCATEGORIZED, Category.ATHOME,Category.ONCAMPUS, Category.OFFCAMPUS],
               default: Category.UNCATEGORIZED
             },
   isFixedTime: {

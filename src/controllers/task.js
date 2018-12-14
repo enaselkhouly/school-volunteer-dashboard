@@ -216,7 +216,7 @@ function putTask (req, res) {
       if (req.query.Complete) {
 
           if (task.completeTask(req.user._id)) {
-            msg = "The task is successfully completed!";
+            msg = "Thank you for completing the task :). Keep up the good work!";
           } else {
             return callback(new Error("The task could not be changed to completed!"));
           }
@@ -273,7 +273,7 @@ function signupTask (req, res) {
       req.flash("error", err.message)	;
       res.redirect(`back`);
     } else {
-      req.flash("success", "You are successfully signed up for the task!")	;
+      req.flash("success", "Thanks for signing up for this task!")	;
       res.redirect('back');
     }
   });
@@ -307,7 +307,7 @@ function cancelTask (req, res) {
         req.flash("error", err.message)	;
         res.redirect(`back`);
       } else {
-        req.flash("success", "The Task assign is successfully cancelled!")	;
+        req.flash("success", "The Task assign is cancelled!")	;
         res.redirect('back');
       }
   });
@@ -322,7 +322,7 @@ function completeTask (req, res) {
     }
     // Change task status
     if (task.completeTask(req.user._id)) {
-      req.flash("success", "The Task status is changed to completed!")	;
+      req.flash("success", "Thank you for completing the task :). Keep up the good work!!")	;
       res.redirect('back');
     } else {
       req.flash("error", "The task status could not be changed to completed!")	;

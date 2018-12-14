@@ -324,7 +324,7 @@ function statusQuery (statusQuery) {
 
 function categoryQuery (categories) {
 
-  let options = ['Uncategorized', 'At Home', 'In-campus', 'Outdoors'];
+  let options = ['Uncategorized', 'At Home', 'On-campus', 'Off-campus'];
 
   let category = [];
 

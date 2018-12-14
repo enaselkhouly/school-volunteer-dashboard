@@ -57,10 +57,10 @@
             shapes = {
               "Uncategorized": "code",
               "At Home": "home",
-              "In-campus": "award",
-              "Outdoors": "sun"
+              "On-campus": "award",
+              "Off-campus": "sun"
             }
-            shape = (task.category == 'Uncategorized' || task.category == "At Home" || task.category == "In-campus" || task.category == "Outdoors")? shapes[task.category] : "code"
+            shape = (task.category == 'Uncategorized' || task.category == "At Home" || task.category == "On-campus" || task.category == "Off-campus")? shapes[task.category] : "code"
             %>
               <p><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
           </div>
