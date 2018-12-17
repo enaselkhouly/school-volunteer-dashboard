@@ -90,6 +90,10 @@ let taskSchema = mongoose.Schema({
           }
 });
 
+/*
+* Methods
+*/
+
 taskSchema.methods.assignTask = function(userId, userName) {
 	let success = false;
 	if (this.status === Status.OPEN) {
@@ -106,9 +110,6 @@ taskSchema.methods.assignTask = function(userId, userName) {
 	return success;
 }
 
-/*
-* Methods
-*/
 
 // Sign up for a task
 taskSchema.methods.signUp = function(userId, userName) {
@@ -180,5 +181,13 @@ taskSchema.methods.unapproveTask = function( ) {
 	}
 	return success;
 } //unapproveTask
+
+taskSchema.methods.resetStatus = function( ) {
+  let success = true;
+
+  this.status = Status.OPEN;
+
+  return success;
+}//resetStatus
 
 module.exports = mongoose.model("Task", taskSchema);

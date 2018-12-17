@@ -24,6 +24,9 @@ router.get("/projects/:id/tasks/:task_id/edit", auth.isTaskOwner, taskController
 /* POST: edit task*/
 router.put("/projects/:id/tasks/:task_id", auth.isLoggedIn, taskController.putTask);
 
+/* POST: duplicate task*/
+router.post("/projects/:id/tasks/:task_id/duplicate", auth.isProjectOwner, taskController.duplicateTask);
+
 /* Signup for a Task*/
 router.get("/projects/:id/tasks/:task_id/signup", auth.isFamily, taskController.signupTask);
 

@@ -33,7 +33,7 @@ function postRegister (req, res) {
         res.redirect("/register");
         return;
       }
-
+      req.flash("success", "New user is created successfully!");
       res.redirect(`/users`);
 
   });

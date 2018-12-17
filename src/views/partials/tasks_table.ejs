@@ -88,6 +88,8 @@
               <td>
                 <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
                 </form>
+                <form id='form-duplicate-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>/duplicate" method="POST">
+                </form>
                 <form id="form-actions" action="/projects/<%=task.project.id%>/tasks/<%=task._id%>" class="form-actions" name="form-actions" method="POST">
                   <div class="form-group form-input hide">
                     <label for="task-time">task time? (in mins)</label>
@@ -116,6 +118,7 @@
                         <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
                         <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                       <%}%>
+                      <button class="btn btn-outline-secondary submit-action" form='form-duplicate-<%=task._id%>' type="submit" name='submit' value="Duplicate"><i data-feather="copy" class="copy"></i></button>
                     <% } %>
                   </div>
                 </form>

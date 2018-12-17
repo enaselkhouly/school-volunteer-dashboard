@@ -45,6 +45,8 @@ function getNewTask (req, res) {
 
 function postNewTask (req, res) {
 
+  // let numberOfSlots = (req.body.numberOfSlots > 1) ? req.body.numberOfSlots : 1;
+
   async.waterfall([
     // Fill task parameters
     function fillTaskParams (callback){
@@ -104,10 +106,12 @@ function postNewTask (req, res) {
 
         callback(null, newTask);
     });
+    console.log('fill params');
   },
   // Create Task
   function (task, callback){
     helpers.createTask(task, callback);
+    console.log('create task');
   },
   // Add task to the project model
   function addTaskToProject(task, callback) {
@@ -233,6 +237,84 @@ function putTask (req, res) {
     res.redirect(`/users/${req.user._id}`);
   });
 } // postEditTask
+
+function duplicateTask (req, res) {
+
+    async.waterfall([
+      // Fill task parameters
+      function fillTaskParams (callback){
+
+      Task.findById(req.params.task_id, (err, task) => {
+
+        if(err) {
+          return callback(err);
+        }
+
+        // Copy task information
+        let newTask = new Task ({
+          name: task.name,
+          description: task.description,
+          "author.id": task.author.id,
+          "author.displayName": task.author.displayName,
+          "project.id": task.project.id,
+          "project.name": task.project.name,
+          category: task.category,
+          estimatedTime: task.estimatedTime,
+          isFixedTime: task.isFixedTime,
+          volunteerTime: task.volunteerTime,
+          deadline: task.deadline,
+          endTime: task.endTime
+        });
+
+        // Reset status
+        newTask.resetStatus();
+
+        return callback(null, newTask);
+      });
+    },
+    // Create Task
+    function (task, callback){
+      helpers.createTask(task, callback);
+    },
+    // Add task to the project model
+    function addTaskToProject(task, callback) {
+      helpers.addTaskToProject(task.project.id, task._id, (err, project) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, task, project);
+      });
+    },
+    // Add Task to user
+    function addTaskToUser(task, project, callback){
+      helpers.addTaskToUser(req.user._id, task._id, (err) => {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, task, project);
+      });
+    },
+    // Add the task'project to the user projects
+    function addTaskProjectToUser(task, project, callback){
+      helpers.addProjectToUser(req.user._id, project._id, (err) => {
+        if (err) {
+          return callback(err);
+        }
+
+        callback(null);
+      });
+    }
+    ], function (err) {
+
+      if (err) {
+        req.flash("error", err.message);
+        res.redirect(`/users/${req.user._id}`);
+      } else {
+        req.flash("success", "The task is duplicated successfully! Make sure to update the task deadline based on your needs.")	;
+        res.redirect(`/users/${req.user._id}`);
+      }
+    });
+}
 
 function signupTask (req, res) {
 
@@ -450,6 +532,7 @@ module.exports = {
   postNewTask   : postNewTask,
   getEditTask   : getEditTask,
   putTask       : putTask,
+  duplicateTask : duplicateTask,
   signupTask    : signupTask,
   cancelTask    : cancelTask,
   completeTask  : completeTask,
