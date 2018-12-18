@@ -39,18 +39,13 @@ function getNewTask (req, res) {
     projectId: projectId,
     page :'task/new'
   });
-
-
 } // getNewTask
 
 function postNewTask (req, res) {
 
-  // let numberOfSlots = (req.body.numberOfSlots > 1) ? req.body.numberOfSlots : 1;
-
   async.waterfall([
     // Fill task parameters
     function fillTaskParams (callback){
-
       // Read new task information
       let newTask = new Task (req.body.task);
 
@@ -106,12 +101,10 @@ function postNewTask (req, res) {
 
         callback(null, newTask);
     });
-    console.log('fill params');
   },
   // Create Task
   function (task, callback){
     helpers.createTask(task, callback);
-    console.log('create task');
   },
   // Add task to the project model
   function addTaskToProject(task, callback) {
@@ -238,6 +231,41 @@ function putTask (req, res) {
   });
 } // postEditTask
 
+// function duplicateTask (req, res) {
+//
+//   Task.findById(req.params.task_id, (err, task) => {
+// console.log(req.params.task_id);
+//     if(err) {
+//       console.log(err);
+//       req.flash("error", err.message);
+//       res.redirect(`/users/${req.user._id}`);
+//
+//     } else {
+//       // Copy task information
+//       let newTask = new Task ({
+//         name: task.name,
+//         description: task.description,
+//         "author.id": task.author.id,
+//         "author.displayName": task.author.displayName,
+//         "project.id": task.project.id,
+//         "project.name": task.project.name,
+//         category: task.category,
+//         estimatedTime: task.estimatedTime,
+//         isFixedTime: task.isFixedTime,
+//         volunteerTime: task.volunteerTime,
+//         deadline: task.deadline,
+//         endTime: task.endTime
+//       });
+//
+//       // Reset status
+//       newTask.resetStatus();
+//
+//       res.locals.task = newTask;
+//       res.redirect(`/projects/${task.project.id}/tasks/new`);
+//     }
+//   });
+//
+// }
 function duplicateTask (req, res) {
 
     async.waterfall([
@@ -301,16 +329,17 @@ function duplicateTask (req, res) {
           return callback(err);
         }
 
-        callback(null);
+        callback(null, task);
       });
     }
-    ], function (err) {
+  ], function (err) {
 
       if (err) {
         req.flash("error", err.message);
         res.redirect(`/users/${req.user._id}`);
       } else {
         req.flash("success", "The task is duplicated successfully! Make sure to update the task deadline based on your needs.")	;
+        // res.redirect(`/projects/${task.project.id}/tasks/${task._id}/edit`);
         res.redirect(`/users/${req.user._id}`);
       }
     });
