@@ -113,7 +113,7 @@ taskSchema.methods.signUp = function(userId, userName, userEmail) {
 
     // Send email notification to task creator
     mailer.sendTaskStatusNotification(this.author.email,
-      `${this.assignedTo.displayName} signed up for ${this.name} in the ${this.project.name} project! If you need to share more details you can contact him/her at ${this.assignedTo.email}`);
+      `${this.assignedTo.displayName} signed up for "${this.name}" in the ${this.project.name} project! If you need to share more details you can contact him/her at ${this.assignedTo.email}`);
 
 		success = true;
 	}
@@ -128,7 +128,7 @@ taskSchema.methods.cancelTask = function( ) {
 
     // Send email notification to task creator
     mailer.sendTaskStatusNotification(this.author.email,
-      `Unfortunately, ${this.assignedTo.displayName} cancelled his/her sign up for ${this.name} in the ${this.project.name}.`);
+      `Unfortunately, ${this.assignedTo.displayName} cancelled his/her sign up for "${this.name}" in the ${this.project.name}.`);
 
 		this.assignedTo.id = null;
 		this.assignedTo.displayName = '';
@@ -152,7 +152,7 @@ taskSchema.methods.completeTask = function(userId) {
 
   // Send email notification to task creator
   mailer.sendTaskStatusNotification(this.author.email,
-    `Good news! ${this.assignedTo.displayName} has completed work for ${this.name} in the ${this.project.name}, please review and approve. Thank you!`);
+    `Good news! ${this.assignedTo.displayName} has completed work for "${this.name}" in the ${this.project.name}, please review and approve. Thank you!`);
 
 	return success;
 } // completeTask
@@ -171,7 +171,7 @@ taskSchema.methods.approveTask = function( ) {
 
   // Send email notification to task creator
   mailer.sendTaskStatusNotification(this.assignedTo.email,
-    `Thank you for competing your work for ${this.name} in the ${this.project.name}, teacher ${this.author.displayName} has approved the task. ${this.volunteerTime} mins has been added to your volunteer time.`);
+    `Thank you for competing your work for "${this.name}" in the ${this.project.name} project, teacher ${this.author.displayName} has approved the task. ${this.volunteerTime} mins has been added to your volunteer time.`);
 
 	return success;
 } // approveTask
@@ -190,7 +190,7 @@ taskSchema.methods.unapproveTask = function( ) {
 
   // Send email notification to task creator
   mailer.sendTaskStatusNotification(this.assignedTo.email,
-    `Unfortunatly, teacher ${this.author.displayName} unapproved your work for ${this.name} in the ${this.project.name}, please get back to the teacher to check out what is missing. Thank you so much for your understanding!`);
+    `Unfortunately, teacher ${this.author.displayName} unapproved your work for "${this.name}" in the ${this.project.name}, please get back to the teacher at ${this.author.email} to check what is missing. Thank you so much for your understanding!`);
 
 	return success;
 } //unapproveTask

@@ -6,6 +6,8 @@ const passportLocalMongoose   = require("passport-local-mongoose");
 
 mongoose.promise  = require('bluebird');
 
+const mailer      = require("../services/mailer");
+
 // User Type definition
 const UserType = {
   ADMIN: "Admin",
@@ -110,4 +112,8 @@ userSchema.methods.comparePassword = function(password, cb) {
 	});
 };
 
+userSchema.methods.newUserNotification = (email, username, password) => {
+  mailer.sendAccountNotification(email, username, password);
+
+}
 module.exports = mongoose.model("User", userSchema);

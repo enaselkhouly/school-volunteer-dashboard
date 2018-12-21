@@ -21,7 +21,24 @@ function sendTaskStatusNotification ( sendTo, msg ) {
 
   let subject = `Volunteer Task Status Update!`;
 
-  let html = fillHTML(msg); // html body
+  let html = fillHTML(subject, msg); // html body
+
+  send(sendTo, subject, html, function(err) {
+
+    if (err) {
+      console.log(err.message);
+    } else {
+      console.log("email sent");
+    }
+  });
+}
+
+function sendAccountNotification ( sendTo, username, password ) {
+
+  let subject = `Welcome to the School Volunteer Dashboard!`;
+
+  let msg = `<p style="text-align: left; font-size:21px;text-color:#000000">We are so excited to announce that the School Volunteer Dashboard is up and running, an application to help parents, PTA, and teachers communicate volunteer work easily. <br><br>Your login details are:<br> - Username: ${username} <br> - Password: ${password}<br><br>You can access the school volunteer dashboard at http://sva-volunteer.herokuapp.com/</p>`;
+  let html = fillHTML(subject, msg); // html body
 
   send(sendTo, subject, html, function(err) {
 
@@ -68,7 +85,7 @@ function send(recipients, subject, body, callback) {
     }
 }
 
-function fillHTML (msg) {
+function fillHTML (subject, msg) {
 return  `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -92,44 +109,50 @@ return  `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://
 </head>
 <body bgcolor="#f3f4f6" style="width:100% !important;size-adjust:100%;-ms-text-size-adjust:100%;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !important;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
     <center bgcolor="#f3f4f6" class="wrapper" style="width:100%;table-layout:fixed;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;" >
-        <div class="webkit" style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;" >
-          <table width="600" align="center" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;" >
-          <tr>
-          <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
-          <table class="outer" align="center" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;Margin:0 auto;width:100%;max-width:600px;background-color:#ffffff;background-image:none;background-repeat:repeat;background-position:top left;background-attachment:scroll;" >
-            <tr>
+      <table width="100%">
+        <tr>
+          <td bgcolor="#f3f4f6">
+            <div class="webkit" style="max-width:600px;margin-top:0;margin-bottom:0;margin-right:auto;margin-left:auto;" >
+              <table width="600" align="center" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;" >
+              <tr>
               <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
-                <table width="100%" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;" >
-                  <tr>
-                    <td bgcolor="#89c639" class="p30 align-center" style="padding-top:30px;padding-bottom:30px;padding-right:30px;padding-left:30px;text-align:center;" >
-                      <p class="heading" style="Margin:0;font-size:24px;color:#ffffff;Margin-bottom:0px;" >Volunteer Task Status Update!</p>
-                    </td>
-                  </tr>
-                </table>
+              <table class="outer" align="center" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;Margin:0 auto;width:100%;max-width:600px;background-image:none;background-repeat:repeat;background-position:top left;background-attachment:scroll;" >
+                <tr>
+                  <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
+                    <table width="100%" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;" >
+                      <tr>
+                        <td bgcolor="#89c639" class="p30 align-center" style="padding-top:30px;padding-bottom:30px;padding-right:20px;padding-left:20px;text-align:center;" >
+                          <p class="heading" style="Margin:0;font-size:30px;color:#ffffff;Margin-bottom:0px;" >${subject}</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr> <!-- One column -->
+                <!-- // Begin Module: One column - text only  -->
+                <tr>
+                  <td bgcolor="#ffffff" style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
+                    <table width="100%" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;" >
+                      <tr>
+                        <td style="padding-top:60px;padding-bottom:60px;padding-right:60px;padding-left:60px;text-align:center; text-color:#000000" >
+                          ${msg}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr> <!-- One column -->
+                <tr>
+                  <td style="padding-top:30px;padding-bottom:30px;padding-right:30px;padding-left:60px;text-align:center;">
+                    <p style="font-size:12px">Volunteer Dashboard | All rights reserved</p>
+                  </td>
+                </tr> <!-- footer -->
+              </table> <!-- Outer table-->
               </td>
-            </tr> <!-- One column -->
-            <!-- // Begin Module: One column - text only  -->
-            <tr>
-              <td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;" >
-                <table width="100%" style="border-collapse:collapse;border-spacing:0;font-family:sans-serif;color:#333333;" >
-                  <tr>
-                    <td style="padding-top:60px;padding-bottom:60px;padding-right:60px;padding-left:60px;text-align:center;" >
-                      <p style="Margin:0;font-size:14px;Margin-bottom:10px;" > ${msg} </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr> <!-- One column -->
-            <tr>
-              <td style="padding-top:30px;padding-bottom:30px;padding-right:30px;padding-left:60px;text-align:center;">
-                <p style="font-size:12px">Volunteer Dashboard | All rights reserved</p>
-              </td>
-            </tr> <!-- footer -->
-          </table> <!-- Outer table-->
+              </tr>
+              </table>
+            </div> <!-- Webkit -->
           </td>
-          </tr>
-          </table>
-        </div> <!-- Webkit -->
+        </tr>
+      </table>
     </center>
 </body>
 </html>
@@ -138,5 +161,6 @@ return  `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://
 module.exports = {
   init: init,
 	send: send,
-  sendTaskStatusNotification: sendTaskStatusNotification
+  sendTaskStatusNotification: sendTaskStatusNotification,
+  sendAccountNotification: sendAccountNotification
 };

@@ -27,12 +27,16 @@ function postRegister (req, res) {
 
   newUser.requiredVolunteerTime *= 60; // Convert from hrs to mins
 
-  User.register(newUser, req.body.password, (err) => {
+  User.register(newUser, req.body.password, (err, user) => {
       if(err){
         req.flash("error", err.message);
         res.redirect("/register");
         return;
       }
+
+      // send email notification to the added user
+      user.newUserNotification(user.email, user.username, req.body.password);
+
       req.flash("success", "New user is created successfully!");
       res.redirect(`/users`);
 
