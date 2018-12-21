@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
-    "start": "cross-env NODE_ENV=production nodemon src/index.js",
-    "start:bundle": "cross-env NODE_ENV=production node dist/index.bundle.js",
+    "dev": "node NODE_ENV=development nodemon src/index.js",
+    "start": "node NODE_ENV=production nodemon src/index.js",
+    "start:bundle": "node NODE_ENV=production node dist/index.bundle.js",
     "heroku-postbuild": "webpack -p --progress",
-    "test": "cross-env NODE_ENV=test mocha",
+    "test": "node NODE_ENV=test mocha",
     "lint": "eslint",
     "sass": "node-sass src/public/scss/styles.scss -o src/public/css"
   },
