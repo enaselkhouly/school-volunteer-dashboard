@@ -34,6 +34,23 @@ module.exports = {
 		collection: "sessions"
 	},
 
+  // Fake mailer
+  mailer: {
+    enabled: "true",
+    // from: 'School Dashboard <sender@example.com>',
+    // transporter: "smtp",
+    smtp: {
+      host: 'smtp-mail.outlook.com',
+      port: 587,
+      secureConnection: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD
+      }
+    },
+    // service: 'Hotmail'
+  },
+
 	ip: process.env.NODE_IP || "0.0.0.0",
 	port: process.env.PORT || 3000,
 	hostname: process.env.PORT || 'localhost',

@@ -52,7 +52,8 @@ function postNewTask (req, res) {
       // link the task with the user
       newTask.author = {
           id : req.user._id,
-          displayName: req.user.displayName
+          displayName: req.user.displayName,
+          email: req.user.email
         }
 
       // Update the estimated time
@@ -168,7 +169,6 @@ function putTask (req, res) {
   async.waterfall([
     function updateTask(callback){
       // TODO: update volunteer time only incase of task complete
-
       // Update the estimated time
       if (!req.query.Approve && !req.query.Complete) {
         req.body.task.estimatedTime = req.body.task.volunteerTime;
@@ -187,20 +187,19 @@ function putTask (req, res) {
         }
       }
 
-      Task.findByIdAndUpdate(req.params.task_id, req.body.task, (err, task) => {
+      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}, (err, task) => {
         if (err) {
           return callback(err);
         }
-
         callback(null, task, "Task is successfully edited!");
       });
     },
     function approveTask(task, msg, callback){
 
       if (req.query.Approve) {
-
+        console.log(task);
           if (task.approveTask()) {
-            msg = "The task is successfully approved!";
+            msg = `Thank you for reviewing and approving the task! You approved ${task.volunteerTime} mins.` ;
           } else {
             return callback(new Error("The task could not be approved!"));
           }
@@ -231,41 +230,6 @@ function putTask (req, res) {
   });
 } // postEditTask
 
-// function duplicateTask (req, res) {
-//
-//   Task.findById(req.params.task_id, (err, task) => {
-// console.log(req.params.task_id);
-//     if(err) {
-//       console.log(err);
-//       req.flash("error", err.message);
-//       res.redirect(`/users/${req.user._id}`);
-//
-//     } else {
-//       // Copy task information
-//       let newTask = new Task ({
-//         name: task.name,
-//         description: task.description,
-//         "author.id": task.author.id,
-//         "author.displayName": task.author.displayName,
-//         "project.id": task.project.id,
-//         "project.name": task.project.name,
-//         category: task.category,
-//         estimatedTime: task.estimatedTime,
-//         isFixedTime: task.isFixedTime,
-//         volunteerTime: task.volunteerTime,
-//         deadline: task.deadline,
-//         endTime: task.endTime
-//       });
-//
-//       // Reset status
-//       newTask.resetStatus();
-//
-//       res.locals.task = newTask;
-//       res.redirect(`/projects/${task.project.id}/tasks/new`);
-//     }
-//   });
-//
-// }
 function duplicateTask (req, res) {
 
     async.waterfall([
@@ -284,6 +248,7 @@ function duplicateTask (req, res) {
           description: task.description,
           "author.id": task.author.id,
           "author.displayName": task.author.displayName,
+          "author.email": task.author.email,
           "project.id": task.project.id,
           "project.name": task.project.name,
           category: task.category,
@@ -362,7 +327,7 @@ function signupTask (req, res) {
           return callback(err);
         }
         // signup
-        if (!task.signUp(user._id, user.displayName)) {
+        if (!task.signUp(user._id, user.displayName, user.email)) {
           return callback(new Error("You can not sign up for this task!"));
         }
 

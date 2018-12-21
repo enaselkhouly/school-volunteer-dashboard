@@ -19,21 +19,4 @@ module.exports = {
 				}
 			}
 		},
-
-		// Fake mailer
-		mailer: {
-			enabled: "true",
-			from: 'School Dashboard <sender@example.com>',
-			transporter: "smtp",
-			smtp: {
-				host: 'smtp.ethereal.email',
-				port: 587,
-				secure: false,
-				auth: {
-					user: 'hllmmt4fhdlbwkwk@ethereal.email',
-          pass: '8s2txRyFJZDEux5grW'
-				}
-			}
-		}
-
 	};

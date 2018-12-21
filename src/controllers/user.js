@@ -63,6 +63,7 @@ function postLogin (req, res, next) {
       if (err) {
         return next(err);
       }
+
       return res.redirect('/users/' + user._id);
     });
   })(req, res, next); // passport.authenticate
