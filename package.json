@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress",
-    "dev": "set NODE_ENV=development&& nodemon src/index.js",
-    "start": "set NODE_ENV=production&& nodemon src/index.js",
-    "start:bundle": "set NODE_ENV=production&& node dist/index.bundle.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js",
+    "start": "cross-env NODE_ENV=production nodemon src/index.js",
+    "start:bundle": "cross-env NODE_ENV=production node dist/index.bundle.js",
     "heroku-postbuild": "webpack -p --progress",
-    "test": "set NODE_ENV=test&& mocha",
+    "test": "cross-env NODE_ENV=test mocha",
     "lint": "eslint",
     "sass": "node-sass src/public/scss/styles.scss -o src/public/css"
   },
@@ -31,11 +31,11 @@
     "dbName": "men-dashboard"
   },
   "dependencies": {
+    "cross-env": "^5.2.0",
     "bcrypt": "^2.0.1",
     "bcrypt-nodejs": "0.0.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^2.0.1",
-    "cross-env": "^5.2.0",
     "ejs": "^2.5.9",
     "ejs-loader": "^0.3.1",
     "express": "^4.16.3",
