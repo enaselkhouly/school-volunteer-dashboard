@@ -18,6 +18,7 @@ function getRegister ( req, res) {
             currentUser: req.user,
             page: "register"
           });
+
 } // getRegister
 
 /* Register new User.*/

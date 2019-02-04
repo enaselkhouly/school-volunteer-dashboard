@@ -62,27 +62,15 @@ let userSchema = new  mongoose.Schema({
 });
 
 userSchema.methods.isAdmin = function ( ) {
-  let result = false;
-  if (this.userType === UserType.ADMIN) {
-    result = true;
-  }
-  return result;
+  return (this.userType === UserType.ADMIN) ? true : false;
 };
 
 userSchema.methods.isTeacher = function ( ) {
-  let result = false;
-  if (this.userType === UserType.TEACHER) {
-    result = true;
-  }
-  return result;
+  return (this.userType === UserType.TEACHER) ? true : false;
 };
 
 userSchema.methods.isFamily = function ( ) {
-  let result = false;
-  if (this.userType === UserType.FAMILY) {
-    result = true;
-  }
-  return result;
+  return (this.userType === UserType.FAMILY) ? true : false;
 };
 
 userSchema.plugin(passportLocalMongoose);
@@ -114,6 +102,6 @@ userSchema.methods.comparePassword = function(password, cb) {
 
 userSchema.methods.newUserNotification = (email, username, password) => {
   mailer.sendAccountNotification(email, username, password);
-
 }
+
 module.exports = mongoose.model("User", userSchema);

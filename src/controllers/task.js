@@ -9,12 +9,12 @@ function getTasks (req, res) {
   return res.redirect(`/projects/${req.params.id}`);
 } //getTasks
 
-/* Show all tasks */
+/* Show a specific task */
 function getTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  helpers.getTask(req.params.task_id, function (err, task) {
+  Task.findById(req.params.task_id, (err, task) => {
 
     if(err){
       req.flash("error", err.message);
@@ -105,29 +105,14 @@ function postNewTask (req, res) {
   },
   // Create Task
   function (task, callback){
-    helpers.createTask(task, callback);
-  },
-  // Add task to the project model
-  function addTaskToProject(task, callback) {
-    helpers.addTaskToProject(task.project.id, task._id, (err, project) => {
-      if (err) {
-        return callback(err);
-      }
-      callback(null, task, project);
+    Task.create(task, (err, task) => {
+      console.log('create task');
+      callback(err, task);
     });
   },
-  // Add Task to user
-  function addTaskToUser(task, project, callback){
-    helpers.addTaskToUser(req.user._id, task._id, (err) => {
-      if (err) {
-        return callback(err);
-      }
-      callback(null, task, project);
-    });
-  },
-  // Add the task'project to the user projects
-  function addTaskProjectToUser(task, project, callback){
-    helpers.addProjectToUser(req.user._id, project._id, (err) => {
+  function addTaskProjectToUser(task, callback){
+    console.log('add task project to user');
+    helpers.addProjectToUser(req.user._id, task.project.id, (err) => {
       if (err) {
         return callback(err);
       }
@@ -191,8 +176,14 @@ function putTask (req, res) {
         if (err) {
           return callback(err);
         }
+
+        if (!req.query.Approve && !req.query.Complete) {
+          task.sendTaskEditNotification();
+        }
+
         callback(null, task, "Task is successfully edited!");
       });
+
     },
     function approveTask(task, msg, callback){
 

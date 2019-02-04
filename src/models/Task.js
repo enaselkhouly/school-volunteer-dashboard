@@ -3,7 +3,9 @@
 const mongoose          = require("mongoose");
     mongoose.promise  = require('bluebird');
 
-const mailer      = require("../services/mailer");
+const mailer  = require("../services/mailer");
+const Project = require('../models/Project');
+const User = require('../models/User');
 
 // Enum defining the Task startus
 const Status = {
@@ -92,6 +94,31 @@ let taskSchema = mongoose.Schema({
   endTime: {
             type: Date
           }
+});
+
+/*
+* Hooks
+*/
+//Add task to project
+taskSchema.post('validate', (task, next) => {
+  console.log('Add task to project');
+  Project.findByIdAndUpdate(task.project.id,
+                        {$push: {"tasks": task._id}},
+                        (err) => {
+      next(err);
+  });
+});
+
+// Add task to user
+taskSchema.post('validate', (task, next) => {
+  console.log('add task to user');
+
+  User.findOneAndUpdate(
+    { _id: task.author.id, 'tasks.id': { $ne: task._id } }, // Condition
+    {$addToSet: { tasks: { _id: task._id } }}, // Update
+    (err) => {
+      next (err);
+  });
 });
 
 /*
@@ -190,10 +217,18 @@ taskSchema.methods.unapproveTask = function( ) {
 
   // Send email notification to task creator
   mailer.sendTaskStatusNotification(this.assignedTo.email,
-    `Unfortunately, teacher ${this.author.displayName} unapproved your work for "${this.name}" in the ${this.project.name}, please get back to the teacher at ${this.author.email} to check what is missing. Thank you so much for your understanding!`);
+    `Unfortunately, teacher ${this.author.displayName} unapproved your work for "${this.name}" in the ${this.project.name} project, please get back to the teacher at ${this.author.email} to check what is missing. Thank you so much for your understanding!`);
 
 	return success;
 } //unapproveTask
+
+taskSchema.methods.sendTaskEditNotification = function( ) {
+  if ((this.status != Status.OPEN) && this.assignedTo.email) {
+    mailer.sendTaskStatusNotification(this.assignedTo.email,
+      `This is to update you that the task "${this.name}" in the ${this.project.name} project, has been updated. Please check the task <a href="http://sva-volunteer.herokuapp.com/projects/${this.project.id}/tasks/${this._id}">here</a> to check the update. Thank You!`);
+  }
+  return;
+}
 
 taskSchema.methods.resetStatus = function( ) {
   let success = true;

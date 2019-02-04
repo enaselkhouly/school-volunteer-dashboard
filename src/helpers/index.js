@@ -252,21 +252,6 @@ function allTasks (query, callback ) {
 
 }
 
-function getTask ( taskId, callback ) {
-
-  Task.findById(taskId, (err, task) => {
-      callback(err, task);
-  });
-}
-
-function createTask( task, callback) {
-
-  Task.create(task, (err, task) => {
-
-    callback(err, task);
-  });
-}
-
 function deleteTask (task, callback) {
 
     task.remove( (err) => {
@@ -359,8 +344,6 @@ module.exports = {
   addTaskToUser         : addTaskToUser,
   removeTaskFromUser    : removeTaskFromUser,
   allTasks              : allTasks,
-  getTask               : getTask,
-  createTask            : createTask,
   deleteTask            : deleteTask,
   getVolunteerTime      : getVolunteerTime,
   statusQuery           : statusQuery,

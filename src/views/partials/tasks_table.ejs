@@ -114,8 +114,8 @@
                         <input class="btn btn-outline-success submit-action hide" type="submit" name="submit" value="Approve"/>
                         <button type="button" class="btn btn-outline-secondary" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
                       <% } %>
+                      <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
                       <% if(task.status == 'Open') {%>
-                        <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
                         <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                       <%}%>
                       <button class="btn btn-outline-secondary submit-action" form='form-duplicate-<%=task._id%>' type="submit" name='submit' value="Duplicate"><i data-feather="copy" class="copy"></i></button>
