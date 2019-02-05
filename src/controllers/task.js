@@ -106,12 +106,11 @@ function postNewTask (req, res) {
   // Create Task
   function (task, callback){
     Task.create(task, (err, task) => {
-      console.log('create task');
       callback(err, task);
     });
   },
   function addTaskProjectToUser(task, callback){
-    console.log('add task project to user');
+
     helpers.addProjectToUser(req.user._id, task.project.id, (err) => {
       if (err) {
         return callback(err);
@@ -269,15 +268,6 @@ function duplicateTask (req, res) {
         callback(null, task, project);
       });
     },
-    // Add Task to user
-    function addTaskToUser(task, project, callback){
-      helpers.addTaskToUser(req.user._id, task._id, (err) => {
-        if (err) {
-          return callback(err);
-        }
-        callback(null, task, project);
-      });
-    },
     // Add the task'project to the user projects
     function addTaskProjectToUser(task, project, callback){
       helpers.addProjectToUser(req.user._id, project._id, (err) => {
@@ -312,18 +302,13 @@ function signupTask (req, res) {
         callback(null, task);
       });
     },
-    function addTaskToUser(task, callback){
-      helpers.addTaskToUser(req.user._id, task._id, (err, user) => {
-        if (err) {
-          return callback(err);
-        }
+    function signupForTask(task, callback){
         // signup
-        if (!task.signUp(user._id, user.displayName, user.email)) {
+        if (!task.signUp(req.user._id, req.user.displayName, req.user.email)) {
           return callback(new Error("You can not sign up for this task!"));
         }
 
         callback(null, task);
-        });
       },
     function addProjectToUser(task, callback){
       helpers.addProjectToUser(req.user.id, task.project.id, (err) => {
@@ -349,14 +334,6 @@ function signupTask (req, res) {
 function cancelTask (req, res) {
 
   async.waterfall ([
-    function removeTaskFromUser (callback) {
-      helpers.removeTaskFromUser(req.user._id, req.params.task_id, (err) => {
-        if (err) {
-            return callback(err);
-        }
-        callback(null);
-      });
-    },
     function cancelTask (callback) {
       Task.findById(req.params.task_id, (err, task) => {
         if(err) {
@@ -451,30 +428,6 @@ function deleteTask (req, res) {
 
         callback(null, task);
       });
-    },
-    // remove Task from Author user
-    function removeTaskFromUser(task, callback) {
-
-      if (task && task.author) {
-        helpers.removeTaskFromUser (task.author.id, task._id, function (err) {
-          if (err) {
-            return callback(err);
-          }
-          callback(null, task);
-        });
-      }
-    },
-    // remove Task from Assigned user
-    function removeTaskFromAssigneeUser(task, callback) {
-
-      if (task && task.assignedTo) {
-        helpers.removeTaskFromUser (task.assignedTo.id, task._id, function (err) {
-          if (err) {
-            return callback(err);
-          }
-          callback(null, task);
-        });
-      }
     },
     // remove task from project
     function removeTaskFromProject (task, callback) {

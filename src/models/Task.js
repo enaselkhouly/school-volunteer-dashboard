@@ -101,23 +101,20 @@ let taskSchema = mongoose.Schema({
 */
 //Add task to project
 taskSchema.post('validate', (task, next) => {
-  console.log('Add task to project');
-  Project.findByIdAndUpdate(task.project.id,
-                        {$push: {"tasks": task._id}},
+
+  const condition = {
+      _id: task.project.id,
+      'tasks.id': { $ne: task._id }
+    };
+
+  const update = {
+    $addToSet: { tasks: { _id: task._id } }
+  };
+
+  Project.findByIdAndUpdate( condition, // Condition
+                             update, // Update
                         (err) => {
       next(err);
-  });
-});
-
-// Add task to user
-taskSchema.post('validate', (task, next) => {
-  console.log('add task to user');
-
-  User.findOneAndUpdate(
-    { _id: task.author.id, 'tasks.id': { $ne: task._id } }, // Condition
-    {$addToSet: { tasks: { _id: task._id } }}, // Update
-    (err) => {
-      next (err);
   });
 });
 

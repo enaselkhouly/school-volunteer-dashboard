@@ -191,53 +191,6 @@ function deleteProject (project, callback) {
     });
 }
 
-/*
-* Tasks helper functions
-*/
-
-function getUserTasks ( user, query, callback ) {
-
-  let info;
-
-  if (query != 'All') {
-    User.findById(user._id).populate({path: "tasks", match: {status: query} }).exec( (err, user) => {
-        callback(err, user.tasks, info);
-    });
-  } else {
-    User.findById(user._id).populate({path: "tasks"}).exec( (err, user) => {
-        callback(err, user.tasks, info);
-    });
-  }
-
-}
-
-function addTaskToUser (userId, taskId, callback){
-
-  let conditions = {
-      _id: userId,
-      'tasks.id': { $ne: taskId }
-  };
-
-  let update = {
-      $addToSet: { tasks: { _id: taskId } }
-  }
-
-  User.findOneAndUpdate(conditions, update, function(err, user) {
-      callback (err, user);
-  });
-}
-
-function removeTaskFromUser ( userId, taskId, callback ) {
-
-  let update = {
-    $pull: {"tasks": taskId}
-  };
-
-  User.findByIdAndUpdate(userId, update , (err, user) => {
-      callback (err, user);
-  });
-}
-
 function allTasks (query, callback ) {
 
   if (query != 'All') {
@@ -330,7 +283,6 @@ function categoryQuery (categories) {
 
 module.exports = {
   allUsers              : allUsers,
-  getUserTasks          : getUserTasks,
   getUserProjects       : getUserProjects,
   addProjectToUser      : addProjectToUser,
   removeProjectFromUser : removeProjectFromUser,
@@ -341,8 +293,6 @@ module.exports = {
   removeTaskFromProject : removeTaskFromProject,
   removeAllProjectTasks : removeAllProjectTasks,
   deleteProject         : deleteProject,
-  addTaskToUser         : addTaskToUser,
-  removeTaskFromUser    : removeTaskFromUser,
   allTasks              : allTasks,
   deleteTask            : deleteTask,
   getVolunteerTime      : getVolunteerTime,
