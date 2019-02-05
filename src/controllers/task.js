@@ -108,16 +108,6 @@ function postNewTask (req, res) {
     Task.create(task, (err, task) => {
       callback(err, task);
     });
-  },
-  function addTaskProjectToUser(task, callback){
-
-    helpers.addProjectToUser(req.user._id, task.project.id, (err) => {
-      if (err) {
-        return callback(err);
-      }
-
-      callback(null);
-    });
   }
   ], function (err) {
 
@@ -257,26 +247,7 @@ function duplicateTask (req, res) {
     },
     // Create Task
     function (task, callback){
-      helpers.createTask(task, callback);
-    },
-    // Add task to the project model
-    function addTaskToProject(task, callback) {
-      helpers.addTaskToProject(task.project.id, task._id, (err, project) => {
-        if (err) {
-          return callback(err);
-        }
-        callback(null, task, project);
-      });
-    },
-    // Add the task'project to the user projects
-    function addTaskProjectToUser(task, project, callback){
-      helpers.addProjectToUser(req.user._id, project._id, (err) => {
-        if (err) {
-          return callback(err);
-        }
-
-        callback(null, task);
-      });
+      Task.create(task, callback);
     }
   ], function (err) {
 
