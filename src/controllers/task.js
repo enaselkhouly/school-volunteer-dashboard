@@ -48,68 +48,59 @@ function getNewTask (req, res) {
 /* Post form for a new Task */
 function postNewTask (req, res) {
 
-  async.waterfall([
-    // Fill task parameters
-    function fillTaskParams (callback){
-      // Read new task information
-      let newTask = new Task (req.body.task);
-
-      // link the task with the user
-      newTask.author = {
-          id : req.user._id,
-          displayName: req.user.displayName,
-          email: req.user.email
-        }
-
-        // TODO
-      // Update the estimated time
-      req.body.task.estimatedTime = req.body.task.volunteerTime;
-
-      if (!newTask.deadline) {
-        return callback(new Error('Task deadline/date could not be left empty.'));
-      }
-
-      let time ="";
-      if (req.body.startTime) {
-        let startTime = req.body.startTime;
-        time = startTime.split ( ":" );
-        if (time[0]) {
-          newTask.deadline.setHours(time[0].trim());
-        }
-        if (time[1]) {
-          newTask.deadline.setMinutes(time[1].trim());
-        }
-      }
-
-      // Initialize and update the end time if exists
-      if (req.body.endTime) {
-        let endTime = req.body.endTime;
-        newTask.endTime = new Date(newTask.deadline.getTime());
-        let time = endTime.split ( ":" );
-        if (time[0]) {
-          newTask.endTime.setHours(time[0].trim());
-        }
-        if (time[1]) {
-          newTask.endTime.setMinutes(time[1].trim());
-        }
-      }
-
-      // Set the project id
-      newTask.project = {
-        _id: req.params.id
-      }
-
-      callback(null, newTask);
-
-  },
-  // Create Task
-  function (task, callback){
-    Task.create(task, (err, task) => {
-      callback(err, task);
-    });
+  // Validate
+  if (!req.body.task.deadline) {
+    const err = new Error('Task deadline/date could not be left empty.');
+    req.flash("error", err.message);
+    res.redirect(`/users/${req.user._id}`);
+    return;
   }
-  ], function (err) {
 
+  // Read new task information
+  let newTask = new Task (req.body.task);
+
+  // link the task with the user
+  newTask.author = {
+      id : req.user._id,
+      displayName: req.user.displayName,
+      email: req.user.email
+    }
+
+  // TODO
+  // Update the estimated time
+  req.body.task.estimatedTime = req.body.task.volunteerTime;
+
+  let time ="";
+  if (req.body.startTime) {
+    let startTime = req.body.startTime;
+    time = startTime.split ( ":" );
+    if (time[0]) {
+      newTask.deadline.setHours(time[0].trim());
+    }
+    if (time[1]) {
+      newTask.deadline.setMinutes(time[1].trim());
+    }
+  }
+
+  // Initialize and update the end time if exists
+  if (req.body.endTime) {
+    let endTime = req.body.endTime;
+    newTask.endTime = new Date(newTask.deadline.getTime());
+    let time = endTime.split ( ":" );
+    if (time[0]) {
+      newTask.endTime.setHours(time[0].trim());
+    }
+    if (time[1]) {
+      newTask.endTime.setMinutes(time[1].trim());
+    }
+  }
+
+  // Set the project id
+  newTask.project = {
+    _id: req.params.id
+  }
+
+  Task.create(newTask, (err) => {
     if (err) {
       req.flash("error", err.message);
       res.redirect(`/users/${req.user._id}`);
@@ -118,6 +109,7 @@ function postNewTask (req, res) {
       res.redirect(`/users/${req.user._id}`);
     }
   });
+
 } // postNewTask
 
 function getEditTask (req, res) {
