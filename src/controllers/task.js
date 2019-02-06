@@ -1,6 +1,7 @@
 'use strict';
 
 const Task = require('../models/Task'),
+      Project = require('../models/Project'),
       helpers = require("../helpers"),
       async = require('async');
 
@@ -14,7 +15,8 @@ function getTask (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
 
-  Task.findById(req.params.task_id, (err, task) => {
+  // Find task and populate project name
+  Task.findOne({_id: req.params.task_id}).populate('project', '_id name').exec( (err, task) => {
 
     if(err){
       req.flash("error", err.message);
@@ -30,6 +32,8 @@ function getTask (req, res) {
   });
 } //getTask
 
+
+/* Show for for a new Task */
 function getNewTask (req, res) {
 
   let userDir = req.user.userType.toLowerCase();
@@ -41,6 +45,7 @@ function getNewTask (req, res) {
   });
 } // getNewTask
 
+/* Post form for a new Task */
 function postNewTask (req, res) {
 
   async.waterfall([
@@ -56,6 +61,7 @@ function postNewTask (req, res) {
           email: req.user.email
         }
 
+        // TODO
       // Update the estimated time
       req.body.task.estimatedTime = req.body.task.volunteerTime;
 
@@ -88,20 +94,13 @@ function postNewTask (req, res) {
         }
       }
 
-      // Get project name
-      helpers.getProject(req.params.id, (err, project) => {
+      // Set the project id
+      newTask.project = {
+        _id: req.params.id
+      }
 
-        if (err) {
-          return callback(err);
-        }
-        // Set the project id and name
-        newTask.project = {
-          id: project._id,
-          name: project.name
-        }
+      callback(null, newTask);
 
-        callback(null, newTask);
-    });
   },
   // Create Task
   function (task, callback){
@@ -177,7 +176,7 @@ function putTask (req, res) {
     function approveTask(task, msg, callback){
 
       if (req.query.Approve) {
-        console.log(task);
+
           if (task.approveTask()) {
             msg = `Thank you for reviewing and approving the task! You approved ${task.volunteerTime} mins.` ;
           } else {
@@ -368,6 +367,7 @@ function approveTask (req, res) {
 function postApproveTask (req, res) {
   res.redirect('back');
 }
+
 function unapproveTask (req, res) {
 
     Task.findById(req.params.task_id, (err, task) => {
@@ -393,7 +393,6 @@ function deleteTask (req, res) {
 
     Task.findOneAndRemove({_id: req.params.task_id}, (err, task) => {
       if (err) {
-        console.log("error", err.message);
         req.flash("error", err.message);
         res.redirect(`/projects`);
         return;

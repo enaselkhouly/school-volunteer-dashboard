@@ -56,11 +56,8 @@ let taskSchema = mongoose.Schema({
     email: String
 	},
   project: {
-    id: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Project"
-		},
-		name: String
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Project"
   },
 	description: String,
   status: {
@@ -103,7 +100,7 @@ let taskSchema = mongoose.Schema({
 taskSchema.post('validate', (task, next) => {
 
   const condition = {
-      _id: task.project.id,
+      _id: task.project._id,
       'tasks.id': { $ne: task._id }
     };
 
