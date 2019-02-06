@@ -106,73 +106,6 @@ function addTaskToProject (projectId, taskId, callback){
   });
 }
 
-function removeTaskFromProject (userId, projectId, taskId, callback) {
-
-  async.waterfall([
-  function getProjectTasks (callback) {
-
-      let populate = {
-           path: 'tasks',
-           model: 'Task',
-           match: { $or: [{'assignedTo.id': userId}, {'author.id': userId}]}
-       };
-
-        Project.findById(projectId).populate(populate).exec( (err, project) => {
-
-          if (err) {
-              callback(err);
-          } else {
-            callback(null, project)
-          }
-        });
-  },
-  function removeTask(project, callback) {
-    let taskAuthorId = null;
-    let taskAssigneeId = null;
-
-    if (project.tasks && project.tasks.length == 1) {
-      taskAuthorId = project.tasks[0].author.id;
-      taskAssigneeId = project.tasks[0].assignedTo.id;
-    }
-    Project.findByIdAndUpdate(projectId,
-                          {$pull: {"tasks": taskId}},
-                          (err, project) => {
-      if (err) {
-        callback(err);
-      } else {
-        callback(null, project, taskAuthorId, taskAssigneeId);
-      }
-    });
-  },
-  function removeProject(project, taskAuthorId, taskAssigneeId, callback) {
-
-    if (!project.author.id.equals(userId) && taskAuthorId) {
-        // remove project from user
-        removeProjectFromUser(taskAuthorId, projectId, (err) => {
-          if (err) {
-              callback(err);
-          }
-        });
-      }
-
-      if (taskAssigneeId){
-        removeProjectFromUser(taskAssigneeId, projectId, (err) => {
-          if (err) {
-              callback(err);
-          }
-        });
-      }
-
-      callback(null);
-
-  }
-  ],
-  function (err) {
-    callback(err);
-  });
-}
-
-
 function removeAllProjectTasks (project, callback) {
 
   let condition = {
@@ -290,7 +223,6 @@ module.exports = {
   getProject            : getProject,
   createProject         : createProject,
   addTaskToProject      : addTaskToProject,
-  removeTaskFromProject : removeTaskFromProject,
   removeAllProjectTasks : removeAllProjectTasks,
   deleteProject         : deleteProject,
   allTasks              : allTasks,

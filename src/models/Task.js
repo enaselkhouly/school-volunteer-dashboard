@@ -118,6 +118,16 @@ taskSchema.post('validate', (task, next) => {
   });
 });
 
+// Remove task from project
+taskSchema.post('remove', (task, next) => {
+
+  Project.findByIdAndUpdate( task.project.id, // Condition
+                            { $pull: { tasks: task._id  } }, // Update
+                        (err) => {
+      next(err);
+  });
+});
+
 /*
 * Methods
 */

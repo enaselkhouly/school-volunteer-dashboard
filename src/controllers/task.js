@@ -316,6 +316,7 @@ function cancelTask (req, res) {
         callback(null);
       });
     }
+    // TODO remove Project from user
   ],
     function (err) {
       if (err){
@@ -386,52 +387,23 @@ function unapproveTask (req, res) {
       });
 } // unapproveTask
 
+
+// Delete task
 function deleteTask (req, res) {
 
-  async.waterfall([
-    // Get Task info
-    function getTaskinfo (callback) {
-
-      Task.findById (req.params.task_id, (err, task) => {
-        if (err) {
-          return callback(err);
-        }
-
-        callback(null, task);
-      });
-    },
-    // remove task from project
-    function removeTaskFromProject (task, callback) {
-
-      if (task.project) {
-        helpers.removeTaskFromProject(req.user._id, task.project.id, task._id, function (err) {
-          if (err) {
-            return callback(err);
-          }
-          callback(null, task);
-
-        });
+    Task.findOneAndRemove({_id: req.params.task_id}, (err, task) => {
+      if (err) {
+        console.log("error", err.message);
+        req.flash("error", err.message);
+        res.redirect(`/projects`);
+        return;
       }
-    },
-    function removeTask (task, callback) {
+      // Call the remove hook
+      task.remove();
 
-      // Delete task
-      task.remove(task._id, function (err) {
-        if (err) {
-          return callback(err);
-        }
-        callback(null, task);
-      });
-    }
-  ], function (err) {
-    if (err) {
-      req.flash("error", err.message);
-      res.redirect(`/projects`);
-    } else {
       req.flash("success", "The task is successfully deleted!");
       res.redirect("/projects");
-    }
-  });
+    });
 } // deleteTask
 
 module.exports = {
