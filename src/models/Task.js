@@ -4,8 +4,7 @@ const mongoose          = require("mongoose");
     mongoose.promise  = require('bluebird');
 
 const mailer  = require("../services/mailer");
-const Project = require('../models/Project');
-const User = require('../models/User');
+const Project = require('./Project');
 
 // Enum defining the Task startus
 const Status = {
@@ -108,7 +107,7 @@ taskSchema.post('validate', (task, next) => {
     $addToSet: { tasks: { _id: task._id } }
   };
 
-  Project.findByIdAndUpdate( condition, // Condition
+  task.model('Project').findByIdAndUpdate( condition, // Condition
                              update, // Update
                         (err) => {
       next(err);
@@ -118,7 +117,7 @@ taskSchema.post('validate', (task, next) => {
 // Remove task from project
 taskSchema.post('remove', (task, next) => {
 
-  Project.findByIdAndUpdate( task.project.id, // Condition
+  task.model('Project').findByIdAndUpdate( task.project, // Condition
                             { $pull: { tasks: task._id  } }, // Update
                         (err) => {
       next(err);
@@ -170,6 +169,26 @@ taskSchema.methods.cancelTask = function( ) {
 
 	return success;
 } // cancelTask
+
+// Remove Task Assignee
+taskSchema.methods.removeAssignee = function( ) {
+	let success = false;
+
+	if (this.assignedTo.id) {
+
+    // Send email notification to task creator
+    mailer.sendTaskStatusNotification(this.author.email,
+      `Unfortunately, ${this.assignedTo.displayName}'s account is deleted. The "${this.name}" task in the ${this.project.name}. he signedup for is now open.`);
+
+		this.assignedTo.id = null;
+		this.assignedTo.displayName = '';
+		this.status	= Status.OPEN;
+		this.save();
+		success = true;
+	}
+
+	return success;
+} // removeAssignee
 
 // Complete Task
 taskSchema.methods.completeTask = function(userId) {
@@ -229,7 +248,7 @@ taskSchema.methods.unapproveTask = function( ) {
 taskSchema.methods.sendTaskEditNotification = function( ) {
   if ((this.status != Status.OPEN) && this.assignedTo.email) {
     mailer.sendTaskStatusNotification(this.assignedTo.email,
-      `This is to update you that the task "${this.name}" in the ${this.project.name} project, has been updated. Please check the task <a href="http://sva-volunteer.herokuapp.com/projects/${this.project.id}/tasks/${this._id}">here</a> to check the update. Thank You!`);
+      `This is to update you that the task "${this.name}" in the ${this.project.name} project, has been updated. Please check the task <a href="http://sva-volunteer.herokuapp.com/projects/${this.project}/tasks/${this._id}">here</a> to check the update. Thank You!`);
   }
   return;
 }

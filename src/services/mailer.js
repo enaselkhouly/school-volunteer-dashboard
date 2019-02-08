@@ -27,8 +27,6 @@ function sendTaskStatusNotification ( sendTo, msg ) {
 
     if (err) {
       console.log(err.message);
-    } else {
-      console.log("email sent");
     }
   });
 }
@@ -44,8 +42,6 @@ function sendAccountNotification ( sendTo, username, password ) {
 
     if (err) {
       console.log(err.message);
-    } else {
-      console.log("email sent");
     }
   });
 }

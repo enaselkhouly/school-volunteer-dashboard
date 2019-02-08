@@ -134,48 +134,20 @@ function putProject (req, res) {
   });
 } // postEditProject
 
+// Delete project
 function deleteProject (req, res) {
 
-  async.waterfall([
-      function findProject (callback) {
-        Project.findById (req.params.id, (err, project) => {
-          if (err) {
-            return callback(err);
-          }
+  Project.findOneAndRemove({_id: req.params.id}, (err, project) => {
 
-          return callback(null, project);
-        });
-      },
-      function removeProjectFromUser(project, callback) {
-        // remove Project from Author user
-        helpers.removeProjectFromUser (project.author.id, project._id, function (err) {
-          if (err) { return callback(err) }
-
-           return callback(null, project);
-        });
-      },
-      function removeAllProjectTasks (project, callback) {
-        // remove project tasks
-        helpers.removeAllProjectTasks (project, function (err) {
-          if (err) { return callback(err) }
-
-          return callback(null, project);
-        });
-      },
-      function removeProject (project, callback){
-        //Delete project
-        project.remove(project._id, function (err) {
-          if (err) { return callback(err) }
-
-          return callback(null);
-        });
-      }
-  ], function (err) {
     if (err) {
       req.flash("error", err.message);
       res.redirect(`/users/${req.user._id}`);
     } else {
-      req.flash("success", "Successfully deleted the Project!");
+
+      // Call the remove hooks
+      project.remove();
+
+      req.flash("success", "The project is deleted successfully!");
       res.redirect(`/users/${req.user._id}`);
     }
   });

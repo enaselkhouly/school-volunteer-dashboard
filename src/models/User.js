@@ -7,6 +7,8 @@ const passportLocalMongoose   = require("passport-local-mongoose");
 mongoose.promise  = require('bluebird');
 
 const mailer      = require("../services/mailer");
+const Project = require('./Project');
+const Task = require('./Task');
 
 // User Type definition
 const UserType = {
@@ -61,6 +63,30 @@ let userSchema = new  mongoose.Schema({
     resetPasswordExpires: Date
 });
 
+/*
+* Hooks
+*/
+// Remove all projects by this author
+userSchema.pre('remove', (user, next) => {
+
+  if (this.isFamily()) {
+    // remove user from assigned tasks
+    Task.find({'assignee.id': user._id}, (err, task) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      task.removeAssignee();
+      next();
+    });
+  } else {
+    Project.remove({'author.id': user._id}, next);
+  }
+});
+
+/*
+* Methods
+*/
 userSchema.methods.isAdmin = function ( ) {
   return (this.userType === UserType.ADMIN) ? true : false;
 };
@@ -74,6 +100,7 @@ userSchema.methods.isFamily = function ( ) {
 };
 
 userSchema.plugin(passportLocalMongoose);
+
 
 /**
  * Password hashing

@@ -3,7 +3,7 @@
     <div class="card border-blue container-fluid">
       <div class="card-body">
         <div class="card-title">
-          <h3><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>"><%= task.name %></a></h3>
+          <h3><a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>"><%= task.name %></a></h3>
           <p>Project | <%= task.project.name %></p>
           <p>Created | <%= task.author.displayName%>, <%=task.created.toDateString()%></p>
         </div>
@@ -72,11 +72,11 @@
           </div>
           <%}%>
           <div class="col-12 mt-3">
-            <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
+            <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project._id%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
             </form>
-            <form id='form-duplicate-<%=task._id%>' action="/projects/<%=task.project.id%>/tasks/<%=task._id%>/duplicate" method="POST">
+            <form id='form-duplicate-<%=task._id%>' action="/projects/<%=task.project._id%>/tasks/<%=task._id%>/duplicate" method="POST">
             </form>
-            <form id="form-actions" action="/projects/<%=task.project.id%>/tasks/<%=task._id%>" class="form-actions" name="form-actions" method="POST">
+            <form id="form-actions" action="/projects/<%=task.project._id%>/tasks/<%=task._id%>" class="form-actions" name="form-actions" method="POST">
               <div class="form-group form-input hide">
                 <label for="task-time">task time?</label>
                 <input id="task-time" class="form-control" type="text" value="<%=task.volunteerTime%>" name="task[volunteerTime]"
@@ -85,7 +85,7 @@
               <div class="form-group">
                 <% if(user.userType == 'Family') {%>
                   <% if(task.status == 'Open') {%>
-                    <button type="button" class="btn btn-outline-success" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/signup">Signup</a></button>
+                    <button type="button" class="btn btn-outline-success" type="button"><a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>/signup">Signup</a></button>
                   <% } else if(task.status == 'In-progress') {%>
                     <% if (task.isFixedTime == false) {%>
                     <button type="button" class="btn btn-outline-warning form-btn" type="button">Complete</button>
@@ -93,15 +93,15 @@
                     <%} else {%>
                     <input class="btn btn-outline-warning submit-action" type="submit" name="submit" value="Complete">
                     <%}%>
-                    <button type="button" class="btn btn-outline-danger" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
+                    <button type="button" class="btn btn-outline-danger" type="button"><a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>/cancel">Cancel</a></button>                <% } %>
                 <%} else if(task.author.id.equals(user._id)) {%>
                   <% if(task.status == 'Pending Approval') {%>
                     <button class="btn btn-outline-success form-btn" type="button">Approve</button>
                     <input class="btn btn-outline-success submit-action hide" type="submit" name="submit" value="Approve"/>
-                    <button type="button" class="btn btn-outline-secondary" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
+                    <button type="button" class="btn btn-outline-secondary" type="button"><a href="/projects/<%=task.project._id%>/tasks/<%= task._id%>/unapprove">Unapprove</a></button>
                   <% } %>
                   <button class="btn btn-outline-secondary submit-action" form='form-duplicate-<%=task._id%>' type="submit" name='submit' value="Duplicate"><i data-feather="copy" class="copy"></i></button>
-                  <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project.id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
+                  <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
                   <% if(task.status == 'Open') {%>
                     <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
                   <%}%>

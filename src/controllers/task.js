@@ -1,7 +1,6 @@
 'use strict';
 
 const Task = require('../models/Task'),
-      Project = require('../models/Project'),
       helpers = require("../helpers"),
       async = require('async');
 
@@ -220,7 +219,7 @@ function duplicateTask (req, res) {
           "author.id": task.author.id,
           "author.displayName": task.author.displayName,
           "author.email": task.author.email,
-          "project.id": task.project.id,
+          "project": task.project,
           "project.name": task.project.name,
           category: task.category,
           estimatedTime: task.estimatedTime,
@@ -247,7 +246,7 @@ function duplicateTask (req, res) {
         res.redirect(`/users/${req.user._id}`);
       } else {
         req.flash("success", "The task is duplicated successfully! Make sure to update the task deadline based on your needs.")	;
-        // res.redirect(`/projects/${task.project.id}/tasks/${task._id}/edit`);
+        // res.redirect(`/projects/${task.project}/tasks/${task._id}/edit`);
         res.redirect(`/users/${req.user._id}`);
       }
     });
@@ -273,7 +272,7 @@ function signupTask (req, res) {
         callback(null, task);
       },
     function addProjectToUser(task, callback){
-      helpers.addProjectToUser(req.user.id, task.project.id, (err) => {
+      helpers.addProjectToUser(req.user.id, task.project, (err) => {
         if (err) {
           return callback(err);
         }

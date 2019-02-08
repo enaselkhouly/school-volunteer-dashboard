@@ -2,8 +2,9 @@
 
 const mongoose          = require("mongoose");
     mongoose.promise  = require('bluebird');
+const Task = require('./Task');
 
-// Task Schema definition
+// Project Schema definition
 let projectSchema = mongoose.Schema({
 	name: String,
   author: {
@@ -32,5 +33,27 @@ let projectSchema = mongoose.Schema({
           }
 }); // projectSchema
 
+/*
+* Hooks
+*/
+
+// Remove project tasks
+//Note: ES6 arrow funtion doesn't work with Mongoose hooks
+projectSchema.pre('remove', (next) => {
+
+  // This will remove the Task without calling the Task remove hooks which
+  // is the required behaviour. The  remove hook is linked with doc.remove by default.
+  Task.remove ({id: this.tasks}, next);
+});
+
+// Remove project from author user's projects
+projectSchema.post('remove', (project, next) => {
+
+  project.model('User').findByIdAndUpdate( project.author.id, // Condition
+                            { $pull: { projects: project._id  } }, // Update
+                        (err) => {
+      next(err);
+  });
+});
 
 module.exports = mongoose.model("Project", projectSchema);

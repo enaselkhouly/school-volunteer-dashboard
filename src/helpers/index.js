@@ -107,12 +107,7 @@ function addTaskToProject (projectId, taskId, callback){
 }
 
 function removeAllProjectTasks (project, callback) {
-
-  let condition = {
-      _id: project.tasks
-  };
-
-  Task.remove (condition, (err) => {
+  Task.remove ({id: project.tasks}, (err) => {
       callback(err);
   });
 }
