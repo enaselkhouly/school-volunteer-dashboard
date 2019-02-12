@@ -368,12 +368,16 @@ function deleteUser (req, res) {
       res.redirect("/users");
    } else {
 
-     User.findByIdAndRemove(req.params.id, function(err){
+     User.findByIdAndRemove(req.params.id, function(err, user){
 
        if(err){
           req.flash("error", err.message);
           res.redirect("/users");
        } else {
+
+          // Call the remove hooks
+          user.remove();
+
            req.flash("success", "Successfully deleted the User!");
            res.redirect("/users");
        }

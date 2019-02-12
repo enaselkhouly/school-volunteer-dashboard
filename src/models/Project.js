@@ -39,11 +39,11 @@ let projectSchema = mongoose.Schema({
 
 // Remove project tasks
 //Note: ES6 arrow funtion doesn't work with Mongoose hooks
-projectSchema.pre('remove', (next) => {
+projectSchema.pre('remove', function(next) {
 
   // This will remove the Task without calling the Task remove hooks which
   // is the required behaviour. The  remove hook is linked with doc.remove by default.
-  Task.remove ({id: this.tasks}, next);
+  Task.remove ({_id: this.tasks}, next);
 });
 
 // Remove project from author user's projects

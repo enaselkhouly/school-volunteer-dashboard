@@ -67,20 +67,33 @@ let userSchema = new  mongoose.Schema({
 * Hooks
 */
 // Remove all projects by this author
-userSchema.pre('remove', (user, next) => {
+userSchema.pre('remove', function(next) {
 
   if (this.isFamily()) {
     // remove user from assigned tasks
-    Task.find({'assignee.id': user._id}, (err, task) => {
+    Task.find({'assignedTo.id': this._id}, (err, tasks) => {
       if (err) {
         next(err);
         return;
       }
-      task.removeAssignee();
+      if (tasks) {
+        tasks.forEach( (task) => {
+          task.removeAssignee();
+        });
+      }
       next();
     });
   } else {
-    Project.remove({'author.id': user._id}, next);
+
+    // Delete all created Tasks
+    Task.find().remove({'author.id': this._id}, (err) => {
+      if (err) {
+        return next(err);
+      }
+    });
+
+    // Delete all created projects
+    this.model('Project').remove({'author.id': this._id}, next);
   }
 });
 

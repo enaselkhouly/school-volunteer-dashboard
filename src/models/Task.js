@@ -4,7 +4,6 @@ const mongoose          = require("mongoose");
     mongoose.promise  = require('bluebird');
 
 const mailer  = require("../services/mailer");
-const Project = require('./Project');
 
 // Enum defining the Task startus
 const Status = {
@@ -124,6 +123,7 @@ taskSchema.post('remove', (task, next) => {
   });
 });
 
+
 /*
 * Methods
 */
@@ -172,20 +172,19 @@ taskSchema.methods.cancelTask = function( ) {
 
 // Remove Task Assignee
 taskSchema.methods.removeAssignee = function( ) {
-	let success = false;
+	let success = true;
 
-	if (this.assignedTo.id) {
+	if (this.assignedTo.id && (this.status !== Status.CLOSED)) {
 
     // Send email notification to task creator
-    mailer.sendTaskStatusNotification(this.author.email,
-      `Unfortunately, ${this.assignedTo.displayName}'s account is deleted. The "${this.name}" task in the ${this.project.name}. he signedup for is now open.`);
+    success = mailer.sendTaskStatusNotification(this.author.email,
+      `Unfortunately, ${this.assignedTo.displayName}'s account is deleted. The "${this.name}" task in the ${this.project.name} he signedup for is now open.`);
 
 		this.assignedTo.id = null;
 		this.assignedTo.displayName = '';
 		this.status	= Status.OPEN;
 		this.save();
-		success = true;
-	}
+  }
 
 	return success;
 } // removeAssignee
