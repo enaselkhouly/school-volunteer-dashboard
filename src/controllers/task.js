@@ -224,6 +224,7 @@ function duplicateTask (req, res) {
           category: task.category,
           estimatedTime: task.estimatedTime,
           isFixedTime: task.isFixedTime,
+          isPTA: task.isPTA,
           volunteerTime: task.volunteerTime,
           deadline: task.deadline,
           endTime: task.endTime

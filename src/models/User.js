@@ -7,7 +7,6 @@ const passportLocalMongoose   = require("passport-local-mongoose");
 mongoose.promise  = require('bluebird');
 
 const mailer      = require("../services/mailer");
-const Project = require('./Project');
 const Task = require('./Task');
 
 // User Type definition
@@ -39,8 +38,7 @@ let userSchema = new  mongoose.Schema({
                     required: true
                    },
     requiredVolunteerTime: {
-      type: Number,
-      default: 900 //mins
+      type: Number
     },
     projects     : [
       {

@@ -30,54 +30,71 @@
                     </select>
                 </div>
                 <fieldset class="form-group">
-                    <lable><strong>Fixed time?</strong></lable>
-                    <div class="form-check">
-                      <% let checked = (task.isFixedTime == true) ? "checked" : ""; %>
-                      <label class="form-check-label">
-                        <input type="radio" class="form-check-input" value="true" name="task[isFixedTime]" id="optionsRadiosYes" <%=checked%>>
-                				Yes
-                			</label>
-                    </div>
-                    <div class="form-check">
-                      <% checked = (task.isFixedTime == false) ? "checked" : ""; %>
-                    	<label class="form-check-label">
-                        <input type="radio" class="form-check-input" value="false" name="task[isFixedTime]" id="optionsRadiosNo" <%=checked%>>
-                				No
-                			</label>
-                    </div>
-                  </fieldset>
-                  <div class="form-group">
-                    <label for="date"><strong>Date or Deadline</strong></label>
-                    <input type="text"  class="form-control" id="date-picker" name="task[deadline]" value="<%=("0" + (task.deadline.getMonth()+1)).slice(-2)%>/<%=("0"+task.deadline.getDate()).slice(-2)%>/<%=task.deadline.getFullYear()%>">
+                  <lable><strong>PTA?</strong></lable>
+                  <div class="form-check">
+                    <% let checked = (task.isPTA == true) ? "checked" : ""; %>
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" value="true" name="task[isPTA]" id="optionsRadiosYes" <%=checked%>>
+              				Yes
+              			</label>
                   </div>
-                  <div class="form-group">
-                    <label for="from"><strong>Time or From</strong></label>
-                    <%
-                      fromTime = ""
-                      if(task.deadline){
-                        fHr = ("0" + task.deadline.getHours()).slice(-2)
-                        fMin = ("0" + task.deadline.getMinutes()).slice(-2)
-                        fromTime = fHr + ":" + fMin
-                      }
-                    %>
-                    <input type="text"  class="form-control" id="from-time" name="task[deadline]" value="<%=fromTime%>">
+                  <div class="form-check">
+                    <% checked = (task.isPTA == false) ? "checked" : ""; %>
+                  	<label class="form-check-label">
+                      <input type="radio" class="form-check-input" value="false" name="task[isPTA]" id="optionsRadiosNo" <%=checked%>>
+              				No
+              			</label>
                   </div>
-                  <div class="form-group">
-                    <label for="to"><strong>To</strong></label>
-                    <%
-                    endTime = ""
-                    if (task.endTime) {
-                      hr = ("0" + task.endTime.getHours()).slice(-2);
-                      min = ("0"+ task.endTime.getMinutes()).slice(-2)
-                      endTime =  hr + ":" + min
+                </fieldset>
+                <fieldset class="form-group">
+                  <lable><strong>Fixed time?</strong></lable>
+                  <div class="form-check">
+                    <% checked = (task.isFixedTime == true) ? "checked" : ""; %>
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" value="true" name="task[isFixedTime]" id="radiosYes" <%=checked%>>
+              				Yes
+              			</label>
+                  </div>
+                  <div class="form-check">
+                    <% checked = (task.isFixedTime == false) ? "checked" : ""; %>
+                  	<label class="form-check-label">
+                      <input type="radio" class="form-check-input" value="false" name="task[isFixedTime]" id="radiosNo" <%=checked%>>
+              				No
+              			</label>
+                  </div>
+                </fieldset>
+                <div class="form-group">
+                  <label for="date"><strong>Date or Deadline</strong></label>
+                  <input type="text"  class="form-control" id="date-picker" name="task[deadline]" value="<%=("0" + (task.deadline.getMonth()+1)).slice(-2)%>/<%=("0"+task.deadline.getDate()).slice(-2)%>/<%=task.deadline.getFullYear()%>">
+                </div>
+                <div class="form-group">
+                  <label for="from"><strong>Time or From</strong></label>
+                  <%
+                    fromTime = ""
+                    if(task.deadline){
+                      fHr = ("0" + task.deadline.getHours()).slice(-2)
+                      fMin = ("0" + task.deadline.getMinutes()).slice(-2)
+                      fromTime = fHr + ":" + fMin
                     }
-                    %>
-                    <input type="text"  class="form-control" id="to-time" name="endTime" value="<%=endTime%>">
-                  </div>
-                	<div class="form-group">
-                		<label for="estimated-time"><strong>Estimated Time in minutes</strong></label>
-                		<input id="estimated-time" class="form-control" type="number" value="<%=task.volunteerTime%>" name="task[volunteerTime]"/>
-                	</div>
+                  %>
+                  <input type="text"  class="form-control" id="from-time" name="task[deadline]" value="<%=fromTime%>">
+                </div>
+                <div class="form-group">
+                  <label for="to"><strong>To</strong></label>
+                  <%
+                  endTime = ""
+                  if (task.endTime) {
+                    hr = ("0" + task.endTime.getHours()).slice(-2);
+                    min = ("0"+ task.endTime.getMinutes()).slice(-2)
+                    endTime =  hr + ":" + min
+                  }
+                  %>
+                  <input type="text"  class="form-control" id="to-time" name="endTime" value="<%=endTime%>">
+                </div>
+              	<div class="form-group">
+              		<label for="estimated-time"><strong>Estimated Time in minutes</strong></label>
+              		<input id="estimated-time" class="form-control" type="number" value="<%=task.volunteerTime%>" name="task[volunteerTime]"/>
+              	</div>
                 <div class="form-group">
                 	<label for="description"><strong>Description</strong></label>
                 	<textarea id="description" class="form-control" type="text" rows="10" name="task[description]"><%=task.description%>
