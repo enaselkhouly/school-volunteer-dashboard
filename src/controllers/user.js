@@ -27,6 +27,7 @@ function postRegister (req, res) {
   let newUser = new User(req.body.user);
 
   newUser.requiredVolunteerTime *= 60; // Convert from hrs to mins
+  newUser.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
   User.register(newUser, req.body.password, (err, user) => {
       if(err){
@@ -34,9 +35,8 @@ function postRegister (req, res) {
         res.redirect("/register");
         return;
       }
-
       // send email notification to the added user
-      user.newUserNotification(user.email, user.username, req.body.password);
+     user.newUserNotification(user.email, user.username, req.body.password);
 
       req.flash("success", "New user is created successfully!");
       res.redirect(`/users`);
@@ -297,15 +297,24 @@ function getUserProfile (req, res) {
       });
     },
     function getVolunteerTime (user, callback) {
-      helpers.getVolunteerTime(user, (err, volunteerTime) => {
+      helpers.getVolunteerTime(user, false/*isPTA*/, (err, volunteerTime) => {
         if (err) {
           return callback(err);
         }
 
         callback(null, user, volunteerTime);
       });
+    },
+    function getPtaVolunteerTime (user, volunteerTime, callback) {
+      helpers.getVolunteerTime(user, true/*isPTA*/, (err, ptaVolunteerTime) => {
+        if (err) {
+          return callback(err);
+        }
+
+        callback(null, user, volunteerTime, ptaVolunteerTime);
+      });
     }
-  ], function (err, user, volunteerTime) {
+  ], function (err, user, volunteerTime, ptaVolunteerTime) {
     if (err) {
       req.flash("error", err.message);
       res.redirect(`/users/${req.params.id}`);
@@ -313,6 +322,7 @@ function getUserProfile (req, res) {
       res.render(`user/${userDir}`, {
                   user: user,
                   volunteerTime: volunteerTime,
+                  ptaVolunteerTime: ptaVolunteerTime,
                   title: 'Profile',
                   page: 'profile'
                 });
@@ -346,6 +356,7 @@ function putUser (req, res){
   let user = req.body.user;
 
   user.requiredVolunteerTime *= 60; // Convert from hrs to mins
+  user.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
   User.findByIdAndUpdate(req.params.id, user, (err) => {
 

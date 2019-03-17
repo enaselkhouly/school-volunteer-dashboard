@@ -54,6 +54,23 @@
               <h5><%= vHr%> <%= vMin%> ( out of <%= rHr%> <%= rMin%> )</h5>
             </div>
           </div>
+          <hr>
+          <div class="row justify-content-between">
+            <div class="col-4">
+              <h5 class="font-weight-bold text-info">PTA Volunteer Time</h5>
+            </div>
+            <div class="col-8">
+              <%
+              vHr = (Math.floor(ptaVolunteerTime /60))? Math.floor(ptaVolunteerTime /60)+"hrs " : ""
+              vMin = (ptaVolunteerTime %60)? ptaVolunteerTime %60+"mins ": ""
+              vHr = (!vHr && !vMin)? "0 " : vHr
+              rHr = (Math.floor(user.requiredPtaVolunteerTime/60))? Math.floor(user.requiredPtaVolunteerTime/60)+ "hrs ": ""
+              rMin = (user.requiredPtaVolunteerTime%60) ? (user.requiredPtaVolunteerTime%60)+ "mins " : ""
+              rHr = (!rHr && !rMin)? "0 " : rHr
+              %>
+              <h5><%= vHr%> <%= vMin%> ( out of <%= rHr%> <%= rMin%> )</h5>
+            </div>
+          </div>
           <%}%>
           <% if (currentUser.userType === 'Admin') {%>
           <div class="row mt-5">

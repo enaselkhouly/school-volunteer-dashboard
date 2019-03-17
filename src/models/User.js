@@ -40,6 +40,9 @@ let userSchema = new  mongoose.Schema({
     requiredVolunteerTime: {
       type: Number
     },
+    requiredPtaVolunteerTime: {
+      type: Number
+    },
     projects     : [
       {
         type: mongoose.Schema.Types.ObjectId,

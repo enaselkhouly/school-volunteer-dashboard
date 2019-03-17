@@ -3,7 +3,6 @@
 const User    = require('../models/User');
 const Project = require('../models/Project');
 const Task    = require('../models/Task');
-const async   = require('async');
 
 /*
 * User helper functions.
@@ -140,13 +139,14 @@ function deleteTask (task, callback) {
     });
 }
 
-function getVolunteerTime (user, callback) {
+function getVolunteerTime (user, isPTA, callback) {
 
   Task.aggregate([
     {
       $match: {
               'status': 'Closed',
                "assignedTo.id": user._id,
+               'isPTA': isPTA
              }
     },
     {
