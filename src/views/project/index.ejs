@@ -21,11 +21,26 @@
         <div class="form-container bg-white mt-2 hide">
           <div class="form container-fluid form-content p-3">
               <form class="">
+                <h6>Filter by PTA type:</h6>
+                <%
+                  let checkboxes = ['PTA', 'Non PTA'];
+                  let checkboxesNames = [true, false];
+                  let checked = "";
+                  for (let i = 0; i < checkboxes.length; i++) {
+                    checked = (pta.indexOf(checkboxesNames[i]) > -1) ? "checked" : ""; %>
+                    <div class="form-check">
+                      <input type="checkbox" class="form-check-input ptaCheckBox" name="<%=checkboxesNames[i]%>" id="<%=checkboxes[i]%>" <%=checked%>>
+                      <label class="form-check-label" for="<%=checkboxes[i]%>">
+                        <%=checkboxes[i]%>
+                      </label>
+                    </div>
+                <%}%>
+                <hr>
                 <h6>Filter by category:</h6>
                     <%
-                      let checkboxes = ['Uncategorized', 'At Home', 'On-campus', 'Off-campus'];
-                      let checkboxesNames = ['uncategorized', 'athome', 'on-campus', 'off-campus'];
-                      let checked = "";
+                      checkboxes = ['Uncategorized', 'At Home', 'On-campus', 'Off-campus'];
+                      checkboxesNames = ['uncategorized', 'athome', 'on-campus', 'off-campus'];
+                      checked = "";
                       for (let i = 0; i < checkboxes.length; i++) {
                         checked = (category.indexOf(checkboxes[i]) > -1) ? "checked" : ""; %>
                         <div class="form-check">

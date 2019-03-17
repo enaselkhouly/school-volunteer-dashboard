@@ -19,7 +19,7 @@ function allUsers ( callback ) {
 * Project helper functions
 */
 
-function getUserProjects ( user, status, category, callback ) {
+function getUserProjects ( user, status, category, pta, callback ) {
 
   let populate = {
     path: "projects",
@@ -29,7 +29,8 @@ function getUserProjects ( user, status, category, callback ) {
        match: {
                   $or: [{'assignedTo.id': user._id}, {'author.id': user._id}],
                   category: {$in: category},
-                  status: {$in: status}
+                  status: {$in: status},
+                  isPTA: {$in: pta}
               }
     }
    };
@@ -66,14 +67,15 @@ function removeProjectFromUser ( userId, projectId, callback ) {
   });
 }
 
-function allProjects (user, status, category, callback ) {
+function allProjects (user, status, category, pta, callback ) {
 
   let populate = {
        path: 'tasks',
        model: 'Task',
        match: {
                   category: {$in: category},
-                  status: {$in: status}
+                  status: {$in: status},
+                  isPTA: {$in: pta}
               }
    };
 
@@ -187,6 +189,25 @@ function statusQuery (statusQuery) {
   return status;
 }
 
+function ptaQuery (ptaQuery) {
+
+  let options = [true, false];
+
+  let pta = [];
+
+  if (ptaQuery) {
+    for (let i = 0; i < options.length; i++) {
+      let option = options[i];
+      if (ptaQuery.indexOf(`${option}`) > -1) {
+        pta.push(options[i]);
+      }
+    }
+  } else {
+    pta = options;
+  }
+
+  return pta;
+}
 
 function categoryQuery (categories) {
 
@@ -224,5 +245,6 @@ module.exports = {
   deleteTask            : deleteTask,
   getVolunteerTime      : getVolunteerTime,
   statusQuery           : statusQuery,
-  categoryQuery         : categoryQuery
+  categoryQuery         : categoryQuery,
+  ptaQuery              : ptaQuery
 }

@@ -176,6 +176,40 @@ $("#filter-submit").click(function (e) {
       }
     }
   });
+
+  // Filter by PTA
+  $('.ptaCheckBox:checkbox').each( function () {
+    const filter = $(this).attr('name');
+
+    if ($(this).is(':checked')) {
+
+      // Add the filter if it was not added before
+      if (url.indexOf(`${filter}`) <= -1) {
+        if(url.indexOf('?') > -1) {
+            url = `${url}&pta=${filter}`;
+          } else {
+            url = `${url}?pta=${filter}`;
+          }
+      }
+    } else {
+      // Remove the filter if it became unchecked
+      if (url.indexOf(`&pta=${filter}`) > -1) {
+        url = url.replace(`&pta=${filter}`,"");
+      }
+      // This will match when the query after the '?'
+      else if (url.indexOf(`pta=${filter}`) > -1){
+        url = url.replace(`pta=${filter}`,"");
+      }
+      // remove the ? if this is the last query
+      let parts;
+      if(url.indexOf('?') > -1) {
+        parts = url.split('?');
+        if (!parts[1]) {
+          url = url.replace("?", "");
+        }
+      }
+    }
+  });
   window.location.href = url;
 });
 

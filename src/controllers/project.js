@@ -12,12 +12,13 @@ function getProjects (req, res) {
 
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
+  let pta = helpers.ptaQuery(req.query.pta);
 
   if (req.user.isFamily()) {
     status = 'Open';
   }
 
-  helpers.allProjects(req.user, status, category, (err, allProjects) => {
+  helpers.allProjects(req.user, status, category, pta, (err, allProjects) => {
 
     if(err){
       req.flash("error", err.message);
@@ -28,6 +29,7 @@ function getProjects (req, res) {
         projects: allProjects,
         status: status,
         category: category,
+        pta: pta,
         page: 'project/index'
       });
     }

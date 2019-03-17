@@ -260,8 +260,9 @@ function getUser (req, res) {
 
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
+  let pta = helpers.ptaQuery(req.query.pta);
 
-  helpers.getUserProjects( req.user, status, category, (err, projects) => {
+  helpers.getUserProjects( req.user, status, category, pta, (err, projects) => {
     if(err){
       req.flash("error", err.message);
       res.redirect(`/`);
@@ -274,6 +275,7 @@ function getUser (req, res) {
         projects: projects,
         status: status,
         category: category,
+        pta: pta,
         page: 'show'
       });
     }
