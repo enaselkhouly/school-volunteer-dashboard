@@ -68,8 +68,8 @@ function postLogin (req, res, next) {
       if (err) {
         return next(err);
       }
-
-      return res.redirect('/users/' + user._id);
+      let redirectTo = (req.session.redirectTo && (req.session.redirectTo !== '/logout'))? req.session.redirectTo : `/users/${user._id}`;
+      return res.redirect(redirectTo);
     });
   })(req, res, next); // passport.authenticate
 } // postLogin

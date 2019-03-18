@@ -9,7 +9,7 @@ function isLoggedInLocal (req, res) {
   if(!req.isAuthenticated()){
 
     status = false;
-
+    req.session.redirectTo = req.path;
     req.flash("error", "You need to be logged in!");
     res.redirect("/login");
   }
