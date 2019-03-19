@@ -47,10 +47,13 @@ function postRegister (req, res) {
 
 /* User login form. */
 function getLogin (req, res){
-
-  res.render('user/login', {
-              title: 'Login'
-            });
+  if (!req.user) {
+    res.render('user/login', {
+                title: 'Login'
+              });
+  } else {
+    return res.redirect(`/users/${req.user._id}`);
+  }
 } // getLogin
 
 /* User login.*/
