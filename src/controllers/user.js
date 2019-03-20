@@ -208,8 +208,9 @@ async.waterfall([
 
     //find the user
     User.findById(req.params.id, function (err, user) {
-      if (err){
-        return callback(err);
+      if (err || ! user){
+        const error = new Error('User not found');
+        return callback(error);
       }
 
       return callback(null, user);
@@ -230,7 +231,7 @@ async.waterfall([
       res.redirect(`back`);
     } else {
       req.flash('success', 'Password is successfully reset!');
-      res.redirect(`/users/${req.params.id}`);
+      res.redirect(`/users`);
     }
   });
 } // postReset
@@ -294,8 +295,9 @@ function getUserProfile (req, res) {
   async.waterfall([
     function getUser (callback) {
       User.findById(req.params.id, (err, user) => {
-        if (err) {
-          return callback(err);
+        if (err || !user) {
+          const error = new Error ('User not found');
+          return callback(error);
         }
 
         callback(null, user);

@@ -43,15 +43,18 @@ function getProject (req, res) {
 
   helpers.getProject(req.params.id, function (err, project) {
 
-    if(err){
-      req.flash("error", err.message);
-      res.redirect(`back`);
+    if(err || !project){
+      const error = new Error('Project not found');
+      req.flash("error", error.message);
+      res.redirect(`/projects`);
+      return;
     } else {
       res.render(`user/${userDir}`, {
         user: user,
         project: project,
         page: 'project/show'
       });
+      return;
     }
   });
 } //getProject

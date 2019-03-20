@@ -1,7 +1,5 @@
 'use strict';
 
-//const  fs  = require('fs');
-
 function init(server) {
 
   // link the server with the routes
@@ -13,6 +11,9 @@ function init(server) {
   server.use('', taskRoutes);
   server.use('', userRoutes);
 
+  server.use(function (req, res) {
+    res.render('pageNotFound');
+  });
 
   /**
    * GET *
@@ -23,13 +24,13 @@ function init(server) {
   }); // GET *
 
 
-  /**
-   * GET *
-   * Define a catch route for random-url.
-   */
-  server.get('*', (req, res) => {
-    res.send("Page could not be found!");
-  }); // GET *
+  // /**
+  //  * GET *
+  //  * Define a catch route for random-url.
+  //  */
+  // server.get('*', (req, res) => {
+  //   res.send('pageNotFound');
+  // }); // GET *
 
 } // init
 

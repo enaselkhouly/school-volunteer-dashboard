@@ -17,11 +17,11 @@ function getTask (req, res) {
   // Find task and populate project name
   Task.findOne({_id: req.params.task_id}).populate('project', '_id name').exec( (err, task) => {
 
-    if(err){
-      req.flash("error", err.message);
-      return res.redirect(`back`);
+    if(err || !task){
+      const error = new Error ('Task not found');
+      req.flash("error", error.message);
+      return res.redirect(`/projects`);
     }
-
     res.render(`user/${userDir}`, {
       user: user,
       task: task,
