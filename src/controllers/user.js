@@ -82,7 +82,7 @@ function getLogout (req, res){
 
   req.logout();
   req.flash("success", "Successfuly logged out!");
-  res.redirect("/");
+  res.redirect("/login");
 
 } // getLogout
 
