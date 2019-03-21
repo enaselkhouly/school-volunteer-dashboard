@@ -87,7 +87,12 @@
               <div class="fluid-container">
                 <div class="row">
                   <div class="col-xs-12 col-md-9">
-                    <a href="/projects/<%=project._id%>"><h3><%=project.name%></h3></a>
+                    <h3>
+                      <%if(project.isPTA){%>
+                      <span class="pta-sign icon-holder">PTA</span>
+                      <%}%>
+                      <a href="/projects/<%=project._id%>"><%=project.name%></a>
+                  </h3>
                   </div>
                   <div class="col-xs-12 col-md-3">
                     <div class="tools float-right">

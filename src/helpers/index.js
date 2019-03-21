@@ -23,14 +23,16 @@ function getUserProjects ( user, status, category, pta, callback ) {
 
   let populate = {
     path: "projects",
+    match: {
+      isPTA: {$in: pta}
+    },
     populate: {
        path: 'tasks',
        model: 'Task',
        match: {
                   $or: [{'assignedTo.id': user._id}, {'author.id': user._id}],
                   category: {$in: category},
-                  status: {$in: status},
-                  isPTA: {$in: pta}
+                  status: {$in: status}
               }
     }
    };
@@ -74,12 +76,10 @@ function allProjects (user, status, category, pta, callback ) {
        model: 'Task',
        match: {
                   category: {$in: category},
-                  status: {$in: status},
-                  isPTA: {$in: pta}
+                  status: {$in: status}
               }
    };
-
-  Project.find().populate(populate).exec( (err, allProjects) => {
+  Project.find({isPTA: pta}).populate(populate).exec( (err, allProjects) => {
       callback(err, allProjects);
   });
 
@@ -143,29 +143,47 @@ function deleteTask (task, callback) {
 
 function getVolunteerTime (user, isPTA, callback) {
 
-  Task.aggregate([
-    {
-      $match: {
-              'status': 'Closed',
-               "assignedTo.id": user._id,
-               'isPTA': isPTA
-             }
-    },
-    {
-      $group: {_id: 0,
-               total: {$sum: "$volunteerTime"}
-             }
-    }], (err, results) => {
+  Task.find({'status': 'Closed', "assignedTo.id": user._id}).populate('project', 'isPTA').exec( (err, tasks) => {
+    let volunteerTime = 0;
 
-      let volunteerTime = 0;
+    if (!err && tasks) {
 
-      if (!err) {
-        if (results.length > 0) {
-          volunteerTime = results[0].total;
+      for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].project.isPTA == isPTA) {
+          volunteerTime += tasks[i].volunteerTime;
         }
       }
-      return callback(err, volunteerTime);
+    }
+
+    return callback(err, volunteerTime);
   });
+
+  // Task.aggregate([
+  //     {
+  //       $unwind: '$project',
+  //     },
+  //     {
+  //       $match: {
+  //             'status': 'Closed',
+  //              "assignedTo.id": user._id,
+  //              "project.isPTA": isPTA
+  //            }
+  //   },
+  //   {
+  //     $group: {_id: 0,
+  //              total: {$sum: "$volunteerTime"}
+  //            }
+  //   }], (err, results) => {
+  //
+  //     let volunteerTime = 0;
+  //
+  //     if (!err) {
+  //       if (results.length > 0) {
+  //         volunteerTime = results[0].total;
+  //       }
+  //     }
+  //     return callback(err, volunteerTime);
+  // });
 }
 
 function statusQuery (statusQuery) {

@@ -78,10 +78,6 @@ let taskSchema = mongoose.Schema({
   volunteerTime: { type: Number,
                 default: 0
               },
-  isPTA: {
-    type: Boolean,
-    default: false
-  },
   created: {
             type: Date,
             default: Date.now

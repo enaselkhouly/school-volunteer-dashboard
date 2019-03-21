@@ -21,6 +21,10 @@ let projectSchema = mongoose.Schema({
       ref: "Task"
     }
   ],
+  isPTA: {
+    type: Boolean,
+    default: false
+  },
   assignedTo: [
     {
     type: mongoose.Schema.Types.ObjectId,

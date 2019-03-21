@@ -15,7 +15,7 @@ function getTask (req, res) {
   let userDir = req.user.userType.toLowerCase();
 
   // Find task and populate project name
-  Task.findOne({_id: req.params.task_id}).populate('project', '_id name').exec( (err, task) => {
+  Task.findOne({_id: req.params.task_id}).populate('project', '_id name isPTA').exec( (err, task) => {
 
     if(err || !task){
       const error = new Error ('Task not found');
@@ -224,7 +224,6 @@ function duplicateTask (req, res) {
           category: task.category,
           estimatedTime: task.estimatedTime,
           isFixedTime: task.isFixedTime,
-          isPTA: task.isPTA,
           volunteerTime: task.volunteerTime,
           deadline: task.deadline,
           endTime: task.endTime

@@ -17,6 +17,23 @@
                 	<input id="project-name"class="form-control" type="text" value="<%=project.name%>" maxlength="80" name="project[name]"
                 	required/>
                 </div>
+                <fieldset class="form-group">
+                  <lable><strong>PTA?</strong></lable>
+                  <div class="form-check">
+                    <% let checked = (project.isPTA == true) ? "checked" : ""; %>
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" value="true" name="project[isPTA]" id="optionsRadiosYes" <%=checked%>>
+              				Yes
+              			</label>
+                  </div>
+                  <div class="form-check">
+                    <% checked = (project.isPTA == false) ? "checked" : ""; %>
+                  	<label class="form-check-label">
+                      <input type="radio" class="form-check-input" value="false" name="project[isPTA]" id="optionsRadiosNo" <%=checked%>>
+              				No
+              			</label>
+                  </div>
+                </fieldset>
                 <div class="form-group">
                 	<label for="description"><strong>Description</strong></label>
                 	<textarea id="description" class="form-control" type="text" rows="10"

@@ -17,6 +17,21 @@
 								<input id="project-name"class="form-control" type="text" placeholder="Enter project summary ..." maxlength="80" name="project[name]"
 								required/>
 							</div>
+              <fieldset class="form-group">
+								<lable><strong>PTA?</strong></lable>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="project[isPTA]" id="optionsRadiosYes" value="true" required>
+										Yes
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="project[isPTA]" id="optionsRadiosNo" value="false" checked required>
+										No
+									</label>
+								</div>
+							</fieldset>
 							<div class="form-group">
 								<label for="description"><strong>Description</strong></label>
 								<textarea id="description" class="form-control" type="text" placeholder="Enter project description ..." rows="10"
