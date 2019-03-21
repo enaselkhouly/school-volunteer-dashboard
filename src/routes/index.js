@@ -7,14 +7,6 @@ function init(server) {
   const taskRoutes = require('./task');
   const userRoutes = require('./user');
 
-  server.use('', projectRoutes);
-  server.use('', taskRoutes);
-  server.use('', userRoutes);
-
-  server.use(function (req, res) {
-    res.render('pageNotFound');
-  });
-
   /**
    * GET *
    * Define a catch route for random-url.
@@ -23,6 +15,13 @@ function init(server) {
     res.redirect('/login');
   }); // GET *
 
+  server.use('', projectRoutes);
+  server.use('', taskRoutes);
+  server.use('', userRoutes);
+
+  server.use(function (req, res) {
+    res.render('pageNotFound');
+  });
 
   // /**
   //  * GET *
