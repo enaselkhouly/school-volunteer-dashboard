@@ -30,12 +30,12 @@
                 </div>
                 <% if (user.userType === 'Family') {%>
                 <div class="form-group">
-                  <label for="vtime"><strong>Required Volunteer Time in hrs</strong></label>
-                  <input id="vtime" class="form-control" type="number" name="user[requiredVolunteerTime]" value="<%=user.requiredVolunteerTime/60%>" required></input>
+                  <label for="vtime"><strong>Required Volunteer Time in mins</strong></label>
+                  <input id="vtime" class="form-control" type="number" name="user[requiredVolunteerTime]" value="<%=user.requiredVolunteerTime%>" required></input>
                 </div>
                 <div class="form-group">
-                  <label for="vPtatime"><strong>Required PTA Volunteer Time in hrs</strong></label>
-                  <input id="vPtatime" class="form-control" type="number" name="user[requiredPtaVolunteerTime]" value="<%=user.requiredPtaVolunteerTime/60%>" required></input>
+                  <label for="vPtatime"><strong>Required PTA Volunteer Time in mins</strong></label>
+                  <input id="vPtatime" class="form-control" type="number" name="user[requiredPtaVolunteerTime]" value="<%=user.requiredPtaVolunteerTime%>" required></input>
                 </div>
                 <%}%>
                 <div class="form-group">

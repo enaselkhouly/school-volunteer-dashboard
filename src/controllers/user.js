@@ -26,8 +26,8 @@ function postRegister (req, res) {
 
   let newUser = new User(req.body.user);
 
-  newUser.requiredVolunteerTime *= 60; // Convert from hrs to mins
-  newUser.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
+  // newUser.requiredVolunteerTime *= 60; // Convert from hrs to mins
+  // newUser.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
   User.register(newUser, req.body.password, (err, user) => {
       if(err){
@@ -362,8 +362,8 @@ function getEditUser (req, res) {
 function putUser (req, res){
   let user = req.body.user;
 
-  user.requiredVolunteerTime *= 60; // Convert from hrs to mins
-  user.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
+  // user.requiredVolunteerTime *= 60; // Convert from hrs to mins
+  // user.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
   User.findByIdAndUpdate(req.params.id, user, (err) => {
 
