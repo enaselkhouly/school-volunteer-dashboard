@@ -71,7 +71,7 @@ function postLogin (req, res, next) {
       if (err) {
         return next(err);
       }
-      let redirectTo = (req.session.redirectTo && (req.session.redirectTo !== '/logout'))? req.session.redirectTo : `/users/${user._id}`;
+      let redirectTo = (req.session.redirectTo)? req.session.redirectTo : `/users/${user._id}`;
       return res.redirect(redirectTo);
     });
   })(req, res, next); // passport.authenticate
@@ -81,7 +81,8 @@ function postLogin (req, res, next) {
 function getLogout (req, res){
 
   req.logout();
-  req.flash("success", "Successfuly logged out!");
+  // req.flash("success", "Successfuly logged out!");
+  req.session.destroy();
   res.redirect("/login");
 
 } // getLogout

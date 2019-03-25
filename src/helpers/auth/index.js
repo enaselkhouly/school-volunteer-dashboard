@@ -13,7 +13,6 @@ function isLoggedInLocal (req, res) {
     req.flash("error", "You need to be logged in!");
     res.redirect("/login");
   }
-
   return status;
 }
 
