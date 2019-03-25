@@ -6,10 +6,14 @@ dist/index.bundle.js
 
 # SASS temp files
 .sass-cache
-src/public/css/styles.css
+#src/public/css/styles.css
+#dist/styles.css
 
 # webpack bundle
 
 # Other temp files
-src/public/css/main.css
+#src/public/css/main.css
 twoSemsters.patch
+
+#login
+src/views/user/login.ejs
