@@ -33,10 +33,7 @@ module.exports = {
         exclude : /(node_modules)/,
         include: [path.resolve(__dirname, 'src')],
         use : {
-          loader: "babel-loader",
-          options: {
-            presets: ["env"]
-          }
+          loader: "babel-loader"
         }
       },
       {
