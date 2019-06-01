@@ -1,3 +1,5 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
 # Dependency directory
 node_modules
 
@@ -12,7 +14,6 @@ dist/index.bundle.js
 # webpack bundle
 
 # Other temp files
-#src/public/css/main.css
 twoSemsters.patch
 
 #login
