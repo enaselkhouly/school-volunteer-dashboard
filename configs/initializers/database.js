@@ -10,8 +10,14 @@ function connect (config) {
     mongoose.set('useCreateIndex', true);
 
 		const dbURL = process.env.DATABASEURL || config.db.url;
-		mongoose.connect(dbURL);
-		console.log('Database is connected on: ', dbURL);
+
+    mongoose.connect(dbURL, function(err) {
+      if (err) {
+        console.log(err.message);
+      }
+    });
+
+    console.log('Database is connected on: ', dbURL);
 }
 
 
