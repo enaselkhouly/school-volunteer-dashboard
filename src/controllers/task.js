@@ -151,7 +151,7 @@ function putTask (req, res) {
         }
       }
 
-      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}, (err, task) => {
+      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}).populate('project', '_id name isPTA').exec( (err, task) => {
         if (err) {
           return callback(err);
         }
@@ -220,7 +220,6 @@ function duplicateTask (req, res) {
           "author.displayName": task.author.displayName,
           "author.email": task.author.email,
           "project": task.project,
-          "project.name": task.project.name,
           category: task.category,
           estimatedTime: task.estimatedTime,
           isFixedTime: task.isFixedTime,
@@ -256,7 +255,7 @@ function signupTask (req, res) {
 
   async.waterfall([
     function getTaskInfo (callback){
-      Task.findById(req.params.task_id, (err, task) => {
+      Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
         if (err) {
           return callback(err);
         }
@@ -296,7 +295,7 @@ function cancelTask (req, res) {
 
   async.waterfall ([
     function cancelTask (callback) {
-      Task.findById(req.params.task_id, (err, task) => {
+      Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
         if(err) {
           return callback(err);
         }
@@ -321,7 +320,7 @@ function cancelTask (req, res) {
 
 function completeTask (req, res) {
 
-  Task.findById(req.params.task_id, (err, task) => {
+  Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
     if(err){
       req.flash("error", err.message);
       return res.redirect("back");
@@ -339,7 +338,7 @@ function completeTask (req, res) {
 
 function approveTask (req, res) {
 
-  Task.findById(req.params.task_id, (err, task) => {
+  Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
       if (err){
         req.flash("error", err.message)	;
         return res.redirect(`back`);
@@ -361,7 +360,7 @@ function postApproveTask (req, res) {
 
 function unapproveTask (req, res) {
 
-    Task.findById(req.params.task_id, (err, task) => {
+    Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
         if (err){
           req.flash("error", err.message)	;
           return res.redirect(`back`);
