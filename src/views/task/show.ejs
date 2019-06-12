@@ -19,13 +19,13 @@
                 <%
                  hrs = ( "0" + ((task.deadline.getHours() + 11) % 12 + 1)).slice(-2);
                  mins = ("0" + task.deadline.getMinutes()).slice(-2);
-                 zone = (hrs >= 12) ? "PM":"AM"
+                 zone = (task.deadline.getHours() >= 12) ? "PM":"AM"
                  fromTime =  hrs + ':' + mins + zone
 
                  if (task.endTime) {
                  toHrs = ( "0" + ((task.endTime.getHours() + 11) % 12 + 1)).slice(-2);
                  toMins = ("0" + task.endTime.getMinutes()).slice(-2);
-                 zone = (toHrs >= 12) ? "PM":"AM"
+                 zone = (task.deadline.getHours() >= 12) ? "PM":"AM"
                  toTime = "- " + toHrs + ':' + toMins + zone
                } else {
                  toTime = ""
