@@ -54,7 +54,7 @@ module.exports = {
 
 	ip: process.env.NODE_IP || "0.0.0.0",
 	port: process.env.PORT || 3000,
-	hostname: process.env.PORT || 'localhost',
+	hostname: process.env.HOSTNAME || 'localhost',
 
 	rootPath: global.rootPath,
 	dataFolder: path.join(global.rootPath, "data"),
