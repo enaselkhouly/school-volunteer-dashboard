@@ -8,7 +8,7 @@ module.exports = {
 		title: pkg.title,
 		version: pkg.version,
 		description: pkg.description,
-		url: "http://localhost:" + (process.env.PORT || 3000) + "/",
+		url: process.env.APPURL || "http://localhost:" + (process.env.PORT || 3000) + "/",
 		contactEmail: ""
 	},
 

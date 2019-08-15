@@ -36,7 +36,7 @@ function postRegister (req, res) {
         return;
       }
       // send email notification to the added user
-     user.newUserNotification(user.email, user.username, req.body.password);
+     user.newUserNotification(user.email, user.username, req.body.password, config.app.url);
 
       req.flash("success", "New user is created successfully!");
       res.redirect(`/users`);
