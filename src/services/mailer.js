@@ -138,7 +138,7 @@ return  `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://
                 </tr> <!-- One column -->
                 <tr>
                   <td style="padding-top:30px;padding-bottom:30px;padding-right:30px;padding-left:60px;text-align:center;">
-                    <p style="font-size:12px">Volunteer Dashboard | All rights reserved</p>
+                    <p style="font-size:12px">Volunteer Dashboard | All rights reserved (c) EnasElkhouly.com</p>
                   </td>
                 </tr> <!-- footer -->
               </table> <!-- Outer table-->
