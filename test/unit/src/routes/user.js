@@ -121,15 +121,15 @@ describe('User routes', function() {
     });
   });
 
-  context('GET /random-url', () => {
-    it('should return 200 OK', (done) => {
-      chai.request(server)
-        .get('/reset')
-        .end(function(err, res) {
-          res.should.have.status(200);
-          res.text.should.contain('Page could not be found!');
-          done(err);
-        });
-    });
-  });
+  // context('GET /random-url', () => {
+  //   it('should return 200 OK', (done) => {
+  //     chai.request(server)
+  //       .get('/reset')
+  //       .end(function(err, res) {
+  //         res.should.have.status(200);
+  //         res.text.should.contain('Page could not be found!');
+  //         done(err);
+  //       });
+  //   });
+  // });
 });
