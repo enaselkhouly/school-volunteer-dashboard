@@ -145,4 +145,8 @@ userSchema.methods.newUserNotification = (email, username, password, appurl) => 
   mailer.sendAccountNotification(email, username, password, appurl);
 }
 
+userSchema.methods.passwordResetNotification = (email, username, password, appurl) => {
+  mailer.sendPasswordResetNotification(email, username, password, appurl);
+}
+
 module.exports = mongoose.model("User", userSchema);

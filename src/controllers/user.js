@@ -192,7 +192,7 @@ async.waterfall([
       return callback(new Error("Invalid credentials, you must be admin to request a reset"));
     }
     // Compare the admin password with the saved password
-    req.user.authenticate(req.body.password, (err, result) => {
+    req.user.authenticate(req.body.adminPassword, (err, result) => {
 
       if (err) {
         return callback(err);
@@ -219,18 +219,26 @@ async.waterfall([
   },
   function resetPassword(user, callback){
 
-    user.setPassword(req.body.newPassword, function (err) {
+    user.setPassword(req.body.newUserPassword, function (err) {
         if (err){
           return callback(err);
         }
         user.save();
-        return callback(null);
+        return callback(null, user);
       });
-  }], function(err) {
+  }], function(err, user) {
     if (err) {
       req.flash('error', err.message);
       res.redirect(`back`);
     } else {
+      // send password reset notification to primary email
+      user.passwordResetNotification(user.email, user.username, req.body.newUserPassword, config.app.url);
+
+      // send password reset notification to secondary email
+      if (user.email2) {
+        user.passwordResetNotification(user.email2, user.username, req.body.newUserPassword, config.app.url);
+      }
+
       req.flash('success', 'Password is successfully reset!');
       res.redirect(`/users`);
     }
