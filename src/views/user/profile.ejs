@@ -84,13 +84,24 @@
           <hr>
           <div class="row justify-content-between">
             <div class="col col-sm-6">
-              <h5 class="font-weight-bold text-info pl-2">Email</h5>
+              <h5 class="font-weight-bold text-info pl-2">Primary Email</h5>
             </div>
             <div class="col col-sm-6">
               <h5 class="pl-2"><%= user.email%></h5>
             </div>
           </div>
           <hr>
+          <% if(user.email2) {%>
+          <div class="row justify-content-between">
+            <div class="col col-sm-6">
+              <h5 class="font-weight-bold text-info pl-2">Secondary Email</h5>
+            </div>
+            <div class="col col-sm-6">
+              <h5 class="pl-2"><%= user.email2%></h5>
+            </div>
+          </div>
+          <hr>
+          <% } %>
           <div class="row justify-content-between">
             <div class="col col-sm-6">
               <h5 class="font-weight-bold text-info pl-2">User Type</h5>
