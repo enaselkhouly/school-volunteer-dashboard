@@ -232,12 +232,7 @@ async.waterfall([
       res.redirect(`back`);
     } else {
       // send password reset notification to primary email
-      user.passwordResetNotification(user.email, user.username, req.body.newUserPassword, config.app.url);
-
-      // send password reset notification to secondary email
-      if (user.email2) {
-        user.passwordResetNotification(user.email2, user.username, req.body.newUserPassword, config.app.url);
-      }
+     user.passwordResetNotification(user.email, user.username, req.body.newUserPassword, config.app.url);
 
       req.flash('success', 'Password is successfully reset!');
       res.redirect(`/users`);
