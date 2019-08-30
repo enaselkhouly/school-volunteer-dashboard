@@ -36,7 +36,7 @@
             </div>
             <div class="col-6">
             <% if(task.assignedTo && task.assignedTo.displayName){ %>
-             <p><i data-feather="check-circle" class="icon-holder check-circle"></i><%= task.assignedTo.displayName%></p>
+             <p><i data-feather="check-circle" class="icon-holder check-circle"></i><a href="/users/<%=task.assignedTo.id%>/profile"><%= task.assignedTo.displayName%></a></p>
             <%} else {%>
               <p><i data-feather="circle" class="icon-holder circle"></i>No Volunteer</p>
             <%}%>
