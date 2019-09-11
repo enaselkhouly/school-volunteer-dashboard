@@ -80,6 +80,7 @@
       <div class="col-12 pl-0 pr-0 pl-md-3 pr-md-3">
         <% var i = 0;
           projects.forEach( (project) => {
+            if (project.tasks && project.tasks.length > 0) {
             let color = ['blue', 'purple', 'brown', 'green' , 'red']; %>
             <% if(i === color.length) { i = 0; }%>
           <div class="card border-<%=color[i]%> mb-3">
@@ -128,6 +129,7 @@
           </div> <!-- card -->
         <%
         (i == (color.length -1)) ? (i = 0) : i++;
+      }
       })%>
       </div>
     </div>
