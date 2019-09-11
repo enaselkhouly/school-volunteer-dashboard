@@ -85,9 +85,17 @@ function allProjects (user, status, category, pta, callback ) {
 
 }
 
-function getProject ( projectId, callback ) {
+function getProject ( projectId, status, callback ) {
 
-  Project.findById(projectId).populate({path: "tasks"}).exec( (err, project) => {
+  let populate = {
+       path: 'tasks',
+       model: 'Task',
+       match: {
+                  status: {$in: status}
+              }
+   };
+
+  Project.findById(projectId).populate(populate).exec( (err, project) => {
       callback(err, project);
   });
 }

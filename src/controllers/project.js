@@ -40,8 +40,14 @@ function getProjects (req, res) {
 function getProject (req, res) {
   let user = req.user;
   let userDir = req.user.userType.toLowerCase();
+  let status = helpers.statusQuery(req.query.status);
 
-  helpers.getProject(req.params.id, function (err, project) {
+  if (req.user.isFamily()) {
+    status = 'Open';
+  }
+
+
+  helpers.getProject(req.params.id, status , (err, project) => {
 
     if(err || !project){
       const error = new Error('Project not found');
