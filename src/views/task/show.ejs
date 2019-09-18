@@ -69,7 +69,7 @@
               <p><i data-feather="<%=shape%>" class="icon-holder <%=shape%> text-info"></i><%= task.category %></p>
           </div>
 
-          <%if(task.description) {%>
+          <%if(task.description && task.description.replace(/\s/g, '').length > 0) {%>
           <div class="col-12">
             <h7>Description: </h7>
             <p><%= task.description%></p>
