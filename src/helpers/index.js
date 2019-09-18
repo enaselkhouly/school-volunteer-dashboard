@@ -79,7 +79,7 @@ function allProjects (user, status, category, pta, callback ) {
                   status: {$in: status}
               }
    };
-  Project.find({isPTA: pta}).populate(populate).exec( (err, allProjects) => {
+  Project.find({isPTA: pta}).populate(populate).sort( {created: -1} ).exec( (err, allProjects) => {
       callback(err, allProjects);
   });
 
