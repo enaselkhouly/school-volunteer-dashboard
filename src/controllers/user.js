@@ -172,6 +172,9 @@ User.findById(req.params.id, (err, user) => {
   if (err || !user) {
     req.flash('error', 'User not found!');
     res.redirect('back');
+  } else if (!req.user.isAdmin()) {
+    req.flash('error', 'You don\'t have credentials to reset a password');
+    res.redirect('back');
   } else {
     res.render('user/admin', {
               title: 'reset',
@@ -182,6 +185,7 @@ User.findById(req.params.id, (err, user) => {
 });
 
 } // getReset
+
 
 function postReset (req, res) {
 
@@ -239,6 +243,82 @@ async.waterfall([
     }
   });
 } // postReset
+
+/* User change password form. */
+function getChangePassword (req, res){
+
+  let userDir = req.user.userType.toLowerCase();
+
+  res.render(`user/${userDir}`, {
+          title: 'change password',
+          page: 'changepassword',
+          user: req.user
+        });
+
+} // getChangePassword
+
+/* Post Password Change*/
+function postChangePassword (req, res) {
+
+  async.waterfall([
+    function checkCredentialls (callback) {
+      // Make sure the request is from the same user
+      if (req.user._id.toString() !== req.params.id.toString()) {
+        return callback(new Error("Invalid credentials, you can't change someone else's password"));
+      }
+      // Compare the old password with the saved password
+      req.user.authenticate(req.body.oldPassword, (err, result) => {
+
+        if (err) {
+          return callback(err);
+        }
+
+        if (result === false) {
+          return callback(new Error("Current password doesn't match database!"));
+        }
+
+        return callback(null);
+      });
+    },
+    function compareTwoPasswords (callback) {
+      if (req.body.newPassword !== req.body.reNewPassword) {
+        return callback(new Error("Password and re-entered password don't match"));
+      }
+      return callback(null);
+    },
+    function findUser(callback){
+
+      //find the user
+      User.findById(req.params.id, function (err, user) {
+        if (err || ! user){
+          const error = new Error('User not found');
+          return callback(error);
+        }
+
+        return callback(null, user);
+      });
+    },
+    function changePassword(user, callback){
+
+      user.setPassword(req.body.newPassword, function (err) {
+          if (err){
+            return callback(err);
+          }
+          user.save();
+          return callback(null);
+        });
+  }], function(err) {
+    if (err) {
+      req.flash('error', err.message);
+      res.redirect(`back`);
+    } else {
+
+      req.flash('success', 'Password is successfully changed!');
+      res.redirect(`/users/${req.user._id}/profile`);
+    }
+  });
+} // postChangePassword
+
 
 /* Get all users */
 function getUsers (req, res){
@@ -408,19 +488,21 @@ function deleteUser (req, res) {
 } // deleteUser
 
 module.exports = {
-  getRegister     : getRegister,
-  postRegister    : postRegister,
-  getLogin        : getLogin,
-  postLogin       : postLogin,
-  getLogout       : getLogout,
-  getForgot       : getForgot,
-  postForgot      : postForgot,
-  getReset        : getReset,
-  postReset       : postReset,
-  getUsers        : getUsers,
-  getUser         : getUser,
-  getUserProfile  : getUserProfile,
-  getEditUser     : getEditUser,
-  putUser         : putUser,
-  deleteUser      : deleteUser
+  getRegister       : getRegister,
+  postRegister      : postRegister,
+  getLogin          : getLogin,
+  postLogin         : postLogin,
+  getLogout         : getLogout,
+  getForgot         : getForgot,
+  postForgot        : postForgot,
+  getReset          : getReset,
+  postReset         : postReset,
+  getChangePassword : getChangePassword,
+  postChangePassword : postChangePassword,
+  getUsers          : getUsers,
+  getUser           : getUser,
+  getUserProfile    : getUserProfile,
+  getEditUser       : getEditUser,
+  putUser           : putUser,
+  deleteUser        : deleteUser
 };

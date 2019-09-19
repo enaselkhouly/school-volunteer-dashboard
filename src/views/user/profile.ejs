@@ -99,19 +99,21 @@
               <h5 class="pl-2"><%= user.userType%></h5>
             </div>
           </div>
-          <% if (currentUser.userType === 'Admin') {%>
           <div class="row mt-5">
             <div class="col-12">
+              <% if (user._id.equals(currentUser._id)){%>
+                <a class="btn btn-outline-info" href="/users/<%=user._id%>/changepassword">Change Password</a>
+              <%}%>
+              <% if (currentUser.userType === 'Admin') {%>
               <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
               <form id="delete-form" action="/users/<%= user._id%>?_method=DELETE" method="POST">
-                <% if (user._id.equals(currentUser._id)){%>
-                  <button class="btn btn-outline-secondary" disabled>Delete</button>
-                <%} else {%>
+                <% if (!user._id.equals(currentUser._id)){%>
                 <button class="btn btn-outline-danger">Delete</button>
                 <%}%>
+              </form>
+              <%}%>
             </div>
           </div>
-          <%}%>
           </div>
         </div>
       </div>

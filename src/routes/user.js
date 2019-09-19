@@ -33,6 +33,12 @@ router.get('/users/:id/reset', auth.isAdmin, userController.getReset);
 /* Post reset password form.*/
 router.post('/users/:id/reset', auth.isAdmin, userController.postReset);
 
+/* Change password form.*/
+router.get('/users/:id/changepassword', auth.isLoggedIn, userController.getChangePassword);
+
+/* Post change password form.*/
+router.post('/users/:id/changepassword', auth.isLoggedIn, userController.postChangePassword);
+
 /* Get all users */
 router.get("/users", auth.isAdmin, userController.getUsers);
 
