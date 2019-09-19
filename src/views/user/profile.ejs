@@ -105,12 +105,15 @@
                 <a class="btn btn-outline-info" href="/users/<%=user._id%>/changepassword">Change Password</a>
               <%}%>
               <% if (currentUser.userType === 'Admin') {%>
-              <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
-              <form id="delete-form" action="/users/<%= user._id%>?_method=DELETE" method="POST">
-                <% if (!user._id.equals(currentUser._id)){%>
-                <button class="btn btn-outline-danger">Delete</button>
+                <% if (!currentUser._id.equals(user._id)){%>
+                  <button class="btn btn-outline-info"><a href="/users/<%=user._id%>/reset">Reset Password</a></button>
                 <%}%>
-              </form>
+                <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
+                <form id="delete-form" action="/users/<%= user._id%>?_method=DELETE" method="POST">
+                  <% if (!user._id.equals(currentUser._id)){%>
+                  <button class="btn btn-outline-danger">Delete</button>
+                  <%}%>
+                </form>
               <%}%>
             </div>
           </div>
