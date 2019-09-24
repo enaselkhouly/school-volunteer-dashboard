@@ -3,33 +3,22 @@
 function init(server) {
 
   // link the server with the routes
+  const homeRoute = require('./home');
   const projectRoutes = require('./project');
   const taskRoutes = require('./task');
   const userRoutes = require('./user');
 
-  /**
-   * GET *
-   * Define a catch route for random-url.
-   */
-  server.get('/', (req, res) => {
-    res.redirect('/login');
-  }); // GET *
-
+  server.use('', homeRoute);
   server.use('', projectRoutes);
   server.use('', taskRoutes);
   server.use('', userRoutes);
 
-  server.use(function (req, res) {
+   /*
+   * Define a catch route for random-url.
+   */
+  server.use( (req, res) => {
     res.render('pageNotFound');
   });
-
-  // /**
-  //  * GET *
-  //  * Define a catch route for random-url.
-  //  */
-  // server.get('*', (req, res) => {
-  //   res.send('pageNotFound');
-  // }); // GET *
 
 } // init
 
