@@ -222,7 +222,7 @@ taskSchema.methods.approveTask = function( ) {
 
   // Send email notification to task creator
   mailer.sendTaskStatusNotification(this.assignedTo.email,
-    `Thank you for completing your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, teacher ${this.author.displayName} has approved the task. ${this.volunteerTime} mins has been added to your volunteer time.`);
+    `Thank you for completing your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, ${this.author.displayName} has approved the task. ${this.volunteerTime} mins has been added to your volunteer time.`);
 
 	return success;
 } // approveTask
@@ -241,7 +241,7 @@ taskSchema.methods.unapproveTask = function( ) {
 
   // Send email notification to task creator
   mailer.sendTaskStatusNotification(this.assignedTo.email,
-    `Unfortunately, teacher ${this.author.displayName} unapproved your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, please get back to the teacher at ${this.author.email} to check what is missing. Thank you so much for your understanding!`);
+    `Unfortunately, ${this.author.displayName} unapproved your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, please get back to the teacher at ${this.author.email} to check what is missing. Thank you so much for your understanding!`);
 
 	return success;
 } //unapproveTask
