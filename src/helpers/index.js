@@ -30,7 +30,8 @@ function getUserProjects ( user, status, category, pta, callback ) {
        path: 'tasks',
        model: 'Task',
        match: {
-                  $or: [{'assignedTo.id': user._id}, {'author.id': user._id}],
+                  $or: [
+                    {'assignedTo.id': user._id}, {'author.id': user._id}],
                   category: {$in: category},
                   status: {$in: status}
               }
@@ -76,7 +77,11 @@ function allProjects (user, status, category, pta, callback ) {
        model: 'Task',
        match: {
                   category: {$in: category},
-                  status: {$in: status}
+                  status: {$in: status},
+                  $or: [
+                    {status: {$ne: 'Open'}},
+                    {deadline: {$gte: new Date()}}
+                  ]
               }
    };
   Project.find({isPTA: pta}).populate(populate).sort( {created: -1} ).exec( (err, allProjects) => {
@@ -215,6 +220,18 @@ function statusQuery (statusQuery) {
   return status;
 }
 
+function isFilterByStatus (statusQuery) {
+
+    let options = ['Open', 'In-progress', 'Pending Approval', 'Closed'];
+    let isFiltered = false;
+
+    if (statusQuery && (options.length !== statusQuery.length)) {
+      isFiltered = true;
+    }
+
+    return isFiltered;
+}
+
 function ptaQuery (ptaQuery) {
 
   let options = [true, false];
@@ -233,6 +250,18 @@ function ptaQuery (ptaQuery) {
   }
 
   return pta;
+}
+
+function isFilterByPTA (ptaQuery) {
+
+    let options = [true, false];
+    let isFiltered = false;
+
+    if (ptaQuery && (options.length !== ptaQuery.length)) {
+      isFiltered = true;
+    }
+
+    return isFiltered;
 }
 
 function categoryQuery (categories) {
@@ -256,6 +285,19 @@ function categoryQuery (categories) {
   return category;
 }
 
+
+function isFilterByCategory (categoryQuery) {
+
+    let options = ['Uncategorized', 'At Home', 'On-campus', 'Off-campus'];
+    let isFiltered = false;
+
+    if (categoryQuery && (options.length !== categoryQuery.length)) {
+      isFiltered = true;
+    }
+
+    return isFiltered;
+}
+
 module.exports = {
   allUsers              : allUsers,
   getUserProjects       : getUserProjects,
@@ -271,6 +313,9 @@ module.exports = {
   deleteTask            : deleteTask,
   getVolunteerTime      : getVolunteerTime,
   statusQuery           : statusQuery,
+  isFilterByStatus      : isFilterByStatus,
   categoryQuery         : categoryQuery,
-  ptaQuery              : ptaQuery
+  isFilterByCategory    : isFilterByCategory,
+  ptaQuery              : ptaQuery,
+  isFilterByPTA         : isFilterByPTA,
 }

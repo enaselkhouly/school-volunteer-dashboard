@@ -13,9 +13,17 @@ function getProjects (req, res) {
   let status = helpers.statusQuery(req.query.status);
   let category = helpers.categoryQuery(req.query.category);
   let pta = helpers.ptaQuery(req.query.pta);
+  let isFiltered = false;
+
+  if (helpers.isFilterByStatus(status) ||
+      helpers.isFilterByCategory(category) ||
+      helpers.isFilterByPTA(pta)) {
+        isFiltered = true;
+      }
 
   if (req.user.isFamily()) {
     status = 'Open';
+    isFiltered = true;
   }
 
   helpers.allProjects(req.user, status, category, pta, (err, allProjects) => {
@@ -30,6 +38,7 @@ function getProjects (req, res) {
         status: status,
         category: category,
         pta: pta,
+        isFiltered: isFiltered,
         page: 'project/index'
       });
     }

@@ -350,6 +350,14 @@ function getUser (req, res) {
   let category = helpers.categoryQuery(req.query.category);
   let pta = helpers.ptaQuery(req.query.pta);
 
+  let isFiltered = false;
+
+  if (helpers.isFilterByStatus(status) ||
+      helpers.isFilterByCategory(category) ||
+      helpers.isFilterByPTA(pta)) {
+        isFiltered = true;
+      }
+
   helpers.getUserProjects( req.user, status, category, pta, (err, projects) => {
     if(err){
       req.flash("error", err.message);
@@ -364,6 +372,7 @@ function getUser (req, res) {
         status: status,
         category: category,
         pta: pta,
+        isFiltered: isFiltered,
         page: 'show'
       });
     }
