@@ -35,7 +35,7 @@ function sendAccountNotification ( sendTo, username, password, appurl ) {
 
   let subject = `Welcome to the School Volunteer Dashboard!`;
 
-  let msg = `<p style="text-align: left; font-size:21px;text-color:#000000">We are so excited to announce that the School Volunteer Dashboard is up and running, an application to help parents, PTA, and teachers communicate volunteer work easily. <br><br>Your login details are:<br> - Username: ${username} <br> - Password: ${password}<br><br>You can access the school volunteer dashboard at ${appurl}</p>`;
+  let msg = `<p style="text-align: left; font-size:21px;text-color:#000000">We are so excited to announce that the School Volunteer Dashboard is up and running, an application to help parents, PTA, and teachers communicate volunteer work easily. <br><br>Your login details are:<br> - Username: ${username} <br> - Password: ${password}<br><br>You can access the school volunteer dashboard at ${appurl}/login</p>`;
   let html = fillHTML(subject, msg); // html body
 
   send(sendTo, subject, html, function(err) {
