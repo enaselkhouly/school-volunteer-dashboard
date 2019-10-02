@@ -159,36 +159,37 @@ function putTask (req, res) {
         if (!req.query.Approve && !req.query.Complete) {
           task.sendTaskEditNotification();
         }
-
         callback(null, task, "Task is successfully edited!");
       });
 
     },
     function approveTask(task, msg, callback){
-
       if (req.query.Approve) {
-
-          if (task.approveTask()) {
+        task.approveTask( (err) => {
+          if (!err) {
             msg = `Thank you for reviewing and approving the task! You approved ${task.volunteerTime} mins.` ;
+            callback(null, task, msg);
           } else {
             return callback(new Error("The task could not be approved!"));
           }
-        }
-
-      callback(null, task, msg);
+        });
+      } else {
+          callback(null, task, msg);
+      }
     },
     function completeTask(task, msg, callback){
-
       if (req.query.Complete) {
-
-          if (task.completeTask(req.user._id)) {
+        task.completeTask(req.user._id, (err) => {
+          if (!err) {
             msg = "Thank you for completing the task :). Keep up the good work!";
+            callback(null, msg);
           } else {
             return callback(new Error("The task could not be changed to completed!"));
           }
-        }
-
-      callback(null, msg);
+        });
+      } else {
+        callback(null, msg);
+      }
     }
   ], function(err, msg){
     if (err) {
@@ -264,11 +265,9 @@ function signupTask (req, res) {
     },
     function signupForTask(task, callback){
         // signup
-        if (!task.signUp(req.user._id, req.user.displayName, req.user.email)) {
-          return callback(new Error("You can not sign up for this task!"));
-        }
-
-        callback(null, task);
+        task.signUp(req.user._id, req.user.displayName, req.user.email, (err) => {
+        callback(err, task);
+        });
       },
     function addProjectToUser(task, callback){
       helpers.addProjectToUser(req.user.id, task.project, (err) => {
@@ -294,18 +293,28 @@ function signupTask (req, res) {
 function cancelTask (req, res) {
 
   async.waterfall ([
-    function cancelTask (callback) {
+    function findTask (callback) {
       Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
         if(err) {
           return callback(err);
         }
-        // change task state
-        task.cancelTask();
-
-        callback(null);
+        callback(null, task);
+      });
+    },
+    function cancelTask (task, callback) {
+      task.cancelTask( (err) => {
+        if (err) {
+          return callback(err);
+        } else {
+          return callback(null, task);
+        }
+      });
+    },
+    function removeProjectFromUser (task, callback) {
+      helpers.removeEmptyProjectFromAssignee( req.user._id, task.project._id, (err) => {
+        callback(err);
       });
     }
-    // TODO remove Project from user
   ],
     function (err) {
       if (err){
@@ -325,14 +334,17 @@ function completeTask (req, res) {
       req.flash("error", err.message);
       return res.redirect("back");
     }
+
     // Change task status
-    if (task.completeTask(req.user._id)) {
-      req.flash("success", "Thank you for completing the task :). Keep up the good work!!")	;
-      res.redirect('back');
-    } else {
-      req.flash("error", "The task status could not be changed to completed!")	;
-      res.redirect(`back`);
-    }
+    task.completeTask(req.user._id, (err) => {
+      if (err) {
+        req.flash("success", "Thank you for completing the task :). Keep up the good work!!")	;
+        return res.redirect('back');
+      } else {
+        req.flash("error", "The task status could not be changed to completed!")	;
+        return res.redirect(`back`);
+      }
+    });
   });
 } // completeTask
 
@@ -344,13 +356,15 @@ function approveTask (req, res) {
         return res.redirect(`back`);
       }
       // Change task status
-      if (task.approveTask()) {
-        req.flash("success", "The task is approved!")	;
-        res.redirect('back');
-      } else {
-        req.flash("error", "The task could not be approved!")	;
-        res.redirect(`back`);
-      }
+      task.approveTask( (err) => {
+        if (!err) {
+          req.flash("success", "The task is approved!")	;
+          return res.redirect('back');
+        } else {
+          req.flash("error", "The task could not be approved!")	;
+          return res.redirect(`back`);
+        }
+      });
     });
 } // approveTask
 
@@ -367,13 +381,15 @@ function unapproveTask (req, res) {
         }
 
         // Change task status
-        if (task.unapproveTask()) {
-          req.flash("success", "The task is unapproved!")	;
-          res.redirect('back');
-        } else {
-          req.flash("error", "The task could not be unapproved!")	;
-          res.redirect(`back`);
-        }
+        task.unapproveTask( (err) => {
+          if (!err) {
+            req.flash("success", "The task is unapproved!")	;
+            return res.redirect('back');
+          } else {
+            req.flash("error", "The task could not be unapproved!")	;
+            return res.redirect(`back`);
+          }
+        });
       });
 } // unapproveTask
 
