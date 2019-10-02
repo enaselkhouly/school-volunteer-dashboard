@@ -38,7 +38,7 @@
               <p class="mt-1">Created by: <%= project.author.displayName%> , <%=project.created.toDateString()%></p>
             </div>
             <div class="col-12">
-              <% if(project.author.id.equals(user._id)) {%>
+              <% if(project.author && project.author.id && project.author.id.equals(user._id)) {%>
               <a class="btn btn-warning" href="/projects/<%=project._id%>/edit">Edit</a>
               <form id="delete-form" action="/projects/<%= project._id%>?_method=DELETE" method="POST">
               <button class="btn btn-danger">Delete</button>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="card-body">
-        <% if(project.author.id.equals(user._id)) {%>
+        <% if(project.author && project.author.id && project.author.id.equals(user._id)) {%>
         <a class="btn btn-outline-success" href="/projects/<%=project._id%>/tasks/new">New Task</a>
         <%}%>
         <% tasks = project.tasks%>
