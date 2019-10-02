@@ -157,18 +157,37 @@ function putProject (req, res) {
 // Delete project
 function deleteProject (req, res) {
 
-  Project.findOneAndRemove({_id: req.params.id}, (err, project) => {
+  // Disable delete if the project has closed or pending approval tasks.
+  helpers.getProject(req.params.id, ['Closed', 'Pending Approval'], (err, project) => {
 
     if (err) {
       req.flash("error", err.message);
       res.redirect(`/users/${req.user._id}`);
-    } else {
 
-      // Call the remove hooks
-      project.remove();
+    } else if (project.tasks && project.tasks.length > 0){
 
-      req.flash("success", "The project is deleted successfully!");
+      let error = new Error('The project has closed or pending approval tasks and can not be deleted!');
+
+      req.flash("error", error.message);
       res.redirect(`/users/${req.user._id}`);
+
+    } else {
+      // TODO: use DeleteOne instead of remove
+      // TODO: send email notification to assignees of inprogress tasks
+      Project.findOneAndRemove({_id: req.params.id}, (err, project) => {
+
+        if (err) {
+          req.flash("error", err.message);
+          res.redirect(`/users/${req.user._id}`);
+        } else {
+
+          // Call the remove hooks
+          project.remove();
+
+          req.flash("success", "The project is deleted successfully!");
+          res.redirect(`/users/${req.user._id}`);
+        }
+      });
     }
   });
 } // deleteProject
