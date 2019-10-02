@@ -30,12 +30,14 @@ function getUserProjects ( user, status, category, pta, callback ) {
        path: 'tasks',
        model: 'Task',
        match: {
-                  $or: [
-                    {'assignedTo.id': user._id}, {'author.id': user._id}],
-                  category: {$in: category},
-                  status: {$in: status}
-              }
-    }
+                $or: [{'assignedTo.id': user._id}, {'author.id': user._id}],
+                category: {$in: category},
+                status: {$in: status}
+
+              },
+        options: { sort: { deadline: 1 }}
+    },
+    options: { sort: { created: -1 }}
    };
 
     User.findById(user._id).populate(populate).exec( (err, user) => {
@@ -63,11 +65,39 @@ function removeProjectFromUser ( userId, projectId, callback ) {
   User.findById(userId, (err, user) => {
     if (!err && user) {
       user.projects.pull({_id: projectId});
-      user.save();
+      user.save( (err) => {
+        callback(err);
+      });
+    } else {
+      callback(err);
     }
-
-    callback(err);
   });
+}
+
+function removeEmptyProjectFromAssignee (userId, projectId, callback) {
+
+  let populate = {
+       path: 'tasks',
+       model: 'Task',
+       match: {
+                  assignedTo: userId
+              }
+      };
+  Project.findById(projectId).populate(populate).exec( (err, project) => {
+    if (err) {
+      callback (err);
+    } else {
+      if (project.tasks.length > 0) {
+        // skip removing project
+        callback(null);
+      } else {
+        // Remove project from user
+        removeProjectFromUser (userId, projectId, (err) => {
+          callback (err);
+        });
+      }
+    }
+  } );
 }
 
 function allProjects (user, status, category, pta, callback ) {
@@ -78,11 +108,13 @@ function allProjects (user, status, category, pta, callback ) {
        match: {
                   category: {$in: category},
                   status: {$in: status},
-                  $or: [
-                    {status: {$ne: 'Open'}},
-                    {deadline: {$gte: new Date()}}
-                  ]
-              }
+                  // TODO: enable it after the "assign task to" feature is implemented
+                  // $or: [ //remove it from the view if open and the deadline passed 7 days
+                  //   {status: {$ne: 'Open'}},
+                  //   {deadline: {$gte: new Date().setDate(new Date().getDate()-7)}}
+                  // ]
+              },
+      options: { sort: { deadline: 1 }}
    };
   Project.find({isPTA: pta}).populate(populate).sort( {created: -1} ).exec( (err, allProjects) => {
       callback(err, allProjects);
@@ -96,8 +128,13 @@ function getProject ( projectId, status, callback ) {
        path: 'tasks',
        model: 'Task',
        match: {
-                  status: {$in: status}
-              }
+                  status: {$in: status},
+                  // $or: [
+                  //   {status: {$ne: 'Open'}},
+                  //   {deadline: {$gte: new Date(new Date().setDate(new Date().getDate()-1))}}
+                  // ]
+              },
+      options: { sort: { deadline: 1 }}
    };
 
   Project.findById(projectId).populate(populate).exec( (err, project) => {
@@ -299,23 +336,24 @@ function isFilterByCategory (categoryQuery) {
 }
 
 module.exports = {
-  allUsers              : allUsers,
-  getUserProjects       : getUserProjects,
-  addProjectToUser      : addProjectToUser,
-  removeProjectFromUser : removeProjectFromUser,
-  allProjects           : allProjects,
-  getProject            : getProject,
-  createProject         : createProject,
-  addTaskToProject      : addTaskToProject,
-  removeAllProjectTasks : removeAllProjectTasks,
-  deleteProject         : deleteProject,
-  allTasks              : allTasks,
-  deleteTask            : deleteTask,
-  getVolunteerTime      : getVolunteerTime,
-  statusQuery           : statusQuery,
-  isFilterByStatus      : isFilterByStatus,
-  categoryQuery         : categoryQuery,
-  isFilterByCategory    : isFilterByCategory,
-  ptaQuery              : ptaQuery,
-  isFilterByPTA         : isFilterByPTA,
+  allUsers                        : allUsers,
+  getUserProjects                 : getUserProjects,
+  addProjectToUser                : addProjectToUser,
+  removeProjectFromUser           : removeProjectFromUser,
+  removeEmptyProjectFromAssignee  : removeEmptyProjectFromAssignee,
+  allProjects                     : allProjects,
+  getProject                      : getProject,
+  createProject                   : createProject,
+  addTaskToProject                : addTaskToProject,
+  removeAllProjectTasks           : removeAllProjectTasks,
+  deleteProject                   : deleteProject,
+  allTasks                        : allTasks,
+  deleteTask                      : deleteTask,
+  getVolunteerTime                : getVolunteerTime,
+  statusQuery                     : statusQuery,
+  isFilterByStatus                : isFilterByStatus,
+  categoryQuery                   : categoryQuery,
+  isFilterByCategory              : isFilterByCategory,
+  ptaQuery                        : ptaQuery,
+  isFilterByPTA                   : isFilterByPTA,
 }
