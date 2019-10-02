@@ -227,8 +227,14 @@ async.waterfall([
         if (err){
           return callback(err);
         }
-        user.save();
-        return callback(null, user);
+        user.save( (err) => {
+          if (err){
+            return callback(err);
+          }
+
+          return callback(null, user);
+        });
+
       });
   }], function(err, user) {
     if (err) {
@@ -304,8 +310,9 @@ function postChangePassword (req, res) {
           if (err){
             return callback(err);
           }
-          user.save();
-          return callback(null);
+          user.save( (err) => {
+            return callback(err);
+          });
         });
   }], function(err) {
     if (err) {
@@ -474,26 +481,31 @@ function putUser (req, res){
 function deleteUser (req, res) {
 
   if (req.user._id.equals(req.params.id)){
-      let error = new Error("You can not delete your own account!")
+      let error = new Error("You can not delete your own account!");
       req.flash("error", error.message);
       res.redirect("/users");
-   } else {
-
-     User.findByIdAndRemove(req.params.id, function(err, user){
-
-       if(err){
-          req.flash("error", err.message);
-          res.redirect("/users");
-       } else {
-
-          // Call the remove hooks
-          user.remove();
-
-           req.flash("success", "Successfully deleted the User!");
-           res.redirect("/users");
-       }
-     });
    }
+
+   req.flash("error", (new Error("User delete is not currently supported!")).message);
+   res.redirect("/users");
+
+   // else {
+   //   //TODO do not remove if a teacher or admin with projects with closed tasks
+   //   User.findByIdAndRemove(req.params.id, function(err, user){
+   //
+   //     if(err){
+   //        req.flash("error", err.message);
+   //        res.redirect("/users");
+   //     } else {
+   //
+   //        // Call the remove hooks
+   //        user.remove();
+   //
+   //         req.flash("success", "Successfully deleted the User!");
+   //         res.redirect("/users");
+   //     }
+   //   });
+   // }
 } // deleteUser
 
 module.exports = {
