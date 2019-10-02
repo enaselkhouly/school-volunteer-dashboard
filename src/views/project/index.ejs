@@ -1,5 +1,5 @@
 <div class="row main-content">
-  <%if (projects.length > 0) {%>
+  <%if (projects && projects.length > 0) {%>
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-sm-6">
@@ -79,9 +79,12 @@
     <div class="row justify-content-center">
       <div class="col-12 pl-0 pr-0 pl-md-3 pr-md-3">
         <% var i = 0;
+           var isFound = false;
           projects.forEach( (project) => {
             <!-- if ((user.userType !== 'Family') || (project.tasks && project.tasks.length > 0)) { -->
-            if (!isFiltered || isFiltered && (project.tasks && project.tasks.length > 0)) {
+            <!-- if (!isFiltered || (isFiltered && (project.tasks && project.tasks.length > 0))) { -->
+            if ((project.tasks && project.tasks.length > 0) || (myView && !isFiltered)) {
+              isFound = true;
             let color = ['blue', 'purple', 'brown', 'green' , 'red']; %>
             <% if(i === color.length) { i = 0; }%>
           <div class="card border-<%=color[i]%> mb-3">
@@ -121,7 +124,7 @@
               </div>
             </div>
             <div class="card-body">
-              <% if(project.author.id.equals(user._id)) {%>
+              <% if(project && project.author && project.author.id && project.author.id.equals(user._id)) {%>
               <a class="btn btn-outline-success" href="/projects/<%=project._id%>/tasks/new">New Task</a>
               <%}%>
               <% tasks = project.tasks%>
@@ -131,7 +134,10 @@
         <%
         (i == (color.length -1)) ? (i = 0) : i++;
       }
-      })%>
+      })
+      if(!isFound) {%>
+        <h3>No tasks found for your search.</h3>
+      <%}%>
       </div>
     </div>
   </div>
