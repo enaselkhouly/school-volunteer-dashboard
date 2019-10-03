@@ -35,7 +35,7 @@ function getUserProjects ( user, status, category, pta, callback ) {
                 status: {$in: status}
 
               },
-        options: { sort: { deadline: 1 }}
+        options: { sort: { created: -1 }}
     },
     options: { sort: { created: -1 }}
    };
@@ -108,13 +108,12 @@ function allProjects (user, status, category, pta, callback ) {
        match: {
                   category: {$in: category},
                   status: {$in: status},
-                  // TODO: enable it after the "assign task to" feature is implemented
-                  // $or: [ //remove it from the view if open and the deadline passed 7 days
-                  //   {status: {$ne: 'Open'}},
-                  //   {deadline: {$gte: new Date().setDate(new Date().getDate()-7)}}
-                  // ]
+                  $or: [ //remove it from the view if open and the deadline passed 7 days
+                    {status: {$ne: 'Open'}},
+                    {deadline: {$gte: new Date().setDate(new Date().getDate()-7)}}
+                  ]
               },
-      options: { sort: { deadline: 1 }}
+      options: { sort: { created: -1 }}
    };
   Project.find({isPTA: pta}).populate(populate).sort( {created: -1} ).exec( (err, allProjects) => {
       callback(err, allProjects);
@@ -134,7 +133,7 @@ function getProject ( projectId, status, callback ) {
                   //   {deadline: {$gte: new Date(new Date().setDate(new Date().getDate()-1))}}
                   // ]
               },
-      options: { sort: { deadline: 1 }}
+      options: { sort: { created: -1 }}
    };
 
   Project.findById(projectId).populate(populate).exec( (err, project) => {
