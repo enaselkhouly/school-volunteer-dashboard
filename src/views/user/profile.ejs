@@ -71,8 +71,9 @@
               </div>
             </div>
           </div>
-          <%}%>
           <hr/>
+          <%}%>
+          <% if (user._id.equals(currentUser._id) || (currentUser.userType !== 'Family')){%>
           <div class="row justify-content-between">
             <div class="col col-sm-6">
               <h5 class="font-weight-bold text-info pl-2">Username</h5>
@@ -82,6 +83,7 @@
             </div>
           </div>
           <hr>
+          <%}%>
           <div class="row justify-content-between">
             <div class="col col-sm-6">
               <h5 class="font-weight-bold text-info pl-2">Email</h5>
@@ -90,6 +92,7 @@
               <h5 class="pl-2"><%= user.email%></h5>
             </div>
           </div>
+          <% if (user._id.equals(currentUser._id) || (currentUser.userType !== 'Family')){%>
           <hr>
           <div class="row justify-content-between">
             <div class="col col-sm-6">
@@ -99,6 +102,7 @@
               <h5 class="pl-2"><%= user.userType%></h5>
             </div>
           </div>
+          <%}%>
           <div class="row mt-5">
             <div class="col-12">
               <% if (user._id.equals(currentUser._id)){%>

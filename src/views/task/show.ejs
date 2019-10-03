@@ -8,8 +8,8 @@
             <span class="pta-sign icon-holder">PTA</span>
             <%}%>
             <a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>"><%= task.name %></a></h3>
-          <p>Project | <%= task.project.name %></p>
-          <p>Created by | <%= task.author.displayName%></a>, <%= task.author.email%>%></p>
+          <p><%= task.project.name %> Project </p>
+          <p><%= task.author.displayName%></a> | <%= task.author.email%>%></p>
         </div>
         <div class="card-text">
           <div class="row">

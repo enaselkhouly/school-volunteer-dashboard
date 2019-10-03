@@ -86,14 +86,27 @@ function isAdminOrTeacher (req, res, next) {
 function isAdminOrProjectOwner (req, res, next) {
   if (isLoggedInLocal(req, res)) {
 
+    // Check if the objectID is valid
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      req.flash("error", "Project not found! Make sure you are using the right path!");
+      res.redirect("/projects");
+      return;
+    }
+
     Project.findById(req.params.id, (err, project) => {
       if (err) {
-        req.flash("error", err.msg);
+        req.flash("error", err.message);
         res.redirect("/projects");
         return;
       }
 
-      if ( req.user && (req.user.isAdmin() || project.author.id.equals(req.user._id)) ){
+      if (!project) {
+        req.flash("error", "Project not found or deleted!");
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( req.user && (req.user.isAdmin() || (project.author && project.author.id && project.author.id.equals(req.user._id))) ){
         next();
       } else {
         req.flash("error", "You don't have permission!");
@@ -106,14 +119,28 @@ function isAdminOrProjectOwner (req, res, next) {
 function isAdminOrTaskOwner (req, res, next) {
   if (isLoggedInLocal(req, res)) {
 
+
+    // Check if the objectID is valid
+    if (!req.params.task_id.match(/^[0-9a-fA-F]{24}$/)) {
+      req.flash("error", "Task not found! Make sure you are using the right path!");
+      res.redirect("/projects");
+      return;
+    }
+
     Task.findById(req.params.task_id, (err, task) => {
       if (err) {
-        req.flash("error", err.msg);
+        req.flash("error", err.message);
         res.redirect("/projects");
         return;
       }
 
-      if ( req.user && (req.user.isAdmin() || task.author.id.equals(req.user._id)) ){
+      if (!task) {
+        req.flash("error", "Task not found or deleted!");
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( req.user && (req.user.isAdmin() || (task.author && task.author.id && task.author.id.equals(req.user._id))) ){
         next();
       } else {
         req.flash("error", "You don't have permission!");
@@ -126,14 +153,28 @@ function isAdminOrTaskOwner (req, res, next) {
 function isProjectOwner (req, res, next) {
   if (isLoggedInLocal(req, res)) {
 
+    // Check if the objectID is valid
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      req.flash("error", "Project not found! Make sure you are using the right path!");
+      res.redirect("/projects");
+      return;
+    }
+
     Project.findById(req.params.id, (err, project) => {
+
       if (err) {
-        req.flash("error", err.msg);
+        req.flash("error", err.message);
         res.redirect("/projects");
         return;
       }
 
-      if ( project.author.id.equals(req.user._id)){
+      if (!project) {
+        req.flash("error", "Project not found or deleted!");
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( project.author && project.author.id && project.author.id.equals(req.user._id)){
         next();
       } else {
         req.flash("error", "You don't have permission!");
@@ -146,14 +187,29 @@ function isProjectOwner (req, res, next) {
 function isTaskOwner (req, res, next) {
   if (isLoggedInLocal(req, res)) {
 
+
+    // Check if the objectID is valid
+    if (!req.params.task_id.match(/^[0-9a-fA-F]{24}$/)) {
+      req.flash("error", "Task not found! Make sure you are using the right path!");
+      res.redirect("/projects");
+      return;
+    }
+
     Task.findById(req.params.task_id, (err, task) => {
       if (err) {
-        req.flash("error", err.msg);
+        req.flash("error", err.message);
         res.redirect("/projects");
         return;
       }
 
-      if ( task.author.id.equals(req.user._id)){
+      if (!task) {
+        let error = new Error('Task not found or deleted!');
+        req.flash("error", error.message);
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( task.author && task.author.id && task.author.id.equals(req.user._id)){
         next();
       } else {
         req.flash("error", "You don't have permission!");

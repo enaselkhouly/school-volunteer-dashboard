@@ -35,7 +35,7 @@
             </div>
             <%}%>
             <div class="col-12">
-              <p class="mt-1">Created by: <%= project.author.displayName%> , <%=project.created.toDateString()%></p>
+              <p class="mt-1"><a href="/users/<%=project.author.id%>/profile"><%= project.author.displayName%></a></p>
             </div>
             <div class="col-12">
               <% if(project.author && project.author.id && project.author.id.equals(user._id)) {%>
