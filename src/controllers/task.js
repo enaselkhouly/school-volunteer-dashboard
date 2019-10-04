@@ -18,8 +18,7 @@ function getTask (req, res) {
   Task.findOne({_id: req.params.task_id}).populate('project', '_id name isPTA').exec( (err, task) => {
 
     if(err || !task){
-      const error = new Error ('Task not found');
-      req.flash("error", error.message);
+      req.flash("error", "Task is not found");
       return res.redirect(`/projects`);
     }
     res.render(`user/${userDir}`, {
@@ -49,8 +48,7 @@ function postNewTask (req, res) {
 
   // Validate
   if (!req.body.task.deadline) {
-    const err = new Error('Task deadline/date could not be left empty.');
-    req.flash("error", err.message);
+    req.flash("error", "Task deadline/date could not be left empty");
     res.redirect(`/users/${req.user._id}`);
     return;
   }
@@ -116,8 +114,8 @@ function getEditTask (req, res) {
   let userDir = req.user.userType.toLowerCase();
 
   Task.findById(req.params.task_id, (err, task) => {
-    if (err) {
-      req.flash("error", err.message);
+    if (err || !task) {
+      req.flash("error", "Task is not found!");
       res.redirect(`/users/${req.user._id}`);
     } else {
       res.render(`user/${userDir}`, {
@@ -152,8 +150,9 @@ function putTask (req, res) {
       }
 
       Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}).populate('project', '_id name isPTA').exec( (err, task) => {
-        if (err) {
-          return callback(err);
+        if (err || !task) {
+          let error = new Error("Task is not found!");
+          return callback(error);
         }
 
         if (!req.query.Approve && !req.query.Complete) {
@@ -209,8 +208,9 @@ function duplicateTask (req, res) {
 
       Task.findById(req.params.task_id, (err, task) => {
 
-        if(err) {
-          return callback(err);
+        if(err || !task) {
+          let error  = new Error('Task is not found!');
+          return callback(error);
         }
 
         // Copy task information
@@ -257,8 +257,9 @@ function signupTask (req, res) {
   async.waterfall([
     function getTaskInfo (callback){
       Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
-        if (err) {
-          return callback(err);
+        if (err || !task) {
+          let error = new Error("Task is not found!");
+          return callback(error);
         }
         callback(null, task);
       });
@@ -295,8 +296,9 @@ function cancelTask (req, res) {
   async.waterfall ([
     function findTask (callback) {
       Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
-        if(err) {
-          return callback(err);
+        if(err || !task) {
+          let error = new Error("Task is not found!");
+          return callback(error);
         }
         callback(null, task);
       });
@@ -330,8 +332,8 @@ function cancelTask (req, res) {
 function completeTask (req, res) {
 
   Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
-    if(err){
-      req.flash("error", err.message);
+    if(err || !task){
+      req.flash("error", "Task is not found");
       return res.redirect("back");
     }
 
@@ -351,8 +353,8 @@ function completeTask (req, res) {
 function approveTask (req, res) {
 
   Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
-      if (err){
-        req.flash("error", err.message)	;
+      if (err || !task){
+        req.flash("error", "Task is not found!")	;
         return res.redirect(`back`);
       }
       // Change task status
@@ -375,8 +377,8 @@ function postApproveTask (req, res) {
 function unapproveTask (req, res) {
 
     Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
-        if (err){
-          req.flash("error", err.message)	;
+        if (err || !task){
+          req.flash("error", "Task is not found!")	;
           return res.redirect(`back`);
         }
 
@@ -398,8 +400,8 @@ function unapproveTask (req, res) {
 function deleteTask (req, res) {
 
     Task.findOneAndRemove({_id: req.params.task_id}, (err, task) => {
-      if (err) {
-        req.flash("error", err.message);
+      if (err || !task) {
+        req.flash("error", "Task is not found!");
         res.redirect(`/projects`);
         return;
       }

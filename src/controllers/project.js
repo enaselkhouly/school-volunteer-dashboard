@@ -59,8 +59,7 @@ function getProject (req, res) {
   helpers.getProject(req.params.id, status , (err, project) => {
 
     if(err || !project){
-      const error = new Error('Project not found');
-      req.flash("error", error.message);
+      req.flash("error", "Project is not found");
       res.redirect(`/projects`);
       return;
     } else {
@@ -127,8 +126,8 @@ function getEditProject (req, res) {
   let userDir = req.user.userType.toLowerCase();
 
   Project.findById(req.params.id, (err, project) => {
-    if (err) {
-      req.flash("error", err.message);
+    if (err || !project) {
+      req.flash("error", "Project is not found");
       res.redirect("back");
     } else {
       res.render(`user/${userDir}`, {
@@ -141,10 +140,10 @@ function getEditProject (req, res) {
 
 function putProject (req, res) {
 
-  Project.findByIdAndUpdate(req.params.id, req.body.project, (err) => {
+  Project.findByIdAndUpdate(req.params.id, req.body.project, (err, project) => {
 
-      if(err){
-         req.flash("error", err.message);
+      if(err || !project){
+         req.flash("error", "Project is not found");
       } else {
          req.flash("success", 'The project is successfully edited!');
       }
@@ -160,8 +159,8 @@ function deleteProject (req, res) {
   // Disable delete if the project has closed or pending approval tasks.
   helpers.getProject(req.params.id, ['Closed', 'Pending Approval'], (err, project) => {
 
-    if (err) {
-      req.flash("error", err.message);
+    if (err || !project) {
+      req.flash("error", "Project is not found!");
       res.redirect(`/users/${req.user._id}`);
 
     } else if (project.tasks && project.tasks.length > 0){

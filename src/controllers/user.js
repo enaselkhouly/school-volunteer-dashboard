@@ -170,7 +170,7 @@ function getReset (req, res){
 
 User.findById(req.params.id, (err, user) => {
   if (err || !user) {
-    req.flash('error', 'User not found!');
+    req.flash('error', 'User is not found!');
     res.redirect('back');
   } else if (!req.user.isAdmin()) {
     req.flash('error', 'You don\'t have credentials to reset a password');
@@ -214,7 +214,7 @@ async.waterfall([
     //find the user
     User.findById(req.params.id, function (err, user) {
       if (err || ! user){
-        const error = new Error('User not found');
+        const error = new Error('User is not found');
         return callback(error);
       }
 
@@ -222,7 +222,6 @@ async.waterfall([
     });
   },
   function resetPassword(user, callback){
-
     user.setPassword(req.body.newUserPassword, function (err) {
         if (err){
           return callback(err);
@@ -231,7 +230,6 @@ async.waterfall([
           if (err){
             return callback(err);
           }
-
           return callback(null, user);
         });
 
@@ -297,7 +295,7 @@ function postChangePassword (req, res) {
       //find the user
       User.findById(req.params.id, function (err, user) {
         if (err || ! user){
-          const error = new Error('User not found');
+          const error = new Error('User is not found');
           return callback(error);
         }
 
@@ -396,7 +394,7 @@ function getUserProfile (req, res) {
     function getUser (callback) {
       User.findById(req.params.id, (err, user) => {
         if (err || !user) {
-          const error = new Error ('User not found');
+          const error = new Error ('User is not found');
           return callback(error);
         }
 
@@ -445,8 +443,8 @@ function getEditUser (req, res) {
 
   User.findById(req.params.id, (err, user) => {
 
-    if(err){
-       req.flash("error", err.message);
+    if(err || !user){
+       req.flash("error", "User is not found");
        res.redirect("/users");
     } else {
       res.render( `user/${userDir}`, {
@@ -465,10 +463,10 @@ function putUser (req, res){
   // user.requiredVolunteerTime *= 60; // Convert from hrs to mins
   // user.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
-  User.findByIdAndUpdate(req.params.id, user, (err) => {
+  User.findByIdAndUpdate(req.params.id, user, (err, user) => {
 
-      if(err){
-         req.flash("error", err.message);
+      if(err || !user){
+         req.flash("error", "User is not found");
       } else {
          req.flash("success", "User is edited successfully!");
       }
