@@ -280,10 +280,9 @@ function signupTask (req, res) {
     }
   ],
   function (err) {
-
     if (err) {
       req.flash("error", err.message)	;
-      res.redirect(`back`);
+      res.redirect(`/projects`);
     } else {
       req.flash("success", "Thanks for signing up for this task!")	;
       res.redirect('back');
@@ -321,7 +320,7 @@ function cancelTask (req, res) {
     function (err) {
       if (err){
         req.flash("error", err.message)	;
-        res.redirect(`back`);
+        res.redirect(`/projects`);
       } else {
         req.flash("success", "The Task assign is cancelled!")	;
         res.redirect('back');
@@ -339,12 +338,12 @@ function completeTask (req, res) {
 
     // Change task status
     task.completeTask(req.user._id, (err) => {
-      if (err) {
+      if (!err) {
         req.flash("success", "Thank you for completing the task :). Keep up the good work!!")	;
         return res.redirect('back');
       } else {
         req.flash("error", "The task status could not be changed to completed!")	;
-        return res.redirect(`back`);
+        return res.redirect(`/projects`);
       }
     });
   });
@@ -364,7 +363,7 @@ function approveTask (req, res) {
           return res.redirect('back');
         } else {
           req.flash("error", "The task could not be approved!")	;
-          return res.redirect(`back`);
+          return res.redirect(`/projects`);
         }
       });
     });
@@ -389,7 +388,7 @@ function unapproveTask (req, res) {
             return res.redirect('back');
           } else {
             req.flash("error", "The task could not be unapproved!")	;
-            return res.redirect(`back`);
+            return res.redirect(`/projects`);
           }
         });
       });
