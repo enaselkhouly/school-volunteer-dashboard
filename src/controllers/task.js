@@ -323,7 +323,7 @@ function cancelTask (req, res) {
         res.redirect(`/projects`);
       } else {
         req.flash("success", "The Task assign is cancelled!")	;
-        res.redirect('back');
+        res.redirect(`/users/${req.user._id}`);
       }
   });
 } // cancelTask

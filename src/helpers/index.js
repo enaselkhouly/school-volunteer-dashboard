@@ -80,7 +80,7 @@ function removeEmptyProjectFromAssignee (userId, projectId, callback) {
        path: 'tasks',
        model: 'Task',
        match: {
-                  assignedTo: userId
+                  'assignedTo.id': userId
               }
       };
   Project.findById(projectId).populate(populate).exec( (err, project) => {
