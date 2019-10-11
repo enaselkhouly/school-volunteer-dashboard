@@ -154,7 +154,7 @@ taskSchema.methods.signUp = function(userId, userName, userEmail, callback) {
         return callback(null);
     });
 	} else {
-    return callback(new Error ('Someone else signed up for this task!'));
+    return callback(new Error ('The task is not open, you can\'t signup!'));
   }
 }//signup
 

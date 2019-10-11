@@ -49,7 +49,7 @@ function isTeacher (req, res, next) {
       next();
     } else {
       req.flash("error", "You don't have permission!");
-      res.redirect("back");
+      res.redirect("/projects");
     }
 
   } // if: isLoggedIn
@@ -63,7 +63,7 @@ function isFamily (req, res, next) {
       next();
     } else {
       req.flash("error", "You don't have permission!");
-      res.redirect("back");
+      res.redirect("/projects");
     }
 
   } // if: isLoggedIn
@@ -78,7 +78,7 @@ function isAdminOrTeacher (req, res, next) {
       next();
     } else {
       req.flash("error", "You don't have permission!");
-      res.redirect("back");
+      res.redirect("/projects");
     }
   } // if: isLoggedIn
 } // isAdminOrTeacher
@@ -219,6 +219,92 @@ function isTaskOwner (req, res, next) {
   } // if: isLoggedIn
 } // isTaskOwner
 
+function isTaskAssignee (req, res, next) {
+  if (isLoggedInLocal(req, res)) {
+
+
+    // Check if the objectID is valid
+    if (!req.params.task_id.match(/^[0-9a-fA-F]{24}$/)) {
+      req.flash("error", "Task not found! Make sure you are using the right path!");
+      res.redirect("/projects");
+      return;
+    }
+
+    Task.findById(req.params.task_id, (err, task) => {
+      if (err) {
+        req.flash("error", err.message);
+        res.redirect("/projects");
+        return;
+      }
+
+      if (!task) {
+        let error = new Error('Task not found or deleted!');
+        req.flash("error", error.message);
+        res.redirect("/projects");
+        return;
+      }
+
+      if ( task.assignedTo && task.assignedTo.id && task.assignedTo.id.equals(req.user._id)){
+        next();
+      } else {
+        req.flash("error", "You don't have permission!");
+        res.redirect("/projects");
+      }
+    });
+  } // if: isLoggedIn
+} //  isTaskAssignee
+
+
+function isTaskEditAllowed (req, res, next) {
+  console.log('inside isTaskEditAllowed');
+  if (isLoggedInLocal(req, res)) {
+    console.log('inside isTaskEditAllowed');
+
+    // Check if the objectID is valid
+    if (!req.params.task_id.match(/^[0-9a-fA-F]{24}$/)) {
+      req.flash("error", "Task not found! Make sure you are using the right path!");
+      res.redirect("/projects");
+      return;
+    }
+
+    Task.findById(req.params.task_id, (err, task) => {
+      if (err) {
+        req.flash("error", err.message);
+        res.redirect("/projects");
+        return;
+      }
+
+      if (!task) {
+        let error = new Error('Task not found or deleted!');
+        req.flash("error", error.message);
+        res.redirect("/projects");
+        return;
+      }
+
+      // 3. Complete
+      if (req.query.Complete) {
+        console.log('is Complete');
+        if ( task.assignedTo && task.assignedTo.id && task.assignedTo.id.equals(req.user._id)){
+          next();
+        } else {
+          req.flash("error", "You don't have permission!");
+          res.redirect("/projects");
+        }
+      }
+      // 2. Aprrove OR 3. Edit
+      else if ( task.author && task.author.id && task.author.id.equals(req.user._id)){
+        console.log('else');
+        next();
+      } else {
+        console.log('else error');
+        req.flash("error", "You don't have permission!");
+        res.redirect("/projects");
+      }
+    });
+  } // if: isLoggedIn
+} // isTaskEditAllowed
+
+
 module.exports = {
   isLoggedIn                : isLoggedIn,
   isAdmin                   : isAdmin,
@@ -228,6 +314,8 @@ module.exports = {
   isAdminOrTaskOwner        : isAdminOrTaskOwner,
   isAdminOrProjectOwner     : isAdminOrProjectOwner,
   isTaskOwner               : isTaskOwner,
-  isProjectOwner            : isProjectOwner
+  isProjectOwner            : isProjectOwner,
+  isTaskAssignee            : isTaskAssignee,
+  isTaskEditAllowed         : isTaskEditAllowed
 
 }

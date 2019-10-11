@@ -22,7 +22,7 @@ router.post("/projects/:id/tasks", auth.isProjectOwner, taskController.postNewTa
 router.get("/projects/:id/tasks/:task_id/edit", auth.isTaskOwner, taskController.getEditTask);
 
 /* POST: edit task*/
-router.put("/projects/:id/tasks/:task_id", auth.isLoggedIn, taskController.putTask);
+router.put("/projects/:id/tasks/:task_id", auth.isTaskEditAllowed, taskController.putTask);
 
 /* POST: duplicate task*/
 router.post("/projects/:id/tasks/:task_id/duplicate", auth.isProjectOwner, taskController.duplicateTask);
@@ -31,7 +31,7 @@ router.post("/projects/:id/tasks/:task_id/duplicate", auth.isProjectOwner, taskC
 router.get("/projects/:id/tasks/:task_id/signup", auth.isFamily, taskController.signupTask);
 
 /* Cancel Task*/
-router.get("/projects/:id/tasks/:task_id/cancel", auth.isFamily, taskController.cancelTask);
+router.get("/projects/:id/tasks/:task_id/cancel", auth.isTaskAssignee, taskController.cancelTask);
 
 /* Complete Task*/
 //router.get("/projects/:id/tasks/:task_id/complete", auth.isFamily, taskController.completeTask);
