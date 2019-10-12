@@ -121,6 +121,7 @@ taskSchema.post('remove', (task, next) => {
   task.model('Project').findByIdAndUpdate( task.project, // Condition
                             { $pull: { tasks: task._id  } }, // Update
                         (err) => {
+      // TODO email parent
       next(err);
   });
 });
@@ -163,6 +164,7 @@ taskSchema.methods.cancelTask = function( callback ) {
 
 	if (this.status === Status.INPROGRESS) {
 
+    let assignee = this.assignedTo.displayName;
 		this.assignedTo.id = null;
 		this.assignedTo.displayName = '';
 		this.status	= Status.OPEN;
@@ -174,7 +176,7 @@ taskSchema.methods.cancelTask = function( callback ) {
 
       // Send email notification to task creator
       mailer.sendTaskStatusNotification(this.author.email,
-        `Unfortunately, ${this.assignedTo.displayName} cancelled his/her sign up for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project.`);
+        `Unfortunately, ${assignee} cancelled his/her sign up for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project.`);
 
       return callback(null);
     });
