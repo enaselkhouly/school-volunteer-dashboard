@@ -256,9 +256,7 @@ function isTaskAssignee (req, res, next) {
 
 
 function isTaskEditAllowed (req, res, next) {
-  console.log('inside isTaskEditAllowed');
   if (isLoggedInLocal(req, res)) {
-    console.log('inside isTaskEditAllowed');
 
     // Check if the objectID is valid
     if (!req.params.task_id.match(/^[0-9a-fA-F]{24}$/)) {
