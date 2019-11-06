@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB",
   "main": "index.js",
+  "engine": {
+    "node": "12.13.0"
+  },
   "scripts": {
     "build": "webpack --progress",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
@@ -31,7 +34,6 @@
     "dbName": "men-dashboard"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
