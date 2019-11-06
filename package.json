@@ -4,7 +4,7 @@
   "description": "MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB",
   "main": "index.js",
   "engine": {
-    "node": "10.17.0"
+    "node": "11.15.0"
   },
   "scripts": {
     "build": "webpack --progress",
