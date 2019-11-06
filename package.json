@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "MEN Full stack School Volunteer Dashboard using Node.js, Express, MongoDB",
   "main": "index.js",
-  "engine": {
+  "engines": {
     "node": "11.15.0"
   },
   "scripts": {
