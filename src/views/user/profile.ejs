@@ -10,7 +10,60 @@
 			<div class="row">
 				<div class="col-12 col-lg-10 col-xl-8">
 					<div class="innerpage-container">
+          <%if (user.userType === 'Family') {%>
+          <div class="row justify-content-between">
+            <div class="col-12">
+              <%
+              vPtaHr = (Math.floor(ptaVolunteerTime /60))? Math.floor(ptaVolunteerTime /60)+"hrs " : ""
+              vPtaMin = (ptaVolunteerTime %60)? ptaVolunteerTime %60+"mins ": ""
+              vPtaHr = (!vPtaHr && !vPtaMin)? "0 " : vPtaHr
+              rPtaHr = (Math.floor(user.requiredPtaVolunteerTime/60))? Math.floor(user.requiredPtaVolunteerTime/60)+ "hrs ": ""
+              rPtaMin = (user.requiredPtaVolunteerTime%60) ? (user.requiredPtaVolunteerTime%60)+ "mins " : ""
+              rPtaHr = (!rPtaHr && !rPtaMin)? "0 " : rPtaHr
+              ptaPerc = (ptaVolunteerTime < (user.requiredVolunteerTime + user.requiredPtaVolunteerTime))? (ptaVolunteerTime / (user.requiredVolunteerTime + user.requiredPtaVolunteerTime))*100 : 100
+              ptaPerc = Math.round(ptaPerc)
 
+              vHr = (Math.floor(volunteerTime /60))? Math.floor(volunteerTime /60)+"hrs " : ""
+              vMin = (volunteerTime %60)? volunteerTime %60+"mins ": ""
+              vHr = (!vHr && !vMin)? "0 " : vHr
+              rHr = (Math.floor(user.requiredVolunteerTime/60))? Math.floor(user.requiredVolunteerTime/60)+ "hrs ": ""
+              rMin = (user.requiredVolunteerTime%60) ? (user.requiredVolunteerTime%60)+ "mins " : ""
+              rHr = (!rHr && !rMin)? "0 " : rHr
+              perc = (volunteerTime < user.requiredVolunteerTime)? (volunteerTime / (user.requiredVolunteerTime + user.requiredPtaVolunteerTime ))*100 :
+                    (user.requiredVolunteerTime / (user.requiredVolunteerTime + user.requiredPtaVolunteerTime ))*100
+              perc = Math.round(perc)
+
+              totalPerc = perc + ptaPerc
+              totalPerc = (totalPerc < 100)? totalPerc : 100
+              %>
+              <div class="row">
+                <div class="col-12 text-center">
+                  <h5 class="font-weight-bold text-info">Total Volunteer Time</h5>
+                </div>
+                <div class="col-12">
+                  <div class="c100 p<%=totalPerc%> green center-block">
+                    <span><%=totalPerc%>%</span>
+                    <div class="slice">
+                      <div class="bar"></div>
+                      <div class="fill"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 text-center">
+                  <div class="row text-center mt-4 mb-4">
+                    <div class="col-6 border-right">
+                      <div class="h4 font-weight-bold mb-0"><%=ptaPerc%>%</div><span class="text-gray"><%= vPtaHr%> <%= vPtaMin%>/ <%= rPtaHr%> <%= rPtaMin%> minimum required <span class="strong">PTA</span> volunteering</span>
+                    </div>
+                    <div class="col-6">
+                      <div class="h4 font-weight-bold mb-0"><%=perc%>%</div><span class="text-gray"><%= vHr%> <%= vMin%>/ <%= rHr%> <%= rMin%> maximum <span class="strong">non PTA</span> volunteering credit</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr/>
+          <%}%>
           <% if (user._id.equals(currentUser._id) || (currentUser.userType !== 'Family')){%>
           <div class="row justify-content-between">
             <div class="col col-sm-6">
