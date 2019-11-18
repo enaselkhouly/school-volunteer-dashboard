@@ -506,6 +506,25 @@ function deleteUser (req, res) {
    // }
 } // deleteUser
 
+// Get Users Report
+function getUsersReport (req, res) {
+
+  helpers.allUsersReport(function(err, users){
+
+    if(err){
+      req.flash("error", err.message);
+      res.redirect(`/users/${req.params.id}`);
+    } else {
+
+      res.render(`user/admin`, {
+          users: users,
+          title: 'Users Report',
+          page: "report"
+        });
+    }
+  });
+}
+
 module.exports = {
   getRegister       : getRegister,
   postRegister      : postRegister,
@@ -523,5 +542,6 @@ module.exports = {
   getUserProfile    : getUserProfile,
   getEditUser       : getEditUser,
   putUser           : putUser,
-  deleteUser        : deleteUser
+  deleteUser        : deleteUser,
+  getUsersReport    : getUsersReport
 };

@@ -1,0 +1,108 @@
+<div class="row main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-sm-6">
+        <h2 class="main-page-title text-sm-left">Family Users Report</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 pl-0 pr-0 pl-md-3 pr-md-3 mt-3">
+          <div class="card border-blue mb-3">
+            <div class="card-body">
+              <div class="table-responsive table-wrapper" id='table-wrapper'>
+                   <table class="table" id="table-data">
+                    <% if(users && users.length > 0){ %>
+                    <thead>
+                      <tr>
+                        <th scope="col"><h5>Family User</h5></th>
+                        <th scope="col"><h5>Completed</h5></th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                      <% users.forEach ( (user) => {%>
+                        <div class="row">
+                          <tr>
+                            <td class="row-head truncate-container cell-view-full mt-3">
+                              <h5 class="truncate-text"><a href="/users/<%=user._id%>/profile"><%= user.displayName %></a></h5>
+                            </td>
+                            <%
+                              let volunteerTime = 0
+                              let pendingVolunteerTime = 0
+
+                              if (user.projects) {
+                                user.projects.forEach ( (project) => {
+
+                                  if (project.tasks) {
+
+                                    project.tasks.forEach ( (task) => {
+
+                                      if ( task.assignedTo && task.assignedTo.id && (task.assignedTo.id.equals(user._id)) ) {
+
+                                        if (task.status === 'Closed') {
+
+                                          volunteerTime += task.volunteerTime
+                                        }
+
+                                        if (task.status === 'Pending Approval') {
+
+                                          pendingVolunteerTime += task.volunteerTime
+                                        }
+
+                                      }
+
+                                    })
+                                  }
+                                })
+                              }
+                              let requiredVolunteer = user.requiredVolunteerTime + user.requiredPtaVolunteerTime
+
+                              let completedPerc = (volunteerTime < requiredVolunteer) ? (volunteerTime / (requiredVolunteer))*100 : 100
+                              completedPerc = Math.round(completedPerc)
+
+                              let pendingPerc = (pendingVolunteerTime < requiredVolunteer) ? (pendingVolunteerTime / (requiredVolunteer))*100 : 100
+                              pendingPerc = Math.round(pendingPerc)
+
+
+                            %>
+                            <td class="row-head cell-view-full mt-3">
+                              <div class="container-fluid">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <h6 class="text-blue text-center d-lg-none">Completed </h6>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-12">
+                                    <div class="c100 p<%=completedPerc%> green float-lg-left center-block-md">
+                                      <span><%=completedPerc%>%</span>
+                                      <div class="slice">
+                                        <div class="bar"></div>
+                                        <div class="fill"></div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <%if (pendingPerc > 0) {%>
+                              <div class="row">
+                                <div class="col-12">
+                                  <p class="secondary-data text-center text-lg-left">In addition to <%=pendingPerc%>% Pending Approval</p>
+                                </div>
+                              </div>
+                              <%}%>
+                              </div>
+                            </td>
+                          </tr>
+                        </div>
+                      <%}); %>
+                    </tbody>
+                  <%}%>
+                  </table>
+              </div>
+
+            </div>
+          </div> <!-- card -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,10 +10,31 @@ const Task    = require('../models/Task');
 
 function allUsers ( callback ) {
 
-  User.find({}, function(err, allUsers){
+  User.find({}, (err, allUsers) => {
       callback(err, allUsers);
   });
 }
+
+
+/*
+* User report.
+*/
+
+function allUsersReport ( callback ) {
+
+  let populate = {
+    path: "projects",
+    populate: {
+       path: 'tasks',
+       model: 'Task'
+    }
+   };
+
+  User.find({userType: 'Family'}).populate(populate).exec( (err, allUsers) => {
+      callback(err, allUsers);
+  });
+}
+
 
 /*
 * Project helper functions
@@ -336,6 +357,7 @@ function isFilterByCategory (categoryQuery) {
 
 module.exports = {
   allUsers                        : allUsers,
+  allUsersReport                  : allUsersReport,
   getUserProjects                 : getUserProjects,
   addProjectToUser                : addProjectToUser,
   removeProjectFromUser           : removeProjectFromUser,

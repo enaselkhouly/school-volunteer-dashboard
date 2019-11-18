@@ -27,6 +27,9 @@ router.get('/forgot', userController.getForgot);
 /* Post forgot password form.*/
 router.post('/forgot', userController.postForgot);
 
+/* Get all users report*/
+router.get("/users/report", auth.isAdmin, userController.getUsersReport);
+
 /* Reset password form.*/
 router.get('/users/:id/reset', auth.isAdmin, userController.getReset);
 

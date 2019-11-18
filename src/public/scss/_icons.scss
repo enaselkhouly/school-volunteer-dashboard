@@ -21,7 +21,7 @@
   color: $white;
 }
 
-.bookmark {
+.bookmark, .users {
   color: $dark-blue;
 }
 
@@ -34,14 +34,14 @@
   color: $dark-blue;
 }
 
-.list, .users{
+.list, .user-plus {
   color: $brown;
 }
 .log-out {
   color: #ff5722;
 }
 
-.plus-square, .user-plus {
+.plus-square, .file-text {
   color: #673ab7;
 }
 
