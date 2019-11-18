@@ -21,9 +21,9 @@
         <div class="form-container bg-white mt-2 hide">
           <div class="form container-fluid form-content p-3">
               <form class="">
-                <h6>Filter by PTA type:</h6>
+                <h6>Filter by PTO type:</h6>
                 <%
-                  let checkboxes = ['PTA', 'Non PTA'];
+                  let checkboxes = ['PTO', 'Non PTO'];
                   let checkboxesNames = [true, false];
                   let checked = "";
                   for (let i = 0; i < checkboxes.length; i++) {
@@ -94,7 +94,7 @@
                   <div class="col-xs-12 col-md-9">
                     <h3>
                       <%if(project.isPTA){%>
-                      <span class="pta-sign icon-holder">PTA</span>
+                      <span class="pta-sign icon-holder">PTO</span>
                       <%}%>
                       <a href="/projects/<%=project._id%>"><%=project.name%></a>
                   </h3>

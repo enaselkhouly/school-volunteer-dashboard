@@ -52,11 +52,11 @@
                 <div class="col-12 text-center">
                   <div class="row text-center mt-4 mb-4">
                     <div class="col-6 border-right">
-                      <div class="h4 font-weight-bold mb-0">PTA</div>
+                      <div class="h4 font-weight-bold mb-0">PTO</div>
                       <span class="text-gray"><%= vPtaHr%> <%= vPtaMin%>/ <%= rPtaHr%> <%= rPtaMin%> minimum required volunteering</span>
                     </div>
                     <div class="col-6">
-                      <div class="h4 font-weight-bold mb-0">Non PTA</div>
+                      <div class="h4 font-weight-bold mb-0">Non PTO</div>
                       <span class="text-gray"><%= vHr%> <%= vMin%>/ <%= rHr%> <%= rMin%> maximum volunteering credit</span>
                       <%if( volunteerTime > user.requiredVolunteerTime) {%>
                       <p class="text-red">You earn <%= rHr%> <%= rMin%> only!</p>

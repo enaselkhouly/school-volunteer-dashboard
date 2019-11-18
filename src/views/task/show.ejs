@@ -5,7 +5,7 @@
         <div class="card-title">
           <h3>
             <%if(task.project.isPTA){%>
-            <span class="pta-sign icon-holder">PTA</span>
+            <span class="pta-sign icon-holder">PTO</span>
             <%}%>
             <a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>"><%= task.name %></a></h3>
           <p><%= task.project.name %> Project </p>
