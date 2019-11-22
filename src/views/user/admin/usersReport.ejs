@@ -27,6 +27,7 @@
                             </td>
                             <%
                               let volunteerTime = 0
+                              let ptaVolunteerTime = 0
                               let pendingVolunteerTime = 0
 
                               if (user.projects) {
@@ -40,7 +41,12 @@
 
                                         if (task.status === 'Closed') {
 
-                                          volunteerTime += task.volunteerTime
+                                          if (project.isPTA) {
+                                              ptaVolunteerTime += task.volunteerTime
+                                          } else {
+                                              volunteerTime += task.volunteerTime
+                                          }
+
                                         }
 
                                         if (task.status === 'Pending Approval') {
@@ -56,7 +62,9 @@
                               }
                               let requiredVolunteer = user.requiredVolunteerTime + user.requiredPtaVolunteerTime
 
-                              let completedPerc = (volunteerTime < requiredVolunteer) ? (volunteerTime / (requiredVolunteer))*100 : 100
+                              volunteerTime = (volunteerTime > user.requiredVolunteerTime)? user.requiredVolunteerTime : volunteerTime
+
+                              let completedPerc = ( (volunteerTime + ptaVolunteerTime) < requiredVolunteer) ? ( (volunteerTime + + ptaVolunteerTime) / (requiredVolunteer))*100 : 100
                               completedPerc = Math.round(completedPerc)
 
                               let pendingPerc = (pendingVolunteerTime < requiredVolunteer) ? (pendingVolunteerTime / (requiredVolunteer))*100 : 100
@@ -83,7 +91,7 @@
                                 </div>
                               </div>
 
-                              <%if (pendingPerc > 0) {%>
+                              <%if ( (pendingPerc > 0) && (completedPerc < 100)) {%>
                               <div class="row">
                                 <div class="col-12">
                                   <p class="secondary-data text-center text-lg-left">In addition to <%=pendingPerc%>% Pending Approval</p>
