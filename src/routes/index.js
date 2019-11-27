@@ -17,7 +17,7 @@ function init(server) {
    * Define a catch route for random-url.
    */
   server.use( (req, res) => {
-    res.render('pageNotFound');
+    res.redirect("/login");
   });
 
 } // init
