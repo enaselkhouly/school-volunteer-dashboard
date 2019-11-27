@@ -26,7 +26,7 @@ router.get("/projects/:id/edit", auth.isProjectOwner, projectController.getEditP
 router.put("/projects/:id", auth.isProjectOwner, projectController.putProject);
 
 /* Delete: delete project*/
-router.delete("/projects/:id", auth.isProjectOwner, projectController.deleteProject);
+router.delete("/projects/:id", auth.isAdmin, projectController.deleteProject);
 
 
 module.exports = router;

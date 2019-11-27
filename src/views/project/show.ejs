@@ -40,8 +40,33 @@
             <div class="col-12">
               <% if(project.author && project.author.id && project.author.id.equals(user._id)) {%>
               <a class="btn btn-warning" href="/projects/<%=project._id%>/edit">Edit</a>
-              <form id="delete-form" action="/projects/<%= project._id%>?_method=DELETE" method="POST">
-              <button class="btn btn-danger">Delete</button>
+
+              <%} if (user.userType == 'Admin') {%>
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#<%=project._id%>deleteProjectModal">Delete</button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="<%=project._id%>deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <p class="text-dark-grey">The project will be <span class="text-red">permanently</span> deleted. All tasks will be removed and the assignees won't get their volunteer time.</p>
+
+                      <p class="text-dark-grey font-weight-bold">You won't be able to undo this action.</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <form id="delete-form" action="/projects/<%= project._id%>?_method=DELETE" method="POST">
+                      <button class="btn btn-danger">Delete</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <%}%>
             </div>
           </div>

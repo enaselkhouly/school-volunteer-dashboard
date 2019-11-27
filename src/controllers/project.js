@@ -156,37 +156,74 @@ function putProject (req, res) {
 // Delete project
 function deleteProject (req, res) {
 
-  // Disable delete if the project has closed or pending approval tasks.
-  helpers.getProject(req.params.id, ['Closed', 'Pending Approval'], (err, project) => {
+  async.waterfall ([
+    function findProject (callback) {
+      let populate = {
+        path: "tasks",
+        populate: {
+           path: 'project',
+        },
+       };
 
-    if (err || !project) {
-      req.flash("error", "Project is not found!");
-      res.redirect(`/users/${req.user._id}`);
-
-    } else if (project.tasks && project.tasks.length > 0){
-
-      let error = new Error('The project has closed or pending approval tasks and can not be deleted!');
-
-      req.flash("error", error.message);
-      res.redirect(`/users/${req.user._id}`);
-
-    } else {
-      // TODO: use DeleteOne instead of remove
-      // TODO: send email notification to assignees of inprogress tasks
-      Project.findOneAndRemove({_id: req.params.id}, (err, project) => {
-
-        if (err) {
-          req.flash("error", err.message);
-          res.redirect(`/users/${req.user._id}`);
-        } else {
-
-          // Call the remove hooks
-          project.remove();
-
-          req.flash("success", "The project is deleted successfully!");
-          res.redirect(`/users/${req.user._id}`);
-        }
+      Project.findById(req.params.id).populate(populate).exec( (err, project) => {
+        callback(err, project);
+        return;
       });
+    },
+    // remove task, notify and remove empty project
+
+    // Send email notifications
+    function cleanupTasksAssignee (project, callback) {
+      if (project.tasks) {
+
+        project.tasks.forEach ( (task) => {
+          if (task.assignedTo) {
+            task.cleanup ((err) => {
+              if (err) {
+                return callback(err);
+              } else {
+                helpers.removeEmptyProjectFromAssignee (task.assignedTo.id, project._id, (err) => {
+                  if (err) {
+                    return callback (err);
+                  }
+                });
+              }
+            });
+          }
+        });
+
+        callback(null, project);
+      }
+    },
+    // removeProjectFromUser author
+    function removeProjectAuthor (project, callback) {
+      // remove from author
+      helpers.removeProjectFromUser( project.author.id, project._id, (err) => {
+        callback(err, project);
+      });
+    },
+    // removeAllProjectTasks
+    function removeProjectTasks (project, callback) {
+      helpers.removeAllProjectTasks(project, (err) => {
+        callback(err, project);
+      });
+    },
+    // Delete project
+    function deleteProject (project, callback) {
+      Project.deleteOne({_id: project._id}, (err) => {
+        callback (err);
+      });
+    }
+    ],
+  function (err) {
+    if (err) {
+        req.flash("error", err.message);
+        res.redirect(`/users/${req.user._id}`);
+      return;
+    } else {
+      req.flash("success", "The project is deleted successfully!");
+      res.redirect(`/users/${req.user._id}`);
+      return;
     }
   });
 } // deleteProject
