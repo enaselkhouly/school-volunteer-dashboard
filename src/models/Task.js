@@ -115,21 +115,25 @@ taskSchema.post('validate', (task, next) => {
   });
 });
 
-// Remove task from project
-taskSchema.post('remove', (task, next) => {
-
-  task.model('Project').findByIdAndUpdate( task.project, // Condition
-                            { $pull: { tasks: task._id  } }, // Update
-                        (err) => {
-      // TODO email parent
-      next(err);
-  });
-});
-
 
 /*
 * Methods
 */
+
+// Remove task from project
+taskSchema.methods.cleanup = function (callback) {
+
+  // Send email notification to task creator
+  mailer.sendTaskStatusNotification(this.assignedTo.email,
+    `Unfortunately, the task "${this.name}" in the ${this.project.name} project was deleted. You won't earn a credit for this task. If you think this is done by mistake or you have any questions please email the teacher at ${this.author.email}. Thanks for your understanding!`);
+
+  this.model('Project').findByIdAndUpdate( this.project, // Condition
+                            { $pull: { tasks: this._id  } }, // Update
+                        (err) => {
+
+      callback(err);
+  });
+}
 
 // Sign up for a task
 taskSchema.methods.signUp = function(userId, userName, userEmail, callback) {

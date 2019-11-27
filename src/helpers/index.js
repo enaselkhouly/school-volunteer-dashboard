@@ -178,7 +178,7 @@ function addTaskToProject (projectId, taskId, callback){
 }
 
 function removeAllProjectTasks (project, callback) {
-  Task.remove ({id: project.tasks}, (err) => {
+  Task.deleteMany ({_id: { $in: project.tasks}}, (err) => {
       callback(err);
   });
 }

@@ -398,18 +398,47 @@ function unapproveTask (req, res) {
 // Delete task
 function deleteTask (req, res) {
 
-    Task.findOneAndRemove({_id: req.params.task_id}, (err, task) => {
-      if (err || !task) {
-        req.flash("error", "Task is not found!");
-        res.redirect(`/projects`);
-        return;
-      }
-      // Call the remove hook
-      task.remove();
+  async.waterfall ([
+    function findTask (callback) {
+      Task.findById(req.params.task_id).populate('project', 'name').exec( (err, task) => {
+        if (err || !task) {
+          callback ( new Error ("Task is not found!"));
+        } else {
+          callback(null, task);
+        }
+      });
+    },
+    function cleanup (task, callback) {
 
+      task.cleanup( (err) => {
+        callback (err, task);
+      });
+    },
+    function removeEmptyProject (task, callback) {
+      helpers.removeEmptyProjectFromAssignee( task.assignedTo.id, task.project._id, (err) => {
+        callback(err);
+      });
+    },
+    function deleteTask (callback) {
+
+      Task.deleteOne({_id: req.params.task_id}, (err) => {
+
+        callback ( err );
+
+      });
+    }
+  ],
+  function (err) {
+    if (err) {
+      req.flash("error", err.message);
+      res.redirect(`/projects`);
+      return;
+    } else {
       req.flash("success", "The task is successfully deleted!");
       res.redirect("/projects");
-    });
+      return;
+    }
+  });
 } // deleteTask
 
 module.exports = {
