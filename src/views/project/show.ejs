@@ -35,7 +35,9 @@
             </div>
             <%}%>
             <div class="col-12">
-              <p class="mt-1"><a href="/users/<%=project.author.id%>/profile"><%= project.author.displayName%></a></p>
+              <% if(project && project.author && project.author.id && project.author.id.displayName) {%>
+              <p class="mt-1"><a href="/users/<%=project.author.id._id%>/profile"><%= project.author.id.displayName%></a></p>
+              <%}%>
             </div>
             <div class="col-12">
               <% if(project.author && project.author.id && project.author.id.equals(user._id)) {%>

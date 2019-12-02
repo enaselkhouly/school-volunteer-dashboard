@@ -15,7 +15,7 @@ function getTask (req, res) {
   let userDir = req.user.userType.toLowerCase();
 
   // Find task and populate project name
-  Task.findOne({_id: req.params.task_id}).populate('project', '_id name isPTA').exec( (err, task) => {
+  Task.findOne({_id: req.params.task_id}).populate('author.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
 
     if(err || !task){
       req.flash("error", "Task is not found");
@@ -149,7 +149,7 @@ function putTask (req, res) {
         }
       }
 
-      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}).populate('project', '_id name isPTA').exec( (err, task) => {
+      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}).populate('author.id', '_id displayName email').populate('assignedTo.id', '_id displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
         if (err || !task) {
           let error = new Error("Task is not found!");
           return callback(error);
@@ -256,7 +256,7 @@ function signupTask (req, res) {
 
   async.waterfall([
     function getTaskInfo (callback){
-      Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
+      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
         if (err || !task) {
           let error = new Error("Task is not found!");
           return callback(error);
@@ -294,7 +294,7 @@ function cancelTask (req, res) {
 
   async.waterfall ([
     function findTask (callback) {
-      Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
+      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
         if(err || !task) {
           let error = new Error("Task is not found!");
           return callback(error);
@@ -330,7 +330,7 @@ function cancelTask (req, res) {
 
 function completeTask (req, res) {
 
-  Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
+  Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
     if(err || !task){
       req.flash("error", "Task is not found");
       return res.redirect("back");
@@ -351,7 +351,7 @@ function completeTask (req, res) {
 
 function approveTask (req, res) {
 
-  Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
+  Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
       if (err || !task){
         req.flash("error", "Task is not found!")	;
         return res.redirect(`back`);
@@ -375,7 +375,7 @@ function postApproveTask (req, res) {
 
 function unapproveTask (req, res) {
 
-    Task.findById(req.params.task_id).populate('project', '_id name isPTA').exec( (err, task) => {
+    Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
         if (err || !task){
           req.flash("error", "Task is not found!")	;
           return res.redirect(`back`);
@@ -400,7 +400,7 @@ function deleteTask (req, res) {
 
   async.waterfall ([
     function findTask (callback) {
-      Task.findById(req.params.task_id).populate('project', 'name').exec( (err, task) => {
+      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', 'name').exec( (err, task) => {
         if (err || !task) {
           callback ( new Error ("Task is not found!"));
         } else {

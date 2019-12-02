@@ -281,7 +281,6 @@ function isTaskEditAllowed (req, res, next) {
 
       // 3. Complete
       if (req.query.Complete) {
-        console.log('is Complete');
         if ( task.assignedTo && task.assignedTo.id && task.assignedTo.id.equals(req.user._id)){
           next();
         } else {
@@ -291,10 +290,8 @@ function isTaskEditAllowed (req, res, next) {
       }
       // 2. Aprrove OR 3. Edit
       else if ( task.author && task.author.id && task.author.id.equals(req.user._id)){
-        console.log('else');
         next();
       } else {
-        console.log('else error');
         req.flash("error", "You don't have permission!");
         res.redirect("/projects");
       }

@@ -56,6 +56,10 @@ function getUserProjects ( user, status, category, pta, callback ) {
                 status: {$in: status}
 
               },
+        populate: {
+          path: 'assignedTo.id',
+          model: 'User'
+        },
         options: { sort: { created: -1 }}
     },
     options: { sort: { created: -1 }}
@@ -134,9 +138,13 @@ function allProjects (user, status, category, pta, callback ) {
                     {deadline: {$gte: new Date().setDate(new Date().getDate()-7)}}
                   ]
               },
+      populate: {
+        path: 'assignedTo.id',
+        model: 'User'
+      },
       options: { sort: { created: -1 }}
    };
-  Project.find({isPTA: pta}).populate(populate).sort( {created: -1} ).exec( (err, allProjects) => {
+  Project.find({isPTA: pta}).populate('author.id').populate(populate).sort( {created: -1} ).exec( (err, allProjects) => {
       callback(err, allProjects);
   });
 
@@ -154,10 +162,14 @@ function getProject ( projectId, status, callback ) {
                   //   {deadline: {$gte: new Date(new Date().setDate(new Date().getDate()-1))}}
                   // ]
               },
+      populate: {
+        path: 'assignedTo.id',
+        model: 'User'
+      },
       options: { sort: { created: -1 }}
    };
 
-  Project.findById(projectId).populate(populate).exec( (err, project) => {
+  Project.findById(projectId).populate('author.id').populate(populate).exec( (err, project) => {
       callback(err, project);
   });
 }

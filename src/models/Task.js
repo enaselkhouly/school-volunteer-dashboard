@@ -124,8 +124,8 @@ taskSchema.post('validate', (task, next) => {
 taskSchema.methods.cleanup = function (callback) {
 
   // Send email notification to task creator
-  mailer.sendTaskStatusNotification(this.assignedTo.email,
-    `Unfortunately, the task "${this.name}" in the ${this.project.name} project was deleted. You won't earn a credit for this task. If you think this is done by mistake or you have any questions please email the teacher at ${this.author.email}. Thanks for your understanding!`);
+  mailer.sendTaskStatusNotification(this.assignedTo.id.email,
+    `Unfortunately, the task "${this.name}" in the ${this.project.name} project was deleted. You won't earn a credit for this task. If you think this is done by mistake or you have any questions please email the teacher at ${this.author.id.email}. Thanks for your understanding!`);
 
   this.model('Project').findByIdAndUpdate( this.project, // Condition
                             { $pull: { tasks: this._id  } }, // Update
@@ -153,8 +153,8 @@ taskSchema.methods.signUp = function(userId, userName, userEmail, callback) {
       }
 
       // Send email notification to task creator
-      mailer.sendTaskStatusNotification(this.author.email,
-        `This is to update you that, ${this.assignedTo.displayName} signed up for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project! If you need to share more details you can contact him/her at ${this.assignedTo.email}.`);
+      mailer.sendTaskStatusNotification(this.author.id.email,
+        `This is to update you that, ${userName} signed up for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project! If you need to share more details you can contact him/her at ${userEmail}.`);
 
         return callback(null);
     });
@@ -168,7 +168,7 @@ taskSchema.methods.cancelTask = function( callback ) {
 
 	if (this.status === Status.INPROGRESS) {
 
-    let assignee = this.assignedTo.displayName;
+    let assignee = this.assignedTo.id.displayName;
 		this.assignedTo.id = null;
 		this.assignedTo.displayName = '';
 		this.status	= Status.OPEN;
@@ -179,7 +179,7 @@ taskSchema.methods.cancelTask = function( callback ) {
       }
 
       // Send email notification to task creator
-      mailer.sendTaskStatusNotification(this.author.email,
+      mailer.sendTaskStatusNotification(this.author.id.email,
         `Unfortunately, ${assignee} cancelled his/her sign up for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project.`);
 
       return callback(null);
@@ -194,8 +194,10 @@ taskSchema.methods.removeAssignee = function( callback ) {
 
 	if (this.assignedTo.id && (this.status !== Status.CLOSED)) {
 
+    let assignee = this.assignedTo.id.displayName;
 		this.assignedTo.id = null;
 		this.assignedTo.displayName = '';
+    this.assignedTo.email = '';
 		this.status	= Status.OPEN;
 		this.save( (err) => {
       if (err) {
@@ -203,8 +205,8 @@ taskSchema.methods.removeAssignee = function( callback ) {
       }
 
       // Send email notification to task creator
-      mailer.sendTaskStatusNotification(this.author.email,
-        `Unfortunately, ${this.assignedTo.displayName}'s account is deleted. The "${this.name}" task in the ${this.project.name} project he signedup for is now open.`);
+      mailer.sendTaskStatusNotification(this.author.id.email,
+        `Unfortunately, ${assignee}'s account is deleted. The "${this.name}" task in the ${this.project.name} project he signedup for is now open.`);
 
         return callback(null);
     });
@@ -217,7 +219,7 @@ taskSchema.methods.removeAssignee = function( callback ) {
 taskSchema.methods.completeTask = function(userId, callback) {
 
 	if ( (this.status === Status.INPROGRESS)
-			&& (this.assignedTo) && (this.assignedTo.id) && (this.assignedTo.id.toString() == userId.toString()) ) {
+			&& (this.assignedTo) && (this.assignedTo.id) && (this.assignedTo.id._id) && (this.assignedTo.id._id.toString() == userId.toString()) ) {
 		this.status	= Status.PENDING;
 
 		this.save( (err) => {
@@ -227,8 +229,8 @@ taskSchema.methods.completeTask = function(userId, callback) {
       }
 
       // Send email notification to task creator
-      mailer.sendTaskStatusNotification(this.author.email,
-        `Good news! ${this.assignedTo.displayName} has completed work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, please review and approve. Thank you!`);
+      mailer.sendTaskStatusNotification(this.author.id.email,
+        `Good news! ${this.assignedTo.id.displayName} has completed work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, please review and approve. Thank you!`);
 
       return callback (null);
     });
@@ -248,8 +250,8 @@ taskSchema.methods.approveTask = function(callback) {
         return callback (err);
       }
       // Send email notification to task creator
-      mailer.sendTaskStatusNotification(this.assignedTo.email,
-        `Thank you for completing your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, ${this.author.displayName} has approved the task. ${this.volunteerTime} mins has been added to your volunteer time.`);
+      mailer.sendTaskStatusNotification(this.assignedTo.id.email,
+        `Thank you for completing your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, ${this.author.id.displayName} has approved the task. ${this.volunteerTime} mins has been added to your volunteer time.`);
 
         return callback(null);
     });
@@ -270,8 +272,8 @@ taskSchema.methods.unapproveTask = function( callback) {
       }
 
       // Send email notification to task creator
-      mailer.sendTaskStatusNotification(this.assignedTo.email,
-        `Unfortunately, ${this.author.displayName} unapproved your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, please get back to the teacher at ${this.author.email} to check what is missing. Thank you so much for your understanding!`);
+      mailer.sendTaskStatusNotification(this.assignedTo.id.email,
+        `Unfortunately, ${this.author.id.displayName} unapproved your work for <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, please get back to the teacher at ${this.author.id.email} to check what is missing. Thank you so much for your understanding!`);
 
       return callback(null);
     } );
@@ -282,8 +284,8 @@ taskSchema.methods.unapproveTask = function( callback) {
 
 // Send task notification
 taskSchema.methods.sendTaskEditNotification = function( ) {
-  if ((this.status != Status.OPEN) && this.assignedTo.email) {
-    mailer.sendTaskStatusNotification(this.assignedTo.email,
+  if ((this.status != Status.OPEN) && this.assignedTo && this.assignedTo.id && this.assignedTo.id.email) {
+    mailer.sendTaskStatusNotification(this.assignedTo.id.email,
       `This is to update you that the task <a href="${config.app.url}/projects/${this.project._id}/tasks/${this._id}">"${this.name}"</a> task in the ${this.project.name} project, has been updated.`);
   }
   return;

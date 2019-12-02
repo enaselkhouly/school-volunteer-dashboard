@@ -39,7 +39,7 @@
               </td>
               <% if(task.assignedTo && task.assignedTo.displayName){ %>
                 <td class="cell-view">
-                 <p><i data-feather="check-circle" class="icon-holder check-circle"></i><a href="/users/<%=task.assignedTo.id%>/profile"><%= task.assignedTo.displayName%></a></p>
+                 <p><i data-feather="check-circle" class="icon-holder check-circle"></i><a href="/users/<%=task.assignedTo.id._id%>/profile"><%= task.assignedTo.id.displayName%></a></p>
                 </td>
               <%} else {%>
                 <td class="cell-view">

@@ -9,7 +9,9 @@
             <%}%>
             <a href="/projects/<%=task.project._id%>/tasks/<%=task._id%>"><%= task.name %></a></h3>
           <p><%= task.project.name %> Project </p>
-          <p><%= task.author.displayName%></a> | <%= task.author.email%>%></p>
+          <% if(task && task.author && task.author.id && task.author.id.displayName && task.author.id.email) {%>
+          <p><%= task.author.id.displayName%></a> | <%= task.author.id.email%>%></p>
+          <%}%>
         </div>
         <div class="card-text">
           <div class="row">
