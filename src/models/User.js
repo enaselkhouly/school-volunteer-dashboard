@@ -7,7 +7,6 @@ const passportLocalMongoose   = require("passport-local-mongoose");
 mongoose.promise  = require('bluebird');
 
 const mailer      = require("../services/mailer");
-const Task = require('./Task');
 
 // User Type definition
 const UserType = {
@@ -31,6 +30,9 @@ let userSchema = new  mongoose.Schema({
                     type: String,
                     unique: true,
                     required: true
+                  },
+    secondaryEmail  : {
+                    type: String
                   },
     userType    : {
                     type: String,
@@ -67,36 +69,42 @@ let userSchema = new  mongoose.Schema({
 /*
 * Hooks
 */
-// Remove all projects by this author
-userSchema.pre('remove', function(next) {
-
-  if (this.isFamily()) {
-    // remove user from assigned tasks
-    Task.find({'assignedTo.id': this._id}, (err, tasks) => {
-      if (err) {
-        next(err);
-        return;
-      }
-      if (tasks) {
-        tasks.forEach( (task) => {
-          task.removeAssignee();
-        });
-      }
-      next();
-    });
-  } else {
-
-    // Delete all created Tasks
-    Task.find().remove({'author.id': this._id}, (err) => {
-      if (err) {
-        return next(err);
-      }
-    });
-
-    // Delete all created projects
-    this.model('Project').remove({'author.id': this._id}, next);
-  }
-});
+// // Remove all projects by this author
+// userSchema.pre('remove', function(next) {
+//
+//   if (this.isFamily()) {
+//     // remove user from assigned tasks
+//     Task.find({'assignedTo.id': this._id}, (err, tasks) => {
+//       if (err) {
+//         next(err);
+//         return;
+//       }
+//       if (tasks) {
+//         tasks.forEach( (task) => {
+//
+//           task.removeAssignee( (err) => {
+//             next(err);
+//             return;
+//           });
+//         });
+//       }
+//       next();
+//     });
+//   } else {
+//
+//     // // Delete all created Tasks
+//     // Task.find().remove({'author.id': this._id}, (err) => {
+//     //   if (err) {
+//     //     return next(err);
+//     //   }
+//     // });
+//     //
+//     // // Delete all created projects
+//     // this.model('Project').remove({'author.id': this._id}, next);
+//
+//     // TODO Archive project
+//   }
+// });
 
 /*
 * Methods
@@ -141,12 +149,18 @@ userSchema.methods.comparePassword = function(password, cb) {
 	});
 };
 
-userSchema.methods.newUserNotification = (email, username, password, appurl) => {
-  mailer.sendAccountNotification(email, username, password, appurl);
+userSchema.methods.newUserNotification = (email, secondaryEmail, username, password, appurl) => {
+
+  let recipients = (secondaryEmail)? (email + ',' + secondaryEmail) : email;
+
+  mailer.sendAccountNotification(recipients, username, password, appurl);
 }
 
-userSchema.methods.passwordResetNotification = (email, username, password, appurl) => {
-  mailer.sendPasswordResetNotification(email, username, password, appurl);
+userSchema.methods.passwordResetNotification = (email, secondaryEmail, username, password, appurl) => {
+
+  let recipients = (secondaryEmail)? (email + ',' + secondaryEmail) : email;
+
+  mailer.sendPasswordResetNotification(recipients, username, password, appurl);
 }
 
 module.exports = mongoose.model("User", userSchema);

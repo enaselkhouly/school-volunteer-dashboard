@@ -43,21 +43,34 @@ function allUsersReport ( callback ) {
 function getUserProjects ( user, status, category, pta, callback ) {
 
   let populate = {
+    path: "projects",
+    match: {
+      isPTA: {$in: pta}
+    },
+    populate: [{
        path: 'tasks',
        model: 'Task',
        match: {
-                  category: {$in: category},
-                  status: {$in: status}
+                $or: [{'assignedTo.id': user._id}, {'author.id': user._id}],
+                category: {$in: category},
+                status: {$in: status}
               },
-      populate: {
-        path: 'assignedTo.id',
-        model: 'User'
-      },
-      options: { sort: { created: -1 }}
+        populate: {
+          path: 'assignedTo.id',
+          model: 'User'
+        },
+        options: { sort: { created: -1 }}
+    },
+    {
+      path: 'author.id',
+      model: 'User'
+    }],
+    options: { sort: { created: -1 }}
    };
-  Project.find({ isPTA: pta , $or: [{'assignedTo.id': user._id}, {'author.id': user._id}]}).populate('author.id').populate(populate).sort( {created: -1} ).exec( (err, userProjects) => {
-      callback(err, userProjects);
-  });
+
+    User.findById(user._id).populate(populate).exec( (err, user) => {
+      callback(err, user.projects);
+    });
 }
 
 function addProjectToUser (userId, projectId, callback){

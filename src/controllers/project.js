@@ -160,9 +160,13 @@ function deleteProject (req, res) {
     function findProject (callback) {
       let populate = {
         path: "tasks",
-        populate: {
+        populate: [{
            path: 'project',
         },
+        {
+          path: "assignedTo.id",
+          model: "User"
+        }]
        };
 
       Project.findById(req.params.id).populate(populate).exec( (err, project) => {

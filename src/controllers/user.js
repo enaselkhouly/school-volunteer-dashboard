@@ -30,16 +30,15 @@ function postRegister (req, res) {
   // newUser.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
   User.register(newUser, req.body.password, (err, user) => {
-      if(err){
-        req.flash("error", err.message);
-        res.redirect("/register");
-        return;
-      }
-      // send email notification to the added user
-     user.newUserNotification(user.email, user.username, req.body.password, config.app.url);
-
-      req.flash("success", "New user is created successfully!");
-      res.redirect(`/users`);
+    if(err){
+      req.flash("error", err.message);
+      res.redirect("/register");
+      return;
+    }
+    // send email notification to the added user
+   user.newUserNotification(user.email, user.secondaryEmail, user.username, req.body.password, config.app.url);
+   req.flash("success", "New user is created successfully!");
+   res.redirect(`/users`);
 
   });
 
@@ -240,7 +239,7 @@ async.waterfall([
       res.redirect(`back`);
     } else {
       // send password reset notification to primary email
-     user.passwordResetNotification(user.email, user.username, req.body.newUserPassword, config.app.url);
+     user.passwordResetNotification(user.email, user.secondaryEmail, user.username, req.body.newUserPassword, config.app.url);
 
       req.flash('success', 'Password is successfully reset!');
       res.redirect(`/users`);
@@ -368,7 +367,6 @@ function getUser (req, res) {
       req.flash("error", err.message);
       res.redirect(`/`);
     } else {
-
       let userDir = req.user.userType.toLowerCase();
 
       res.render(`user/${userDir}`, {
@@ -463,10 +461,13 @@ function putUser (req, res){
   // user.requiredVolunteerTime *= 60; // Convert from hrs to mins
   // user.requiredPtaVolunteerTime *= 60; // Convert from hrs to mins
 
-  User.findByIdAndUpdate(req.params.id, user, (err, user) => {
+  User.findByIdAndUpdate(req.params.id, user, {multi: true}, (err, user) => {
 
-      if(err || !user){
-         req.flash("error", "User is not found");
+      if (!user) {
+        req.flash("error", "User is not found");
+      }
+      else if(err || !user){
+         req.flash("error", err.message);
       } else {
          req.flash("success", "User is edited successfully!");
       }

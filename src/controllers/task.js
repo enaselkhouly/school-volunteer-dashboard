@@ -58,9 +58,7 @@ function postNewTask (req, res) {
 
   // link the task with the user
   newTask.author = {
-      id : req.user._id,
-      displayName: req.user.displayName,
-      email: req.user.email
+      id : req.user._id
     }
 
   // TODO
@@ -149,7 +147,7 @@ function putTask (req, res) {
         }
       }
 
-      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}).populate('author.id', '_id displayName email').populate('assignedTo.id', '_id displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
+      Task.findByIdAndUpdate(req.params.task_id, req.body.task, {new: true}).populate('author.id', '_id displayName email secondaryEmail').populate('assignedTo.id', '_id displayName email secondaryEmail').populate('project', '_id name isPTA').exec( (err, task) => {
         if (err || !task) {
           let error = new Error("Task is not found!");
           return callback(error);
@@ -218,8 +216,6 @@ function duplicateTask (req, res) {
           name: task.name,
           description: task.description,
           "author.id": task.author.id,
-          "author.displayName": task.author.displayName,
-          "author.email": task.author.email,
           "project": task.project,
           category: task.category,
           estimatedTime: task.estimatedTime,
@@ -256,7 +252,7 @@ function signupTask (req, res) {
 
   async.waterfall([
     function getTaskInfo (callback){
-      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
+      Task.findById(req.params.task_id).populate('author.id', 'displayName email secondaryEmail').populate('project', '_id name isPTA').exec( (err, task) => {
         if (err || !task) {
           let error = new Error("Task is not found!");
           return callback(error);
@@ -271,7 +267,7 @@ function signupTask (req, res) {
         });
       },
     function addProjectToUser(task, callback){
-      helpers.addProjectToUser(req.user.id, task.project, (err) => {
+      helpers.addProjectToUser(req.user._id, task.project, (err) => {
         if (err) {
           return callback(err);
         }
@@ -294,7 +290,7 @@ function cancelTask (req, res) {
 
   async.waterfall ([
     function findTask (callback) {
-      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
+      Task.findById(req.params.task_id).populate('author.id', 'displayName email secondaryEmail').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
         if(err || !task) {
           let error = new Error("Task is not found!");
           return callback(error);
@@ -328,54 +324,9 @@ function cancelTask (req, res) {
   });
 } // cancelTask
 
-function completeTask (req, res) {
-
-  Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
-    if(err || !task){
-      req.flash("error", "Task is not found");
-      return res.redirect("back");
-    }
-
-    // Change task status
-    task.completeTask(req.user._id, (err) => {
-      if (!err) {
-        req.flash("success", "Thank you for completing the task :). Keep up the good work!!")	;
-        return res.redirect('back');
-      } else {
-        req.flash("error", "The task status could not be changed to completed!")	;
-        return res.redirect(`/projects`);
-      }
-    });
-  });
-} // completeTask
-
-function approveTask (req, res) {
-
-  Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
-      if (err || !task){
-        req.flash("error", "Task is not found!")	;
-        return res.redirect(`back`);
-      }
-      // Change task status
-      task.approveTask( (err) => {
-        if (!err) {
-          req.flash("success", "The task is approved!")	;
-          return res.redirect('back');
-        } else {
-          req.flash("error", "The task could not be approved!")	;
-          return res.redirect(`/projects`);
-        }
-      });
-    });
-} // approveTask
-
-function postApproveTask (req, res) {
-  res.redirect('back');
-}
-
 function unapproveTask (req, res) {
 
-    Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', '_id name isPTA').exec( (err, task) => {
+    Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email secondaryEmail').populate('project', '_id name isPTA').exec( (err, task) => {
         if (err || !task){
           req.flash("error", "Task is not found!")	;
           return res.redirect(`back`);
@@ -400,7 +351,7 @@ function deleteTask (req, res) {
 
   async.waterfall ([
     function findTask (callback) {
-      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email').populate('project', 'name').exec( (err, task) => {
+      Task.findById(req.params.task_id).populate('author.id', 'displayName email').populate('assignedTo.id', 'displayName email secondaryEmail').populate('project', 'name').exec( (err, task) => {
         if (err || !task) {
           callback ( new Error ("Task is not found!"));
         } else {
@@ -451,9 +402,6 @@ module.exports = {
   duplicateTask : duplicateTask,
   signupTask    : signupTask,
   cancelTask    : cancelTask,
-  completeTask  : completeTask,
-  approveTask   : approveTask,
-  postApproveTask : postApproveTask,
   unapproveTask : unapproveTask,
   deleteTask    : deleteTask
 };
