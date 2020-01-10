@@ -118,7 +118,7 @@
 
                       <button class="btn btn-outline-warning" type="button"><a href="/projects/<%=task.project%>/tasks/<%=task._id%>/edit"><i data-feather="edit" class="edit"></i></a></button>
 
-                    <%} if( (user.userType == 'Admin') || (task && task.author && task.author.id && task.author.id.equals(user._id))) {%>
+                    <%} if (task && task.author && task.author.id && task.author.id.equals(user._id)) {%>
                       <!-- Button trigger modal -->
                       <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#<%=task._id%>deleteModal">
                         <i data-feather="trash-2" class="trash-2"></i>
