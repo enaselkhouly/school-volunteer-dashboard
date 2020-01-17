@@ -128,8 +128,8 @@ taskSchema.methods.cleanup = function (callback) {
     // Send email notification to assignee
     let recipients = (this.assignedTo.id.secondaryEmail && (this.assignedTo.id.secondaryEmail != null))? (this.assignedTo.id.email + ',' + this.assignedTo.id.secondaryEmail) : this.assignedTo.id.email;
 
-    mailer.sendTaskStatusNotification(recipients,
-      `Unfortunately, the task "${this.name}" in the ${this.project.name} project was deleted. You won't earn a credit for this task. If you think this is done by mistake or you have any questions please email the teacher at ${this.author.id.email}. Thanks for your understanding!`);
+    //mailer.sendTaskStatusNotification(recipients,
+    //  `Unfortunately, the task "${this.name}" in the ${this.project.name} project was deleted. You won't earn a credit for this task. If you think this is done by mistake or you have any questions please email the teacher at ${this.author.id.email}. Thanks for your understanding!`);
 
     this.model('Project').findByIdAndUpdate( this.project, // Condition
                               { $pull: { tasks: this._id  } }, // Update
