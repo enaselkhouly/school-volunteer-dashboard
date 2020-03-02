@@ -123,30 +123,31 @@
                       <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#<%=task._id%>deleteModal">
                         <i data-feather="trash-2" class="trash-2"></i>
                       </button>
-                      <!-- Modal -->
-                      <div class="modal fade" id="<%=task._id%>deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <p>The "<%=task.name%>" task will be <span class="text-red">permanently</span> deleted. If this task has assignee he/she won't get the volunteer time for this task.</p>
-
-                              <p class="font-weight-bold">You won't be able to undo this action.</p>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <%}%>
                   </div>
                 </form>
+
+                <!-- Modal -->
+                <div class="modal fade" id="<%=task._id%>deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>The "<%=task.name%>" task will be <span class="text-red">permanently</span> deleted. If this task has assignee he/she won't get the volunteer time for this task.</p>
+
+                        <p class="font-weight-bold">You won't be able to undo this action.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-outline-danger submit-action" form='form-delete-<%=task._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </td>
             </tr>
           </div>
