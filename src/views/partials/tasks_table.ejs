@@ -86,11 +86,12 @@
                 <p class="secondary-data cell-view-hide" title="Volunteer Time"><i data-feather="clock" class="icon-holder clock"></i><%= vHr %><%= vMin%></p>
               </td>
               <td>
-                <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
-                </form>
-                <form id='form-duplicate-<%=task._id%>' action="/projects/<%=task.project%>/tasks/<%=task._id%>/duplicate" method="POST">
-                </form>
-                <form id="form-actions" action="/projects/<%=task.project%>/tasks/<%=task._id%>" class="form-actions" name="form-actions" method="POST">
+                <div>
+                  <form id='form-delete-<%=task._id%>' action="/projects/<%=task.project%>/tasks/<%=task._id%>?_method=DELETE" method="POST">
+                  </form>
+                  <form id='form-duplicate-<%=task._id%>' action="/projects/<%=task.project%>/tasks/<%=task._id%>/duplicate" method="POST">
+                  </form>
+                  <form id="form-actions" action="/projects/<%=task.project%>/tasks/<%=task._id%>" class="form-actions" name="form-actions" method="POST">
                   <div class="form-group form-input hide">
                     <label for="task-time">task time? (in mins)</label>
                     <input id="task-time" class="form-control" type="text" value="<%=task.volunteerTime%>" name="task[volunteerTime]"
@@ -126,7 +127,7 @@
                       <%}%>
                   </div>
                 </form>
-
+                </div>
                 <!-- Modal -->
                 <div class="modal fade" id="<%=task._id%>deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
