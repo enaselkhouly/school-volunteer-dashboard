@@ -74,7 +74,7 @@
     "css-loader": "^2.1.1",
     "ejs-html-loader": "^4.0.1",
     "eslint": "^5.15.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mini-css-extract-plugin": "^0.5.0",
     "mocha": "^6.2.0",
     "morgan": "^1.9.1",
