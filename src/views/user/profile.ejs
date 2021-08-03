@@ -51,12 +51,12 @@
                 </div>
                 <div class="col-12 text-center">
                   <div class="row text-center mt-4 mb-4">
-                    <div class="col-6 border-right">
+                    <!-- <div class="col-6 border-right">
                       <div class="h4 font-weight-bold mb-0">PTO</div>
                       <span class="text-gray"><%= vPtaHr%> <%= vPtaMin%>/ <%= rPtaHr%> <%= rPtaMin%> minimum required volunteering</span>
-                    </div>
-                    <div class="col-6">
-                      <div class="h4 font-weight-bold mb-0">Non PTO</div>
+                    </div> -->
+                    <div class="col-12">
+                      <!-- <div class="h4 font-weight-bold mb-0">Volunteer Time</div> -->
                       <span class="text-gray"><%= vHr%> <%= vMin%>/ <%= rHr%> <%= rMin%> maximum volunteering credit</span>
                       <%if( volunteerTime > user.requiredVolunteerTime) {%>
                       <p class="text-red">You earn <%= rHr%> <%= rMin%> only!</p>
@@ -109,11 +109,42 @@
                   <button class="btn btn-outline-info"><a href="/users/<%=user._id%>/reset">Reset Password</a></button>
                 <%}%>
                 <a class="btn btn-outline-warning" href="/users/<%=user._id%>/edit">Edit</a>
-                <form id="delete-form" action="/users/<%= user._id%>?_method=DELETE" method="POST">
                   <% if (!user._id.equals(currentUser._id)){%>
-                  <button class="btn btn-outline-danger">Delete</button>
+                  
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#<%=user._id%>deleteModal">Delete</button>
+                  
+                    <!-- Modal -->
+                    <div class="modal fade" id="<%=user._id%>deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <% if (user.userType === 'Family'){%>
+                            <p>Are you sure you want to proceed? This user will be <span class="text-red">permanently</span> deleted and all the user's data will be lost.</p>
+
+                            <% } else {%>
+
+                              <p>Are you sure you want to proceed? This user will be <span class="text-red">permanently</span> deleted and the user's created projects will be lost.</p>
+                              <p>Tasks with status 'Closed' will remain. Family users will keep their volunteer time for closed tasks.</p>
+
+                            <% } %>
+                            <p class="font-weight-bold">You won't be able to undo this action.</p>
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form id="form-delete-<%=user._id%>" action="/users/<%= user._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-outline-danger submit-action" form='form-delete-<%=user._id%>' type="submit" name='submit' value="Delete"><i data-feather="trash-2" class="trash-2"></i></button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
                   <%}%>
-                </form>
               <%}%>
             </div>
           </div>

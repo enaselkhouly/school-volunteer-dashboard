@@ -93,11 +93,11 @@ function removeProjectFromUser ( userId, projectId, callback ) {
   User.findById(userId, (err, user) => {
     if (!err && user) {
       user.projects.pull({_id: projectId});
-      user.save( (err) => {
-        callback(err);
+      user.save( (error) => {
+        return callback(error);
       });
     } else {
-      callback(err);
+      return callback(err);
     }
   });
 }

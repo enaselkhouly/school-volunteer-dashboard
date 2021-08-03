@@ -21,7 +21,7 @@
         <div class="form-container bg-white mt-2 hide">
           <div class="form container-fluid form-content p-3">
               <form class="">
-                <h6>Filter by PTO type:</h6>
+                <!-- <h6>Filter by PTO type:</h6>
                 <%
                   let checkboxes = ['PTO', 'Non PTO'];
                   let checkboxesNames = [true, false];
@@ -35,7 +35,7 @@
                       </label>
                     </div>
                 <%}%>
-                <hr>
+                <hr> -->
                 <h6>Filter by category:</h6>
                     <%
                       checkboxes = ['Uncategorized', 'At Home', 'On-campus', 'Off-campus'];
@@ -93,9 +93,9 @@
                 <div class="row">
                   <div class="col-xs-12 col-md-9">
                     <h3>
-                      <%if(project.isPTA){%>
+                      <!-- <%if(project.isPTA){%>
                       <span class="pta-sign icon-holder">PTO</span>
-                      <%}%>
+                      <%}%> -->
                       <a href="/projects/<%=project._id%>"><%=project.name%></a>
                   </h3>
                   </div>

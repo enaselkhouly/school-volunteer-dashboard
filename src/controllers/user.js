@@ -484,27 +484,155 @@ function deleteUser (req, res) {
       req.flash("error", error.message);
       res.redirect("/users");
    }
+   else {
+   
+    User.findById(req.params.id, (err, user) => {
+      if (err || !user) {
+          req.flash("error", new Error("User not found!"));
+          res.redirect("/users");
+        } else {
+        
+          if (user.isFamily()) {
+      
+            // remove user from assigned tasks
+            user.model('Task').find({'assignedTo.id': user._id}, (err, tasks) => {
+              if (err) {
+                req.flash("error", err.message);
+                res.redirect("/users");
+                return;
+              }
+              if (tasks) {
+                tasks.forEach( (task) => {
 
-   req.flash("error", (new Error("User delete is not currently supported!")).message);
-   res.redirect("/users");
+                  if (task.status !== 'Closed') {
+        
+                    task.removeAssignee( (err) => {
+                      if(err) {
+                        req.flash("error", err.message);
+                        res.redirect("/users");
+                      }
+                      return;
+                    });
+                  }
+                });
+              }
 
-   // else {
-   //   //TODO do not remove if a teacher or admin with projects with closed tasks
-   //   User.findByIdAndRemove(req.params.id, function(err, user){
-   //
-   //     if(err){
-   //        req.flash("error", err.message);
-   //        res.redirect("/users");
-   //     } else {
-   //
-   //        // Call the remove hooks
-   //        user.remove();
-   //
-   //         req.flash("success", "Successfully deleted the User!");
-   //         res.redirect("/users");
-   //     }
-   //   });
-   // }
+              User.findByIdAndRemove(req.params.id, function(err){
+                if(err) {
+                  req.flash("error", err.message);
+                  res.redirect("/users");
+                } else {
+                  req.flash("success", "Successfully deleted the User!");
+                  res.redirect("/users");            
+                }
+              });
+            });
+          } 
+          
+          else {
+                
+            async.waterfall ([
+              function findProject (callback) {
+                
+                let populate = {
+                  path: 'tasks',
+                  model: 'Task',
+                  match: {
+                          status: {$ne: 'Closed'}
+                         },
+                 populate: {
+                   path: 'assignedTo.id',
+                   model: 'User'
+                 }
+              };
+        
+              user.model('Project').find({'author.id': user._id}).populate(populate).exec( (err, allProjects) => {
+                    callback(err, allProjects);
+                });
+              },
+            
+              function cleanupTasksAssignee (allProjects, callback) {
+        
+                allProjects.forEach(project => { 
+                  if (project.tasks) {
+            
+                    project.tasks.forEach ( (task) => {
+                      if (task.assignedTo) {
+                        task.cleanup ((err) => {
+                          if (err) {
+                            return callback(err);
+                          } else {
+                            helpers.removeEmptyProjectFromAssignee (task.assignedTo.id, project._id, (err) => {
+                              if (err) {
+                                return callback (err);
+                              }
+                            });
+                          }
+                        });
+                      }
+                    });
+                  }
+                })
+                callback(null, allProjects);
+              },
+        
+              // removeProjectFromUser author
+              function removeProjectAuthor (allProjects, callback) {
+        
+        
+                allProjects.forEach(project => { 
+                  // remove from author
+                  helpers.removeProjectFromUser( project.author.id, project._id, (err) => {
+                  });
+                });
+
+                callback(null, allProjects);
+              }
+              ,
+              // removeAllProjectTasks
+              function removeProjectTasks (allProjects, callback) {
+        
+                allProjects.forEach(project => { 
+        
+                  helpers.removeAllProjectTasks(project, (err) => {
+                    if(err) {
+                      callback(err);
+                    }
+                  });
+                })
+                callback(null, allProjects);
+              },
+              // Delete project
+              function deleteProjects (allProjects, callback) {
+        
+                allProjects.forEach ( project => {
+        
+                  if(!project.tasks) {
+                    Project.deleteOne({'_id': project._id});
+                  }
+                })  
+                callback(null);
+              },
+              function deleteUser (callback) {
+                User.findByIdAndRemove(req.params.id, function(err){
+                  callback(err);
+                });
+              }
+              ],
+            function (err) {
+              if(err){
+                req.flash("error", err.message);
+                res.redirect("/users");
+             } else {
+            
+              req.flash("success", "Successfully deleted the User!");
+              res.redirect("/users");
+            } 
+          });
+        }
+      }
+    }) 
+  }
 } // deleteUser
 
 // Get Users Report

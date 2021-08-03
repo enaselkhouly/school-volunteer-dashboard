@@ -7,6 +7,8 @@ const passportLocalMongoose   = require("passport-local-mongoose");
 mongoose.promise  = require('bluebird');
 
 const mailer      = require("../services/mailer");
+const async  = require("async");
+// const helpers = require("../helpers");
 
 // User Type definition
 const UserType = {
@@ -43,7 +45,8 @@ let userSchema = new  mongoose.Schema({
       type: Number
     },
     requiredPtaVolunteerTime: {
-      type: Number
+      type: Number,
+      default: 0,
     },
     projects     : [
       {
@@ -65,46 +68,6 @@ let userSchema = new  mongoose.Schema({
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
-
-/*
-* Hooks
-*/
-// // Remove all projects by this author
-// userSchema.pre('remove', function(next) {
-//
-//   if (this.isFamily()) {
-//     // remove user from assigned tasks
-//     Task.find({'assignedTo.id': this._id}, (err, tasks) => {
-//       if (err) {
-//         next(err);
-//         return;
-//       }
-//       if (tasks) {
-//         tasks.forEach( (task) => {
-//
-//           task.removeAssignee( (err) => {
-//             next(err);
-//             return;
-//           });
-//         });
-//       }
-//       next();
-//     });
-//   } else {
-//
-//     // // Delete all created Tasks
-//     // Task.find().remove({'author.id': this._id}, (err) => {
-//     //   if (err) {
-//     //     return next(err);
-//     //   }
-//     // });
-//     //
-//     // // Delete all created projects
-//     // this.model('Project').remove({'author.id': this._id}, next);
-//
-//     // TODO Archive project
-//   }
-// });
 
 /*
 * Methods

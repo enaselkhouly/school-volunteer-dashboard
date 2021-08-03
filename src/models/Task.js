@@ -203,27 +203,32 @@ taskSchema.methods.cancelTask = function( callback ) {
 // Remove Task Assignee
 taskSchema.methods.removeAssignee = function( callback ) {
 
-	if (this.assignedTo.id && (this.status !== Status.CLOSED)) {
+	if (this.assignedTo.id) {
 
-    let assignee = this.assignedTo.id.displayName;
-		this.assignedTo.id = null;
-		this.assignedTo.displayName = '';
-    this.assignedTo.email = '';
-		this.status	= Status.OPEN;
-		this.save( (err) => {
-      if (err) {
-        return callback(err);
-      }
+    if (this.status !== Status.CLOSED) {
+      let assignee = this.assignedTo.id.displayName;
+      this.assignedTo.id = null;
+      this.assignedTo.displayName = '';
+      this.assignedTo.email = '';
+      this.status	= Status.OPEN;
+      this.save( (err) => {
+        if (err) {
+          return callback(err);
+        }
 
-      // Send email notification to task creator
+        // Send email notification to task creator
 
-      let recipients = (this.author.id.secondaryEmail && (this.author.id.secondaryEmail != null))? (this.author.id.email + ',' + this.author.id.secondaryEmail) : this.author.id.email;
+        let recipients = (this.author.id.secondaryEmail && (this.author.id.secondaryEmail != null))? (this.author.id.email + ',' + this.author.id.secondaryEmail) : this.author.id.email;
 
-      mailer.sendTaskStatusNotification(recipients,
-        `Unfortunately, ${assignee}'s account is deleted. The "${this.name}" task in the ${this.project.name} project he signedup for is now open.`);
+        mailer.sendTaskStatusNotification(recipients,
+          `Unfortunately, ${assignee}'s account is deleted. The "${this.name}" task in the ${this.project.name} project he signedup for is now open.`);
 
-        return callback(null);
-    });
+          return callback(null);
+      });
+    } else {
+      this.remove();
+      return callback(null);      
+    }
   } else {
     return callback(new Error ('Can not remove assignee!'));
   }

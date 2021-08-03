@@ -23,12 +23,13 @@ function sendTaskStatusNotification ( sendTo, msg ) {
 
   let html = fillHTML(subject, msg); // html body
 
-  send(sendTo, subject, html, function(err) {
+  // TODO temporary disable
+  // send(sendTo, subject, html, function(err) {
 
-    if (err) {
-      console.log(err.message);
-    }
-  });
+  //   if (err) {
+  //     console.log(err.message);
+  //   }
+  // });
 }
 
 function sendAccountNotification ( sendTo, username, password, appurl ) {

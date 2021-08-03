@@ -8,7 +8,7 @@ module.exports = {
 		},
 
 		db: {
-			url: process.env.MONGO_URI || "mongodb://localhost/" + pkg.config.dbName + "-dev",
+			url: process.env.MONGO_URI || "mongodb://localhost/test",
 			options: {
 				user: "",
 				pass: "",
