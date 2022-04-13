@@ -34,7 +34,7 @@
     "dbName": "men-dashboard"
   },
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "bcrypt": "^3.0.6",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
